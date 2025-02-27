@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Clément Poupelin">
+<meta name="description" content="Description">
+
+<title>Séries temporelles - Fiche 06</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../img/logo_univ_nantes_simple.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../custom.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="https://www.univ-nantes.fr/" class="navbar-brand navbar-brand-logo">
+    <img src="../img/logo_univ_nantes_complet.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="https://www.univ-nantes.fr/">
+    <span class="navbar-title">Front page</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-feuille-de-tp" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-file-earmark-font-fill" role="img">
+</i> 
+ <span class="menu-text">Feuille de TP</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-feuille-de-tp">    
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche1-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche2-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche3-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche4-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche5-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 5</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche6-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 6</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/fiche6_bootstrap.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 6 Bootstrap</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Enonce/Fiche7-20-21.pdf" rel="" target="">
+ <span class="dropdown-text">Fiche 7</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://clement-poupelin.github.io/Series_temporelles/" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/Clement-Poupelin" rel="" target="">
+ <span class="dropdown-text">Clément Poupelin</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/nonomtrt" rel="" target="">
+ <span class="dropdown-text">Noémie Matrat</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-linkedin" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+      <i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-linkedin">    
+        <li>
+    <a class="dropdown-item" href="http://www.linkedin.com/in/cl%C3%A9ment-poupelin-7675311a7/" rel="" target="">
+ <span class="dropdown-text">Clément Poupelin</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.linkedin.com/in/no%C3%A9mie-matrat-86a34a200/" rel="" target="">
+ <span class="dropdown-text">Noémie Matrat</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:clementjc.poupelin@gmail.com" rel="" target=""><i class="bi bi-envelope" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="http://clement-poupelin.github.io/" rel="" target=""><i class="bi bi-person-circle" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.instagram.com/clement__poupelin" rel="" target=""><i class="bi bi-instagram" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <div class="quarto-title-block"><div><h1 class="title">Fiche 06</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+                  <div>
+        <div class="description">
+          Description
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">categorie 1</div>
+                <div class="quarto-category">cotegorie 2</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Clément Poupelin </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">Invalid Date</p>
+      </div>
+    </div>
+    
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">February 27, 2025</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intervenant.e.s" id="toc-intervenant.e.s" class="nav-link active" data-scroll-target="#intervenant.e.s">Intervenant.e.s</a>
+  <ul class="collapse">
+  <li><a href="#rédaction" id="toc-rédaction" class="nav-link" data-scroll-target="#rédaction">Rédaction</a></li>
+  <li><a href="#relecture" id="toc-relecture" class="nav-link" data-scroll-target="#relecture">Relecture</a></li>
+  </ul></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#données" id="toc-données" class="nav-link" data-scroll-target="#données">Données</a></li>
+  <li><a href="#analyse" id="toc-analyse" class="nav-link" data-scroll-target="#analyse">Analyse</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session info</a></li>
+  <li><a href="#exercice-1" id="toc-exercice-1" class="nav-link" data-scroll-target="#exercice-1"><strong>EXERCICE 1 : </strong></a></li>
+  <li><a href="#exercice-2" id="toc-exercice-2" class="nav-link" data-scroll-target="#exercice-2"><strong>EXERCICE 2 : </strong></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="intervenant.e.s" class="level1">
+<h1>Intervenant.e.s</h1>
+<section id="rédaction" class="level3">
+<h3 class="anchored" data-anchor-id="rédaction">Rédaction</h3>
+<ul>
+<li><strong>Clément Poupelin</strong>, <a href="mailto:clementjc.poupelin@gmail.com" class="email">clementjc.poupelin@gmail.com</a><br>
+</li>
+</ul>
+</section>
+<section id="relecture" class="level3">
+<h3 class="anchored" data-anchor-id="relecture">Relecture</h3>
+<ul>
+<li></li>
+</ul>
+</section>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">Packages</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Fonctions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Seed</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplot</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Fonction 1</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Fonction 2</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+
+</div>
+</div>
+</div>
+</section>
+<section id="données" class="level1">
+<h1>Données</h1>
+</section>
+<section id="analyse" class="level1">
+<h1>Analyse</h1>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>METTRE LES REMARQUES</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>METTRE LES POINTS D’ATTENTION</p>
+</div>
+</div>
+<div class="success-header">
+<div class="success-icon">
+
+</div>
+<p>Résultats</p>
+</div>
+<div class="success">
+<p>METTRE LES CONCLUSIONS</p>
+</div>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+</section>
+<section id="session-info" class="level1">
+<h1>Session info</h1>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>(<span class="at">pkgs =</span> <span class="st">"attached"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>─ Session info ───────────────────────────────────────────────────────────────
+ setting  value
+ version  R version 4.2.1 (2022-06-23 ucrt)
+ os       Windows 10 x64 (build 22631)
+ system   x86_64, mingw32
+ ui       RTerm
+ language (EN)
+ collate  French_France.utf8
+ ctype    French_France.utf8
+ tz       Europe/Paris
+ date     2025-02-27
+ pandoc   3.2 @ C:/Program Files/RStudio/resources/app/bin/quarto/bin/tools/ (via rmarkdown)
+
+─ Packages ───────────────────────────────────────────────────────────────────
+ package   * version date (UTC) lib source
+ dplyr     * 1.1.4   2023-11-17 [1] CRAN (R 4.2.3)
+ ggplot2   * 3.5.1   2024-04-23 [1] CRAN (R 4.2.3)
+ gridExtra * 2.3     2017-09-09 [1] CRAN (R 4.2.1)
+
+ [1] C:/Users/cleme/AppData/Local/R/win-library/4.2
+ [2] C:/Program Files/R/R-4.2.1/library
+
+──────────────────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+</section>
+<section id="exercice-1" class="level1">
+<h1><strong>EXERCICE 1 : </strong></h1>
+<p><br></p>
+<p>Sur la série de vente de voitures (avant la rupture), montrer que la modélisation SARIMA ne fournit pas une solution satisfaisante. www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt <br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>url_TP3 <span class="ot">=</span> <span class="st">"http://www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt"</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scan</span>(url_TP3) <span class="co"># pour importer le dataframe en 1 vecteur de donnée (et non un dataframe de dim n*m)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>Xt <span class="ot">=</span> <span class="fu">ts</span>(X, <span class="at">frequency =</span><span class="dv">12</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Xt <span class="ot">=</span> <span class="fu">window</span>(Xt, <span class="at">start=</span><span class="fu">start</span>(Xt), <span class="at">end=</span><span class="dv">24</span>) <span class="co"># Avant rupture</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>On tente de trouver une modelisation sarima qui prend en compte la présence d’une tendance et une saisonnalité de période 12</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sarima_voitures <span class="ot">=</span> <span class="fu">auto.arima</span>(Xt, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                             <span class="at">d=</span><span class="dv">1</span>, </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">D=</span><span class="dv">1</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">start.q =</span> <span class="dv">1</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">start.p =</span> <span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">max.order =</span> <span class="dv">4</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                             <span class="at">stationary =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                             <span class="at">seasonal =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ic =</span> <span class="st">"bic"</span>, </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                             <span class="at">trace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ Fitting models using approximations to speed things up...
+
+ ARIMA(1,1,1)(1,1,1)[12]                    : 5555.015
+ ARIMA(0,1,0)(0,1,0)[12]                    : 5729.47
+ ARIMA(1,1,0)(1,1,0)[12]                    : 5658.897
+ ARIMA(0,1,1)(0,1,1)[12]                    : 5531.315
+ ARIMA(0,1,1)(0,1,0)[12]                    : 5629.095
+ ARIMA(0,1,1)(1,1,1)[12]                    : 5549.975
+ ARIMA(0,1,1)(0,1,2)[12]                    : 5536.018
+ ARIMA(0,1,1)(1,1,0)[12]                    : 5603.51
+ ARIMA(0,1,1)(1,1,2)[12]                    : 5545.522
+ ARIMA(0,1,0)(0,1,1)[12]                    : 5636.085
+ ARIMA(1,1,1)(0,1,1)[12]                    : 5537.866
+ ARIMA(0,1,2)(0,1,1)[12]                    : 5536.856
+ ARIMA(1,1,0)(0,1,1)[12]                    : 5592.743
+ ARIMA(1,1,2)(0,1,1)[12]                    : 5540.004
+
+ Now re-fitting the best model(s) without approximations...
+
+ ARIMA(0,1,1)(0,1,1)[12]                    : 5795.21
+
+ Best model: ARIMA(0,1,1)(0,1,1)[12]                    </code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sarima_voitures)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: Xt 
+ARIMA(0,1,1)(0,1,1)[12] 
+
+Coefficients:
+          ma1     sma1
+      -0.7189  -0.7981
+s.e.   0.0396   0.0496
+
+sigma^2 = 180095614:  log likelihood = -2889.24
+AIC=5784.48   AICc=5784.57   BIC=5795.21
+
+Training set error measures:
+                    ME     RMSE      MAE       MPE     MAPE      MASE
+Training set -264.0867 13051.56 9612.369 -1.658486 8.476118 0.6515145
+                    ACF1
+Training set -0.01263232</code></pre>
+</div>
+</div>
+<p>Si la modélisation choisie est valide, alors les résidus du modèle doivent former un bruit blanc. On peut alors regarder si l’ACF empirique et la PACF empirique des résidus sont similaires à celles d’un bruit blanc :</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>On peut utiliser la fonction <strong>coeftest</strong> de la librairie <strong>lmtest</strong> :</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(sarima_voitures)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+z test of coefficients:
+
+      Estimate Std. Error z value  Pr(&gt;|z|)    
+ma1  -0.718899   0.039585 -18.161 &lt; 2.2e-16 ***
+sma1 -0.798067   0.049578 -16.097 &lt; 2.2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Toutes las variables sont considérées comme significatives. Pourtant, les ACF et PACF ne seblent pas représenter un Bruit Blanc.</p>
+<p>Essayons quelques tests: <br></p>
+<p>Test de Ljung-Box : Utilisez le test de Ljung-Box pour tester l’hypothèse que les autocorrélations jusqu’à un certain nombre de retards (lag) sont nulles.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(sarima_voitures[[<span class="st">"residuals"</span>]], <span class="at">lag =</span> <span class="dv">20</span>, <span class="at">type =</span> <span class="st">"Ljung-Box"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Box-Ljung test
+
+data:  sarima_voitures[["residuals"]]
+X-squared = 53.924, df = 20, p-value = 5.937e-05</code></pre>
+</div>
+</div>
+<p>Si la p-value associée au test de Ljung-Box est significativement élevée, cela suggère que la série est un bruit blanc. Ici, ce n’est pas le cas.</p>
+<p><br></p>
+<p>Test d’adéquation de Kolmogorov-Smirnov : Vous pouvez également utiliser le test d’adéquation de Kolmogorov-Smirnov pour comparer la distribution empirique de vos données avec une distribution normale.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(sarima_voitures[[<span class="st">"residuals"</span>]], <span class="st">"pnorm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  sarima_voitures[["residuals"]]
+D = 0.51976, p-value &lt; 2.2e-16
+alternative hypothesis: two-sided</code></pre>
+</div>
+</div>
+<p>Si la p-value est élevée, cela suggère que la série suit une distribution normale, ce qui est caractéristique d’un bruit blanc. Ici, ce n’est pas le cas. <br></p>
+<p><br></p>
+<p>On peut donc conclure que la modélisation SARIMA ne fournit pas une solution satisfaisante.</p>
+<p><br></p>
+<p><br></p>
+</section>
+<section id="exercice-2" class="level1">
+<h1><strong>EXERCICE 2 : </strong></h1>
+<p><br></p>
+<p>On souhaite prévoir le nombre d’usagers de la SNCF pour les 12 mois de l’année 2001. Pour réaliser la prévision, on dispose des données mensuelles sur 11 années entre 1990 et 2000. Ces données sont disponibles dans le fichier suivant www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">"http://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt"</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">scan</span>(url) <span class="co"># pour importer le dataframe en 1 vecteur de donnée (et ne pas avoir un truc de dim n*m)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>yt <span class="ot">=</span> <span class="fu">ts</span>(y, <span class="at">frequency =</span> <span class="dv">12</span>) <span class="co"># car données sur évolution annuelle </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><br></p>
+<section id="question-1-justifier-le-choix-dune-modélisation-sarima-sur-cette-série-à-laide-de-quelques-graphiques.-en-déduire-une-estimation-de-d-d-s" class="level4">
+<h4 class="anchored" data-anchor-id="question-1-justifier-le-choix-dune-modélisation-sarima-sur-cette-série-à-laide-de-quelques-graphiques.-en-déduire-une-estimation-de-d-d-s">QUESTION 1 : Justifier le choix d’une modélisation SARIMA sur cette série à l’aide de quelques graphiques. En déduire une estimation de <span class="math inline">\((d, D, s)\)</span></h4>
+<p><br></p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Ca ne ressemble pas à un MA ou un AR donc on peut tenter du SARIMA</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dy <span class="ot">=</span> <span class="fu">diff</span>(yt)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tsplot</span>(<span class="fu">cbind</span>(yt,dy), <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">main =</span> <span class="st">"Comparaison yt et (I-B)yt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>avec l’acf, on peut vouloir s=12, D=1, d=1</p>
+<p><strong>RAPPEL : </strong> Le modèle SARIMA d’ordres <span class="math inline">\((p, d, q)(P, D, Q)_s\)</span> s’écrit de la forme</p>
+<p><span class="math display">\[\begin{align}
+  \Phi(B^s)\phi(B)(I-B^s)^D(I-B)^dX_t = \Theta(B^s)\theta(B)w_t
+\end{align}\]</span></p>
+<p>Les polynômes <span class="math inline">\(\phi\)</span> et <span class="math inline">\(\theta\)</span> représente la partie ARMA</p>
+<p>Les polynômes <span class="math inline">\(\Phi\)</span> et <span class="math inline">\(\Theta\)</span> représente la partie ARMA saisonnière</p>
+<p><span class="math inline">\((I-B^s)^D\)</span> et <span class="math inline">\((I-B)^d\)</span> permettent de prendre en compte la non-stationnarité</p>
+<p>En général <span class="math inline">\(D=1\)</span> (ou <span class="math inline">\(2\)</span>)</p>
+<p><br></p>
+</section>
+<section id="question-2-valider-un-ou-plusieurs-modèles-sarima-sur-cette-série" class="level4">
+<h4 class="anchored" data-anchor-id="question-2-valider-un-ou-plusieurs-modèles-sarima-sur-cette-série">QUESTION 2 : Valider un ou plusieurs modèles SARIMA sur cette série</h4>
+<p><br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>modele_sarima <span class="ot">=</span> <span class="fu">auto.arima</span>(yt, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">d=</span><span class="dv">1</span>, </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">D=</span><span class="dv">1</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start.q =</span> <span class="dv">1</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start.p =</span> <span class="dv">1</span>, </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                           <span class="at">max.order =</span> <span class="dv">4</span>, </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">seasonal =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">ic =</span> <span class="st">"bic"</span>, </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">trace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ ARIMA(1,1,1)(1,1,1)[12]                    : 1498.52
+ ARIMA(0,1,0)(0,1,0)[12]                    : 1553.684
+ ARIMA(1,1,0)(1,1,0)[12]                    : 1518.427
+ ARIMA(0,1,1)(0,1,1)[12]                    : 1490.551
+ ARIMA(0,1,1)(0,1,0)[12]                    : 1508.769
+ ARIMA(0,1,1)(1,1,1)[12]                    : 1495.03
+ ARIMA(0,1,1)(0,1,2)[12]                    : 1495.01
+ ARIMA(0,1,1)(1,1,0)[12]                    : 1497.844
+ ARIMA(0,1,1)(1,1,2)[12]                    : Inf
+ ARIMA(0,1,0)(0,1,1)[12]                    : 1532.182
+ ARIMA(1,1,1)(0,1,1)[12]                    : 1494.006
+ ARIMA(0,1,2)(0,1,1)[12]                    : 1494.192
+ ARIMA(1,1,0)(0,1,1)[12]                    : 1511.698
+ ARIMA(1,1,2)(0,1,1)[12]                    : 1498.683
+
+ Best model: ARIMA(0,1,1)(0,1,1)[12]                    </code></pre>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modele_sarima)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: yt 
+ARIMA(0,1,1)(0,1,1)[12] 
+
+Coefficients:
+          ma1     sma1
+      -0.7800  -0.5331
+s.e.   0.0725   0.0931
+
+sigma^2 = 13936:  log likelihood = -738.11
+AIC=1482.21   AICc=1482.42   BIC=1490.55
+
+Training set error measures:
+                   ME     RMSE      MAE       MPE     MAPE      MASE       ACF1
+Training set 6.260106 111.1405 79.17467 0.1785064 3.036865 0.6068575 0.07031074</code></pre>
+</div>
+</div>
+<p>De manière non automatique</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">1</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">2</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">2</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">3</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">3</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-17-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mod1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+
+Call:
+arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+    include.mean = !no.constant, transform.pars = trans, fixed = fixed, optim.control = list(trace = trc, 
+        REPORT = 1, reltol = tol))
+
+Coefficients:
+         ar1      ma1
+      0.1185  -0.8458
+s.e.  0.1793   0.1446
+
+sigma^2 estimated as 17108:  log likelihood = -749.35,  aic = 1504.69
+
+$degrees_of_freedom
+[1] 117
+
+$ttable
+    Estimate     SE t.value p.value
+ar1   0.1185 0.1793  0.6608    0.51
+ma1  -0.8458 0.1446 -5.8478    0.00
+
+$ICs
+     AIC     AICc      BIC 
+12.64448 12.64535 12.71454 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>mod2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+
+Call:
+arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+    include.mean = !no.constant, transform.pars = trans, fixed = fixed, optim.control = list(trace = trc, 
+        REPORT = 1, reltol = tol))
+
+Coefficients:
+          ar1     ar2      ma1      ma2
+      -0.3648  0.2793  -0.3614  -0.5584
+s.e.   0.2953  0.1081   0.2967   0.2614
+
+sigma^2 estimated as 16560:  log likelihood = -747.76,  aic = 1505.51
+
+$degrees_of_freedom
+[1] 115
+
+$ttable
+    Estimate     SE t.value p.value
+ar1  -0.3648 0.2953 -1.2353  0.2193
+ar2   0.2793 0.1081  2.5830  0.0110
+ma1  -0.3614 0.2967 -1.2182  0.2257
+ma2  -0.5584 0.2614 -2.1363  0.0348
+
+$ICs
+     AIC     AICc      BIC 
+12.65137 12.65432 12.76814 </code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mod3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>$fit
+
+Call:
+arima(x = xdata, order = c(p, d, q), seasonal = list(order = c(P, D, Q), period = S), 
+    include.mean = !no.constant, transform.pars = trans, fixed = fixed, optim.control = list(trace = trc, 
+        REPORT = 1, reltol = tol))
+
+Coefficients:
+         ar1      ar2      ar3      ma1     ma2      ma3
+      0.0264  -0.8078  -0.0497  -0.7504  0.8675  -0.7168
+s.e.  0.1662   0.1181   0.1801   0.1438  0.1391   0.1469
+
+sigma^2 estimated as 16187:  log likelihood = -746.27,  aic = 1506.55
+
+$degrees_of_freedom
+[1] 113
+
+$ttable
+    Estimate     SE t.value p.value
+ar1   0.0264 0.1662  0.1587  0.8742
+ar2  -0.8078 0.1181 -6.8423  0.0000
+ar3  -0.0497 0.1801 -0.2758  0.7832
+ma1  -0.7504 0.1438 -5.2182  0.0000
+ma2   0.8675 0.1391  6.2371  0.0000
+ma3  -0.7168 0.1469 -4.8812  0.0000
+
+$ICs
+     AIC     AICc      BIC 
+12.66007 12.66637 12.82355 </code></pre>
+</div>
+</div>
+<p>En regadant un peu la significativité ainsi que les critères AIC, AICc et BIC, on pourrait vouloir tenter de retenir les modèles mod2 et mod3.</p>
+<p><br></p>
+</section>
+<section id="question-3-pour-les-modèles-sarima-validés-à-la-question-précedente-calculer-les-prévisions-mensuelles-pour-lannée-2001.-representer-les-differentes-prévisions-et-les-régions-de-confiance." class="level4">
+<h4 class="anchored" data-anchor-id="question-3-pour-les-modèles-sarima-validés-à-la-question-précedente-calculer-les-prévisions-mensuelles-pour-lannée-2001.-representer-les-differentes-prévisions-et-les-régions-de-confiance.">QUESTION 3 : Pour les modèles SARIMA validés à la question précedente, calculer les prévisions mensuelles pour l’année 2001. Representer les differentes prévisions et les régions de confiance.</h4>
+<p><br></p>
+<p>Regardons pour nos modèles mod2 et mod3</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)) </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">2</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">2</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>) </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">3</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">3</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Maintenant, si on prend le modèle choisi par <strong>auto.arima</strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>s3 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">1</span>, <span class="at">d=</span><span class="dv">0</span>, <span class="at">q=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">0</span>, <span class="at">Q=</span><span class="dv">2</span>, <span class="at">S=</span><span class="dv">12</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="question-4-evaluer-la-qualité-de-vos-prévisions-en-les-comparant-avec-les-valeurs-observées-en-2001.-vous-pouvez-par-exemple-calculer-les-erreurs-quadratiques" class="level4">
+<h4 class="anchored" data-anchor-id="question-4-evaluer-la-qualité-de-vos-prévisions-en-les-comparant-avec-les-valeurs-observées-en-2001.-vous-pouvez-par-exemple-calculer-les-erreurs-quadratiques">QUESTION 4 : Evaluer la qualité de vos prévisions en les comparant avec les valeurs observées en 2001. Vous pouvez par exemple calculer les erreurs quadratiques</h4>
+<p><span class="math inline">\(\sum_{h=1}^{12}(\hat{x}_{n:h} − x_{n+h})^2\)</span>. <br></p>
+<p>Les sont disponibles dans le fichier https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>url_2001 <span class="ot">=</span> <span class="st">"https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt"</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>y_2001 <span class="ot">=</span> <span class="fu">scan</span>(url_2001) </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>yt_2001 <span class="ot">=</span> <span class="fu">ts</span>(y_2001, <span class="at">frequency =</span> <span class="dv">12</span>, <span class="at">start =</span> <span class="dv">12</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>eq1<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  eq1[i] <span class="ot">=</span> (s1<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>EQ1 <span class="ot">=</span> <span class="fu">sum</span>(eq1)</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>eq2<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  eq2[i] <span class="ot">=</span> (s2<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>EQ2 <span class="ot">=</span> <span class="fu">sum</span>(eq2)</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>EQ1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2385213</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>EQ2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2364717</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># EQ2 est plus petite donc mod3 meilleur que mod2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>avec le modèle de <strong>auto.arima</strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>eq3<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  eq3[i] <span class="ot">=</span> (s3<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>EQ3 <span class="ot">=</span> <span class="fu">sum</span>(eq3)</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>EQ1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2385213</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>EQ2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2364717</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>EQ3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1706067</code></pre>
+</div>
+</div>
+<p>Ici, l’erreur est beaucoup plus petite donc le modèle semble meilleur</p>
+<p><br></p>
+</section>
+<section id="question-5-comparer-avec-la-qualité-des-prévision-sarima-avec-celles-données-par-la-méthode-de" class="level4">
+<h4 class="anchored" data-anchor-id="question-5-comparer-avec-la-qualité-des-prévision-sarima-avec-celles-données-par-la-méthode-de">QUESTION 5 : Comparer avec la qualité des prévision SARIMA avec celles données par la méthode de</h4>
+<p>Holt Winter <br></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>HW1 <span class="ot">=</span> <span class="fu">HoltWinters</span>(yt, <span class="at">start.periods =</span> <span class="dv">2</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(yt, xlim=c(0,14))</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(HW1$fitted[,1], lty=2, col="blue")</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>HW1.pred <span class="ot">=</span> <span class="fu">predict</span>(HW1, <span class="dv">12</span>, <span class="at">prediction.interval =</span> <span class="cn">TRUE</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Visually evaluate the prediction</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(yt, xlim=c(8,15), ylim = c(2500, 4000) )</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(yt_2001, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">2600</span>, <span class="dv">5000</span>))</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(HW1$fitted[,1], lty=2, col="blue")</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(HW1.pred[,<span class="dv">1</span>], <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">13-1</span><span class="sc">/</span><span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>), <span class="fu">rev</span>(<span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">13-1</span><span class="sc">/</span><span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>))), <span class="fu">c</span>(HW1.pred[,<span class="dv">2</span>], <span class="fu">rev</span>(HW1.pred[,<span class="dv">3</span>])), <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.4</span>), <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co"># RGB (Rouge, Vert, Bleu), où (0, 0, 1)</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(s3<span class="sc">$</span>pred, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"yt_2001"</span>, <span class="st">"prédiction estimée"</span>, <span class="st">"prédictions HW"</span>, <span class="st">"intervalle de</span><span class="sc">\n</span><span class="st"> prédictions HW"</span>),</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.4</span>)),</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="Fiche_06_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="question-6-conclure" class="level4">
+<h4 class="anchored" data-anchor-id="question-6-conclure">QUESTION 6 : Conclure</h4>
+<p><br></p>
+<p><br></p>
+
+
+<!-- -->
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb45" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Fiche 06"</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Clément Poupelin"</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-02-xx"</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "`r Sys.Date()`"</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co">    embed-resources: false</span></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-summary: "Show the code"</span></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-location: right</span></span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: article</span></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co">    code-overflow: wrap</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="an">number-sections:</span><span class="co"> false</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> ["categorie 1", "cotegorie 2"]</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="an">image:</span><span class="co"> ""</span></span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a><span class="an">description:</span><span class="co"> "Description"</span></span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a><span class="fu"># Intervenant.e.s</span></span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### Rédaction</span></span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Clément Poupelin**, <span class="co">[</span><span class="ot">clementjc.poupelin\@gmail.com</span><span class="co">](mailto:clementjc.poupelin@gmail.com)</span>{.email}\</span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### Relecture</span></span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span></span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a><span class="fu"># Setup</span></span>
+<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>:::: panel-tabset</span>
+<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
+<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, warning=FALSE, message=FALSE}</span></span>
+<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
+<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
+<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplot</span></span>
+<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-50"><a href="#cb45-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fonctions</span></span>
+<span id="cb45-51"><a href="#cb45-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-52"><a href="#cb45-52" aria-hidden="true" tabindex="-1"></a>::: panel-tabset</span>
+<span id="cb45-53"><a href="#cb45-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fonction 1</span></span>
+<span id="cb45-54"><a href="#cb45-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-55"><a href="#cb45-55" aria-hidden="true" tabindex="-1"></a><span class="fu">### Fonction 2</span></span>
+<span id="cb45-56"><a href="#cb45-56" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-57"><a href="#cb45-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-58"><a href="#cb45-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Seed</span></span>
+<span id="cb45-59"><a href="#cb45-59" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb45-60"><a href="#cb45-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-61"><a href="#cb45-61" aria-hidden="true" tabindex="-1"></a><span class="fu"># Données</span></span>
+<span id="cb45-62"><a href="#cb45-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-63"><a href="#cb45-63" aria-hidden="true" tabindex="-1"></a><span class="fu"># Analyse</span></span>
+<span id="cb45-64"><a href="#cb45-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-65"><a href="#cb45-65" aria-hidden="true" tabindex="-1"></a>::: callout-note</span>
+<span id="cb45-66"><a href="#cb45-66" aria-hidden="true" tabindex="-1"></a>METTRE LES REMARQUES</span>
+<span id="cb45-67"><a href="#cb45-67" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-68"><a href="#cb45-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-69"><a href="#cb45-69" aria-hidden="true" tabindex="-1"></a>::: callout-warning</span>
+<span id="cb45-70"><a href="#cb45-70" aria-hidden="true" tabindex="-1"></a>METTRE LES POINTS D'ATTENTION</span>
+<span id="cb45-71"><a href="#cb45-71" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-72"><a href="#cb45-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-73"><a href="#cb45-73" aria-hidden="true" tabindex="-1"></a>:::: success-header</span>
+<span id="cb45-74"><a href="#cb45-74" aria-hidden="true" tabindex="-1"></a>::: success-icon</span>
+<span id="cb45-75"><a href="#cb45-75" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-76"><a href="#cb45-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-77"><a href="#cb45-77" aria-hidden="true" tabindex="-1"></a>Résultats</span>
+<span id="cb45-78"><a href="#cb45-78" aria-hidden="true" tabindex="-1"></a>::::</span>
+<span id="cb45-79"><a href="#cb45-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-80"><a href="#cb45-80" aria-hidden="true" tabindex="-1"></a>::: success</span>
+<span id="cb45-81"><a href="#cb45-81" aria-hidden="true" tabindex="-1"></a>METTRE LES CONCLUSIONS</span>
+<span id="cb45-82"><a href="#cb45-82" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb45-83"><a href="#cb45-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-84"><a href="#cb45-84" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb45-85"><a href="#cb45-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-86"><a href="#cb45-86" aria-hidden="true" tabindex="-1"></a><span class="fu"># Session info</span></span>
+<span id="cb45-87"><a href="#cb45-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-90"><a href="#cb45-90" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-91"><a href="#cb45-91" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>(<span class="at">pkgs =</span> <span class="st">"attached"</span>)</span>
+<span id="cb45-92"><a href="#cb45-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-93"><a href="#cb45-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-94"><a href="#cb45-94" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=FALSE}</span></span>
+<span id="cb45-95"><a href="#cb45-95" aria-hidden="true" tabindex="-1"></a><span class="co"># chargement des packages et scripts nécessaires</span></span>
+<span id="cb45-96"><a href="#cb45-96" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astsa)</span>
+<span id="cb45-97"><a href="#cb45-97" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb45-98"><a href="#cb45-98" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
+<span id="cb45-99"><a href="#cb45-99" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tseries)</span>
+<span id="cb45-100"><a href="#cb45-100" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dygraphs)</span>
+<span id="cb45-101"><a href="#cb45-101" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales) <span class="co"># pour l'opacité </span></span>
+<span id="cb45-102"><a href="#cb45-102" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb45-103"><a href="#cb45-103" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tseries)</span>
+<span id="cb45-104"><a href="#cb45-104" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb45-105"><a href="#cb45-105" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forecast)</span>
+<span id="cb45-106"><a href="#cb45-106" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-107"><a href="#cb45-107" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 1 : **</span></span>
+<span id="cb45-108"><a href="#cb45-108" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-109"><a href="#cb45-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-110"><a href="#cb45-110" aria-hidden="true" tabindex="-1"></a>Sur la série de vente de voitures (avant la rupture), montrer que la modélisation SARIMA</span>
+<span id="cb45-111"><a href="#cb45-111" aria-hidden="true" tabindex="-1"></a>ne fournit pas une solution satisfaisante.</span>
+<span id="cb45-112"><a href="#cb45-112" aria-hidden="true" tabindex="-1"></a>www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt</span>
+<span id="cb45-113"><a href="#cb45-113" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-114"><a href="#cb45-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-115"><a href="#cb45-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-118"><a href="#cb45-118" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-119"><a href="#cb45-119" aria-hidden="true" tabindex="-1"></a>url_TP3 <span class="ot">=</span> <span class="st">"http://www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt"</span></span>
+<span id="cb45-120"><a href="#cb45-120" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scan</span>(url_TP3) <span class="co"># pour importer le dataframe en 1 vecteur de donnée (et non un dataframe de dim n*m)</span></span>
+<span id="cb45-121"><a href="#cb45-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-122"><a href="#cb45-122" aria-hidden="true" tabindex="-1"></a>Xt <span class="ot">=</span> <span class="fu">ts</span>(X, <span class="at">frequency =</span><span class="dv">12</span>)</span>
+<span id="cb45-123"><a href="#cb45-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-124"><a href="#cb45-124" aria-hidden="true" tabindex="-1"></a>Xt <span class="ot">=</span> <span class="fu">window</span>(Xt, <span class="at">start=</span><span class="fu">start</span>(Xt), <span class="at">end=</span><span class="dv">24</span>) <span class="co"># Avant rupture</span></span>
+<span id="cb45-125"><a href="#cb45-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-126"><a href="#cb45-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-127"><a href="#cb45-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-128"><a href="#cb45-128" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-129"><a href="#cb45-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-130"><a href="#cb45-130" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Xt, <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">main =</span> <span class="st">"Série Temporelle"</span>)</span>
+<span id="cb45-131"><a href="#cb45-131" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb45-132"><a href="#cb45-132" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(Xt, <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">main =</span> <span class="st">"ACF de notre série"</span>)</span>
+<span id="cb45-133"><a href="#cb45-133" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(Xt, <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">main =</span> <span class="st">"PACF de notre série"</span>)</span>
+<span id="cb45-134"><a href="#cb45-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-135"><a href="#cb45-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-136"><a href="#cb45-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-137"><a href="#cb45-137" aria-hidden="true" tabindex="-1"></a>On tente de trouver une modelisation sarima qui prend en compte la présence d'une tendance et une saisonnalité de période 12</span>
+<span id="cb45-140"><a href="#cb45-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-141"><a href="#cb45-141" aria-hidden="true" tabindex="-1"></a>sarima_voitures <span class="ot">=</span> <span class="fu">auto.arima</span>(Xt, </span>
+<span id="cb45-142"><a href="#cb45-142" aria-hidden="true" tabindex="-1"></a>                             <span class="at">d=</span><span class="dv">1</span>, </span>
+<span id="cb45-143"><a href="#cb45-143" aria-hidden="true" tabindex="-1"></a>                             <span class="at">D=</span><span class="dv">1</span>,</span>
+<span id="cb45-144"><a href="#cb45-144" aria-hidden="true" tabindex="-1"></a>                             <span class="at">start.q =</span> <span class="dv">1</span>,</span>
+<span id="cb45-145"><a href="#cb45-145" aria-hidden="true" tabindex="-1"></a>                             <span class="at">start.p =</span> <span class="dv">1</span>,</span>
+<span id="cb45-146"><a href="#cb45-146" aria-hidden="true" tabindex="-1"></a>                             <span class="at">max.order =</span> <span class="dv">4</span>, </span>
+<span id="cb45-147"><a href="#cb45-147" aria-hidden="true" tabindex="-1"></a>                             <span class="at">stationary =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb45-148"><a href="#cb45-148" aria-hidden="true" tabindex="-1"></a>                             <span class="at">seasonal =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb45-149"><a href="#cb45-149" aria-hidden="true" tabindex="-1"></a>                             <span class="at">ic =</span> <span class="st">"bic"</span>, </span>
+<span id="cb45-150"><a href="#cb45-150" aria-hidden="true" tabindex="-1"></a>                             <span class="at">trace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-151"><a href="#cb45-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-154"><a href="#cb45-154" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-155"><a href="#cb45-155" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sarima_voitures)</span>
+<span id="cb45-156"><a href="#cb45-156" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-157"><a href="#cb45-157" aria-hidden="true" tabindex="-1"></a>Si la modélisation choisie est valide, alors les résidus du modèle doivent former un bruit blanc.</span>
+<span id="cb45-158"><a href="#cb45-158" aria-hidden="true" tabindex="-1"></a>On peut alors regarder si l’ACF empirique et la PACF empirique des résidus sont similaires à celles d’un bruit blanc :</span>
+<span id="cb45-159"><a href="#cb45-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-160"><a href="#cb45-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-161"><a href="#cb45-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-162"><a href="#cb45-162" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb45-163"><a href="#cb45-163" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sarima_voitures[[<span class="st">"residuals"</span>]])</span>
+<span id="cb45-164"><a href="#cb45-164" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(sarima_voitures[[<span class="st">"residuals"</span>]])</span>
+<span id="cb45-165"><a href="#cb45-165" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-166"><a href="#cb45-166" aria-hidden="true" tabindex="-1"></a>On peut utiliser la fonction **coeftest** de la librairie **lmtest** :</span>
+<span id="cb45-169"><a href="#cb45-169" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-170"><a href="#cb45-170" aria-hidden="true" tabindex="-1"></a><span class="fu">coeftest</span>(sarima_voitures)</span>
+<span id="cb45-171"><a href="#cb45-171" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-172"><a href="#cb45-172" aria-hidden="true" tabindex="-1"></a>Toutes las variables sont considérées comme significatives. Pourtant, les ACF et PACF ne seblent pas représenter un Bruit Blanc.</span>
+<span id="cb45-173"><a href="#cb45-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-174"><a href="#cb45-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-175"><a href="#cb45-175" aria-hidden="true" tabindex="-1"></a>Essayons quelques tests:</span>
+<span id="cb45-176"><a href="#cb45-176" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-177"><a href="#cb45-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-178"><a href="#cb45-178" aria-hidden="true" tabindex="-1"></a>Test de Ljung-Box :</span>
+<span id="cb45-179"><a href="#cb45-179" aria-hidden="true" tabindex="-1"></a>Utilisez le test de Ljung-Box pour tester l'hypothèse que les autocorrélations jusqu'à un certain nombre de retards (lag) sont nulles.</span>
+<span id="cb45-182"><a href="#cb45-182" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-183"><a href="#cb45-183" aria-hidden="true" tabindex="-1"></a><span class="fu">Box.test</span>(sarima_voitures[[<span class="st">"residuals"</span>]], <span class="at">lag =</span> <span class="dv">20</span>, <span class="at">type =</span> <span class="st">"Ljung-Box"</span>)</span>
+<span id="cb45-184"><a href="#cb45-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-185"><a href="#cb45-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-186"><a href="#cb45-186" aria-hidden="true" tabindex="-1"></a>Si la p-value associée au test de Ljung-Box est significativement élevée, cela suggère que la série est un bruit blanc. Ici, ce n'est pas le cas.</span>
+<span id="cb45-187"><a href="#cb45-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-188"><a href="#cb45-188" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-189"><a href="#cb45-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-190"><a href="#cb45-190" aria-hidden="true" tabindex="-1"></a>Test d'adéquation de Kolmogorov-Smirnov :</span>
+<span id="cb45-191"><a href="#cb45-191" aria-hidden="true" tabindex="-1"></a>Vous pouvez également utiliser le test d'adéquation de Kolmogorov-Smirnov pour comparer la distribution empirique de vos données avec une distribution normale.</span>
+<span id="cb45-194"><a href="#cb45-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-195"><a href="#cb45-195" aria-hidden="true" tabindex="-1"></a><span class="fu">ks.test</span>(sarima_voitures[[<span class="st">"residuals"</span>]], <span class="st">"pnorm"</span>)</span>
+<span id="cb45-196"><a href="#cb45-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-197"><a href="#cb45-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-198"><a href="#cb45-198" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-199"><a href="#cb45-199" aria-hidden="true" tabindex="-1"></a>Si la p-value est élevée, cela suggère que la série suit une distribution normale, ce qui est caractéristique d'un bruit blanc. Ici, ce n'est pas le cas.</span>
+<span id="cb45-200"><a href="#cb45-200" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-201"><a href="#cb45-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-202"><a href="#cb45-202" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-203"><a href="#cb45-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-204"><a href="#cb45-204" aria-hidden="true" tabindex="-1"></a>On peut donc conclure que la modélisation SARIMA ne fournit pas une solution satisfaisante.</span>
+<span id="cb45-205"><a href="#cb45-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-206"><a href="#cb45-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-207"><a href="#cb45-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-208"><a href="#cb45-208" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-209"><a href="#cb45-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-210"><a href="#cb45-210" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-211"><a href="#cb45-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-212"><a href="#cb45-212" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 2 : **</span></span>
+<span id="cb45-213"><a href="#cb45-213" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-214"><a href="#cb45-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-215"><a href="#cb45-215" aria-hidden="true" tabindex="-1"></a>On souhaite prévoir le nombre d’usagers de la SNCF pour les 12 mois de l’année 2001.</span>
+<span id="cb45-216"><a href="#cb45-216" aria-hidden="true" tabindex="-1"></a>Pour réaliser la prévision, on dispose des données mensuelles sur 11 années entre 1990 et</span>
+<span id="cb45-217"><a href="#cb45-217" aria-hidden="true" tabindex="-1"></a><span class="ss">2000. </span>Ces données sont disponibles dans le fichier suivant</span>
+<span id="cb45-218"><a href="#cb45-218" aria-hidden="true" tabindex="-1"></a>www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt</span>
+<span id="cb45-219"><a href="#cb45-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-220"><a href="#cb45-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-223"><a href="#cb45-223" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-224"><a href="#cb45-224" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">"http://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt"</span></span>
+<span id="cb45-225"><a href="#cb45-225" aria-hidden="true" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">scan</span>(url) <span class="co"># pour importer le dataframe en 1 vecteur de donnée (et ne pas avoir un truc de dim n*m)</span></span>
+<span id="cb45-226"><a href="#cb45-226" aria-hidden="true" tabindex="-1"></a>yt <span class="ot">=</span> <span class="fu">ts</span>(y, <span class="at">frequency =</span> <span class="dv">12</span>) <span class="co"># car données sur évolution annuelle </span></span>
+<span id="cb45-227"><a href="#cb45-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-228"><a href="#cb45-228" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-229"><a href="#cb45-229" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-230"><a href="#cb45-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-231"><a href="#cb45-231" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 1 : Justifier le choix d’une modélisation SARIMA sur cette série à l’aide de quelques graphiques. En déduire une estimation de $(d, D, s)$</span></span>
+<span id="cb45-232"><a href="#cb45-232" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-233"><a href="#cb45-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-234"><a href="#cb45-234" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-235"><a href="#cb45-235" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(yt, <span class="at">col =</span> <span class="st">'purple'</span>, </span>
+<span id="cb45-236"><a href="#cb45-236" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"Série Temporelle $Y_t$"</span>))</span>
+<span id="cb45-237"><a href="#cb45-237" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb45-238"><a href="#cb45-238" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(yt, <span class="at">col =</span> <span class="st">'purple'</span>, </span>
+<span id="cb45-239"><a href="#cb45-239" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"ACF de $Y_t$"</span>))</span>
+<span id="cb45-240"><a href="#cb45-240" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(yt, <span class="at">col =</span> <span class="st">'purple'</span>, </span>
+<span id="cb45-241"><a href="#cb45-241" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"PACF de $Y_t$"</span>))</span>
+<span id="cb45-242"><a href="#cb45-242" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
+<span id="cb45-243"><a href="#cb45-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-244"><a href="#cb45-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-245"><a href="#cb45-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-246"><a href="#cb45-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-247"><a href="#cb45-247" aria-hidden="true" tabindex="-1"></a>Ca ne ressemble pas à un MA ou un AR donc on peut tenter du SARIMA</span>
+<span id="cb45-250"><a href="#cb45-250" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-251"><a href="#cb45-251" aria-hidden="true" tabindex="-1"></a>dy <span class="ot">=</span> <span class="fu">diff</span>(yt)</span>
+<span id="cb45-252"><a href="#cb45-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-253"><a href="#cb45-253" aria-hidden="true" tabindex="-1"></a><span class="fu">tsplot</span>(<span class="fu">cbind</span>(yt,dy), <span class="at">col =</span> <span class="st">"purple"</span>, <span class="at">main =</span> <span class="st">"Comparaison yt et (I-B)yt"</span>)</span>
+<span id="cb45-254"><a href="#cb45-254" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-255"><a href="#cb45-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-256"><a href="#cb45-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-257"><a href="#cb45-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-258"><a href="#cb45-258" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb45-259"><a href="#cb45-259" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(dy, <span class="at">col =</span> <span class="st">'purple'</span>, </span>
+<span id="cb45-260"><a href="#cb45-260" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"ACF de $(I-B)Y_t$"</span>))</span>
+<span id="cb45-261"><a href="#cb45-261" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(dy, <span class="at">col =</span> <span class="st">'purple'</span>, </span>
+<span id="cb45-262"><a href="#cb45-262" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"PACF de $(I-B)Y_t$"</span>))</span>
+<span id="cb45-263"><a href="#cb45-263" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
+<span id="cb45-264"><a href="#cb45-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-265"><a href="#cb45-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-266"><a href="#cb45-266" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-267"><a href="#cb45-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-268"><a href="#cb45-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-269"><a href="#cb45-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-270"><a href="#cb45-270" aria-hidden="true" tabindex="-1"></a>avec l'acf, on peut vouloir s=12, D=1, d=1</span>
+<span id="cb45-271"><a href="#cb45-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-272"><a href="#cb45-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-273"><a href="#cb45-273" aria-hidden="true" tabindex="-1"></a>**RAPPEL : **</span>
+<span id="cb45-274"><a href="#cb45-274" aria-hidden="true" tabindex="-1"></a>Le modèle SARIMA d’ordres $(p, d, q)(P, D, Q)_s$ s’écrit de la forme</span>
+<span id="cb45-275"><a href="#cb45-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-276"><a href="#cb45-276" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
+<span id="cb45-277"><a href="#cb45-277" aria-hidden="true" tabindex="-1"></a>  \Phi(B^s)\phi(B)(I-B^s)^D(I-B)^dX_t = \Theta(B^s)\theta(B)w_t</span>
+<span id="cb45-278"><a href="#cb45-278" aria-hidden="true" tabindex="-1"></a>\end{align}</span>
+<span id="cb45-279"><a href="#cb45-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-280"><a href="#cb45-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-281"><a href="#cb45-281" aria-hidden="true" tabindex="-1"></a>Les polynômes $\phi$ et $\theta$ représente la partie ARMA </span>
+<span id="cb45-282"><a href="#cb45-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-283"><a href="#cb45-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-284"><a href="#cb45-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-285"><a href="#cb45-285" aria-hidden="true" tabindex="-1"></a>Les polynômes $\Phi$ et $\Theta$ représente la partie ARMA saisonnière</span>
+<span id="cb45-286"><a href="#cb45-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-287"><a href="#cb45-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-288"><a href="#cb45-288" aria-hidden="true" tabindex="-1"></a> $(I-B^s)^D$ et $(I-B)^d$ permettent de prendre en compte la non-stationnarité</span>
+<span id="cb45-289"><a href="#cb45-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-290"><a href="#cb45-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-291"><a href="#cb45-291" aria-hidden="true" tabindex="-1"></a>En général $D=1$ (ou $2$) </span>
+<span id="cb45-292"><a href="#cb45-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-293"><a href="#cb45-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-294"><a href="#cb45-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-295"><a href="#cb45-295" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-296"><a href="#cb45-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-297"><a href="#cb45-297" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : Valider un ou plusieurs modèles SARIMA sur cette série</span></span>
+<span id="cb45-298"><a href="#cb45-298" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-299"><a href="#cb45-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-302"><a href="#cb45-302" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-303"><a href="#cb45-303" aria-hidden="true" tabindex="-1"></a>modele_sarima <span class="ot">=</span> <span class="fu">auto.arima</span>(yt, </span>
+<span id="cb45-304"><a href="#cb45-304" aria-hidden="true" tabindex="-1"></a>                           <span class="at">d=</span><span class="dv">1</span>, </span>
+<span id="cb45-305"><a href="#cb45-305" aria-hidden="true" tabindex="-1"></a>                           <span class="at">D=</span><span class="dv">1</span>,</span>
+<span id="cb45-306"><a href="#cb45-306" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start.q =</span> <span class="dv">1</span>,</span>
+<span id="cb45-307"><a href="#cb45-307" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start.p =</span> <span class="dv">1</span>, </span>
+<span id="cb45-308"><a href="#cb45-308" aria-hidden="true" tabindex="-1"></a>                           <span class="at">max.order =</span> <span class="dv">4</span>, </span>
+<span id="cb45-309"><a href="#cb45-309" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stationary =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb45-310"><a href="#cb45-310" aria-hidden="true" tabindex="-1"></a>                           <span class="at">seasonal =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb45-311"><a href="#cb45-311" aria-hidden="true" tabindex="-1"></a>                           <span class="at">ic =</span> <span class="st">"bic"</span>, </span>
+<span id="cb45-312"><a href="#cb45-312" aria-hidden="true" tabindex="-1"></a>                           <span class="at">trace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb45-313"><a href="#cb45-313" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-316"><a href="#cb45-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-317"><a href="#cb45-317" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modele_sarima)</span>
+<span id="cb45-318"><a href="#cb45-318" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-319"><a href="#cb45-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-320"><a href="#cb45-320" aria-hidden="true" tabindex="-1"></a>De manière non automatique </span>
+<span id="cb45-321"><a href="#cb45-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-322"><a href="#cb45-322" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, results='hide'}</span></span>
+<span id="cb45-323"><a href="#cb45-323" aria-hidden="true" tabindex="-1"></a>mod1 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">1</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span>
+<span id="cb45-324"><a href="#cb45-324" aria-hidden="true" tabindex="-1"></a>mod2 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">2</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">2</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span>
+<span id="cb45-325"><a href="#cb45-325" aria-hidden="true" tabindex="-1"></a>mod3 <span class="ot">=</span> <span class="fu">sarima</span>(yt, <span class="at">p=</span><span class="dv">3</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">3</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>)</span>
+<span id="cb45-326"><a href="#cb45-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-327"><a href="#cb45-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-330"><a href="#cb45-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-331"><a href="#cb45-331" aria-hidden="true" tabindex="-1"></a>mod1</span>
+<span id="cb45-332"><a href="#cb45-332" aria-hidden="true" tabindex="-1"></a>mod2</span>
+<span id="cb45-333"><a href="#cb45-333" aria-hidden="true" tabindex="-1"></a>mod3</span>
+<span id="cb45-334"><a href="#cb45-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-335"><a href="#cb45-335" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-336"><a href="#cb45-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-337"><a href="#cb45-337" aria-hidden="true" tabindex="-1"></a>En regadant un peu la significativité ainsi que les critères AIC, AICc et BIC, on pourrait vouloir tenter de retenir les modèles mod2 et mod3.</span>
+<span id="cb45-338"><a href="#cb45-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-339"><a href="#cb45-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-340"><a href="#cb45-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-341"><a href="#cb45-341" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-342"><a href="#cb45-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-343"><a href="#cb45-343" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Pour les modèles SARIMA validés à la question précedente, calculer les prévisions mensuelles pour l’année 2001. Representer les differentes prévisions et les régions de confiance.</span></span>
+<span id="cb45-344"><a href="#cb45-344" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-345"><a href="#cb45-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-346"><a href="#cb45-346" aria-hidden="true" tabindex="-1"></a>Regardons pour nos modèles mod2 et mod3</span>
+<span id="cb45-349"><a href="#cb45-349" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-350"><a href="#cb45-350" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>)) </span>
+<span id="cb45-351"><a href="#cb45-351" aria-hidden="true" tabindex="-1"></a>s1 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">2</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">2</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>) </span>
+<span id="cb45-352"><a href="#cb45-352" aria-hidden="true" tabindex="-1"></a>s2 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">3</span>, <span class="at">d=</span><span class="dv">1</span>, <span class="at">q=</span><span class="dv">3</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">1</span>, <span class="at">Q=</span><span class="dv">0</span>, <span class="at">S=</span><span class="dv">12</span>) </span>
+<span id="cb45-353"><a href="#cb45-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-354"><a href="#cb45-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-355"><a href="#cb45-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-356"><a href="#cb45-356" aria-hidden="true" tabindex="-1"></a>Maintenant, si on prend le modèle choisi par **auto.arima**</span>
+<span id="cb45-359"><a href="#cb45-359" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-360"><a href="#cb45-360" aria-hidden="true" tabindex="-1"></a>s3 <span class="ot">=</span> <span class="fu">sarima.for</span>(yt, <span class="at">n.ahead =</span> <span class="dv">12</span>, <span class="at">p=</span><span class="dv">1</span>, <span class="at">d=</span><span class="dv">0</span>, <span class="at">q=</span><span class="dv">1</span>, <span class="at">P=</span><span class="dv">0</span>, <span class="at">D=</span><span class="dv">0</span>, <span class="at">Q=</span><span class="dv">2</span>, <span class="at">S=</span><span class="dv">12</span>) </span>
+<span id="cb45-361"><a href="#cb45-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-362"><a href="#cb45-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-363"><a href="#cb45-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-364"><a href="#cb45-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-365"><a href="#cb45-365" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-366"><a href="#cb45-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-367"><a href="#cb45-367" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 4 : Evaluer la qualité de vos prévisions en les comparant avec les valeurs observées en 2001. Vous pouvez par exemple calculer les erreurs quadratiques</span></span>
+<span id="cb45-368"><a href="#cb45-368" aria-hidden="true" tabindex="-1"></a>$\sum_{h=1}^{12}(\hat{x}_{n:h} − x_{n+h})^2$. </span>
+<span id="cb45-369"><a href="#cb45-369" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-370"><a href="#cb45-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-371"><a href="#cb45-371" aria-hidden="true" tabindex="-1"></a>Les sont disponibles dans le fichier</span>
+<span id="cb45-372"><a href="#cb45-372" aria-hidden="true" tabindex="-1"></a>https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt</span>
+<span id="cb45-373"><a href="#cb45-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-376"><a href="#cb45-376" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-377"><a href="#cb45-377" aria-hidden="true" tabindex="-1"></a>url_2001 <span class="ot">=</span> <span class="st">"https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt"</span></span>
+<span id="cb45-378"><a href="#cb45-378" aria-hidden="true" tabindex="-1"></a>y_2001 <span class="ot">=</span> <span class="fu">scan</span>(url_2001) </span>
+<span id="cb45-379"><a href="#cb45-379" aria-hidden="true" tabindex="-1"></a>yt_2001 <span class="ot">=</span> <span class="fu">ts</span>(y_2001, <span class="at">frequency =</span> <span class="dv">12</span>, <span class="at">start =</span> <span class="dv">12</span>) </span>
+<span id="cb45-380"><a href="#cb45-380" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-381"><a href="#cb45-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-382"><a href="#cb45-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
+<span id="cb45-383"><a href="#cb45-383" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(yt_2001, <span class="at">main =</span> <span class="st">"Donnnées obsérvées pour l'année 2001"</span>)</span>
+<span id="cb45-384"><a href="#cb45-384" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-385"><a href="#cb45-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-388"><a href="#cb45-388" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-389"><a href="#cb45-389" aria-hidden="true" tabindex="-1"></a>eq1<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb45-390"><a href="#cb45-390" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb45-391"><a href="#cb45-391" aria-hidden="true" tabindex="-1"></a>  eq1[i] <span class="ot">=</span> (s1<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb45-392"><a href="#cb45-392" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-393"><a href="#cb45-393" aria-hidden="true" tabindex="-1"></a>EQ1 <span class="ot">=</span> <span class="fu">sum</span>(eq1)</span>
+<span id="cb45-394"><a href="#cb45-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-395"><a href="#cb45-395" aria-hidden="true" tabindex="-1"></a>eq2<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb45-396"><a href="#cb45-396" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb45-397"><a href="#cb45-397" aria-hidden="true" tabindex="-1"></a>  eq2[i] <span class="ot">=</span> (s2<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb45-398"><a href="#cb45-398" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-399"><a href="#cb45-399" aria-hidden="true" tabindex="-1"></a>EQ2 <span class="ot">=</span> <span class="fu">sum</span>(eq2)</span>
+<span id="cb45-400"><a href="#cb45-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-401"><a href="#cb45-401" aria-hidden="true" tabindex="-1"></a>EQ1</span>
+<span id="cb45-402"><a href="#cb45-402" aria-hidden="true" tabindex="-1"></a>EQ2</span>
+<span id="cb45-403"><a href="#cb45-403" aria-hidden="true" tabindex="-1"></a><span class="co"># EQ2 est plus petite donc mod3 meilleur que mod2</span></span>
+<span id="cb45-404"><a href="#cb45-404" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-405"><a href="#cb45-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-406"><a href="#cb45-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-407"><a href="#cb45-407" aria-hidden="true" tabindex="-1"></a> avec le modèle de **auto.arima**</span>
+<span id="cb45-410"><a href="#cb45-410" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-411"><a href="#cb45-411" aria-hidden="true" tabindex="-1"></a>eq3<span class="ot">=</span><span class="fu">c</span>()</span>
+<span id="cb45-412"><a href="#cb45-412" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>){</span>
+<span id="cb45-413"><a href="#cb45-413" aria-hidden="true" tabindex="-1"></a>  eq3[i] <span class="ot">=</span> (s3<span class="sc">$</span>pre[<span class="dv">1</span>] <span class="sc">-</span> yt_2001[i])<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb45-414"><a href="#cb45-414" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb45-415"><a href="#cb45-415" aria-hidden="true" tabindex="-1"></a>EQ3 <span class="ot">=</span> <span class="fu">sum</span>(eq3)</span>
+<span id="cb45-416"><a href="#cb45-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-417"><a href="#cb45-417" aria-hidden="true" tabindex="-1"></a>EQ1</span>
+<span id="cb45-418"><a href="#cb45-418" aria-hidden="true" tabindex="-1"></a>EQ2</span>
+<span id="cb45-419"><a href="#cb45-419" aria-hidden="true" tabindex="-1"></a>EQ3</span>
+<span id="cb45-420"><a href="#cb45-420" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-421"><a href="#cb45-421" aria-hidden="true" tabindex="-1"></a>Ici, l'erreur est beaucoup plus petite donc le modèle semble meilleur</span>
+<span id="cb45-422"><a href="#cb45-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-423"><a href="#cb45-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-424"><a href="#cb45-424" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-425"><a href="#cb45-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-426"><a href="#cb45-426" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 5 : Comparer avec la qualité des prévision SARIMA avec celles données par la méthode de</span></span>
+<span id="cb45-427"><a href="#cb45-427" aria-hidden="true" tabindex="-1"></a>Holt Winter</span>
+<span id="cb45-428"><a href="#cb45-428" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-429"><a href="#cb45-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-430"><a href="#cb45-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-433"><a href="#cb45-433" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb45-434"><a href="#cb45-434" aria-hidden="true" tabindex="-1"></a>HW1 <span class="ot">=</span> <span class="fu">HoltWinters</span>(yt, <span class="at">start.periods =</span> <span class="dv">2</span>)</span>
+<span id="cb45-435"><a href="#cb45-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-436"><a href="#cb45-436" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(yt, xlim=c(0,14))</span></span>
+<span id="cb45-437"><a href="#cb45-437" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(HW1$fitted[,1], lty=2, col="blue")</span></span>
+<span id="cb45-438"><a href="#cb45-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-439"><a href="#cb45-439" aria-hidden="true" tabindex="-1"></a>HW1.pred <span class="ot">=</span> <span class="fu">predict</span>(HW1, <span class="dv">12</span>, <span class="at">prediction.interval =</span> <span class="cn">TRUE</span>, <span class="at">level=</span><span class="fl">0.95</span>)</span>
+<span id="cb45-440"><a href="#cb45-440" aria-hidden="true" tabindex="-1"></a><span class="co">#Visually evaluate the prediction</span></span>
+<span id="cb45-441"><a href="#cb45-441" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(yt, xlim=c(8,15), ylim = c(2500, 4000) )</span></span>
+<span id="cb45-442"><a href="#cb45-442" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(yt_2001, <span class="at">col =</span> <span class="st">"black"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">2600</span>, <span class="dv">5000</span>))</span>
+<span id="cb45-443"><a href="#cb45-443" aria-hidden="true" tabindex="-1"></a><span class="co">#lines(HW1$fitted[,1], lty=2, col="blue")</span></span>
+<span id="cb45-444"><a href="#cb45-444" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(HW1.pred[,<span class="dv">1</span>], <span class="at">col=</span><span class="st">"blue"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb45-445"><a href="#cb45-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-446"><a href="#cb45-446" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">13-1</span><span class="sc">/</span><span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>), <span class="fu">rev</span>(<span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">13-1</span><span class="sc">/</span><span class="dv">12</span>, <span class="at">by =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">12</span>))), <span class="fu">c</span>(HW1.pred[,<span class="dv">2</span>], <span class="fu">rev</span>(HW1.pred[,<span class="dv">3</span>])), <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.4</span>), <span class="at">border =</span> <span class="cn">NA</span>)</span>
+<span id="cb45-447"><a href="#cb45-447" aria-hidden="true" tabindex="-1"></a><span class="co"># RGB (Rouge, Vert, Bleu), où (0, 0, 1)</span></span>
+<span id="cb45-448"><a href="#cb45-448" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-449"><a href="#cb45-449" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(s3<span class="sc">$</span>pred, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb45-450"><a href="#cb45-450" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb45-451"><a href="#cb45-451" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"yt_2001"</span>, <span class="st">"prédiction estimée"</span>, <span class="st">"prédictions HW"</span>, <span class="st">"intervalle de</span><span class="sc">\n</span><span class="st"> prédictions HW"</span>),</span>
+<span id="cb45-452"><a href="#cb45-452" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>, <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.4</span>)),</span>
+<span id="cb45-453"><a href="#cb45-453" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb45-454"><a href="#cb45-454" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">12</span>))</span>
+<span id="cb45-455"><a href="#cb45-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-456"><a href="#cb45-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-457"><a href="#cb45-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb45-458"><a href="#cb45-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-459"><a href="#cb45-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-460"><a href="#cb45-460" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-461"><a href="#cb45-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-462"><a href="#cb45-462" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 6 : Conclure</span></span>
+<span id="cb45-463"><a href="#cb45-463" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+<span id="cb45-464"><a href="#cb45-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-465"><a href="#cb45-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-466"><a href="#cb45-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-467"><a href="#cb45-467" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright 2025, Clément Poupelin</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This blog is built with <a href="https://quarto.org/">Quarto</a></div>
+  </div>
+</footer>
+
+
+
+</body></html>

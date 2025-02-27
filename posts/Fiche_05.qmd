@@ -1,0 +1,1013 @@
+---
+title: "Fiche 05"
+author: "Clément Poupelin"
+date: "2025-02-xx"
+date-modified: "`r Sys.Date()`"
+format: 
+  html:
+    embed-resources: false
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc-location: right
+    page-layout: article
+    code-overflow: wrap
+toc: true
+number-sections: false
+editor: visual
+categories: ["categorie 1", "cotegorie 2"]
+image: ""
+description: "Description"
+---
+
+# Intervenant.e.s
+
+### Rédaction
+
+-   **Clément Poupelin**, [clementjc.poupelin\@gmail.com](mailto:clementjc.poupelin@gmail.com){.email}\
+
+### Relecture
+
+-   
+
+# Setup
+
+:::: panel-tabset
+## Packages
+
+```{r, setup, warning=FALSE, message=FALSE}
+# Données
+library(dplyr)        # manipulation des données
+
+
+# Plots
+## ggplot
+library(ggplot2)
+library(gridExtra)
+```
+
+## Fonctions
+
+::: panel-tabset
+### Fonction 1
+
+### Fonction 2
+:::
+
+## Seed
+::::
+
+# Données
+
+# Analyse
+
+::: callout-note
+METTRE LES REMARQUES
+:::
+
+::: callout-warning
+METTRE LES POINTS D'ATTENTION
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+METTRE LES CONCLUSIONS
+:::
+
+# Conclusion
+
+# Session info
+
+```{r}
+sessioninfo::session_info(pkgs = "attached")
+```
+
+
+
+```{r, include=FALSE}
+# chargement des packages et scripts nécessaires
+library(astsa)
+library(lmtest)
+library(latex2exp)
+library(tseries)
+library(dygraphs)
+library(scales) # pour l'opacité 
+library(forecast)
+library(tseries)
+library(ggplot2)
+```
+
+# **EXERCICE 1 : **
+<br>
+
+On considère le modèle AR(2) défini par
+\begin{align}
+X_t + a_1X_{t-1} + a_2X_{t-2} = \varepsilon_t
+\end{align}
+
+où $(\varepsilon_t)_t$ est une suite iid suivant la loi standard gaussienne.
+<br>
+
+Pour les trois situations suivantes
+\begin{align}
+
+a_1 = \frac{-5}{6} & &  a_2 = \frac{1}{6}\\
+a_1 = \frac{-5}{6} & & a_2 = 0.9\\
+a_1 = -1.12 & & a_2 = 0.5
+
+\end{align}
+
+
+<br>
+
+#### QUESTION 1 : Calculer les racines du polynôme AR
+<br>
+
+
+```{r}
+
+coefs_1 = c(-5/6, 1/6)
+coefs_2 = c(-5/6, 0.9)
+coefs_3 = c(-1.12, 0.5)
+
+racines_1 = polyroot(c(1,coefs_1))
+racines_2 = polyroot(c(1,coefs_2))
+racines_3 = polyroot(c(1,coefs_3))
+
+```
+
+```{r, echo=FALSE}
+print(paste("racines_1 = ", racines_1[1], "et", racines_1[2] ))
+print(paste("racines_2 = ", round(racines_2[1],2), "et", round(racines_2[2],2) ))
+print(paste("racines_3 = ", round(racines_3[1],2), "et", round(racines_3[2],2) ))
+
+
+```
+
+
+
+
+<br>
+
+#### QUESTION 2 : Tracer la suite des ACF théoriques (**ARMAacf**)
+<br>
+
+
+
+```{r}
+true_ACF_1 = ARMAacf(ar = (- coefs_1), lag.max = 30)
+true_ACF_2 = ARMAacf(ar = (- coefs_2), lag.max = 30)
+true_ACF_3 = ARMAacf(ar = (- coefs_3), lag.max = 30)
+
+```
+
+```{r, echo=FALSE}
+plot(true_ACF_1, type = 'h')
+abline(h = 0)
+
+plot(true_ACF_2, type = 'h')
+abline(h = 0)
+
+plot(true_ACF_3, type = 'h')
+abline(h = 0)
+```
+
+
+
+
+
+
+
+<br>
+
+#### QUESTION 3 : Simuler et représenter une trajectoire de longueur $n = 2500$
+<br>
+
+
+```{r}
+n = 2500
+
+trajectoire_1 = arima.sim(list(ar = (-coefs_1)), n)
+trajectoire_2 = arima.sim(list(ar = (-coefs_2)), n)
+trajectoire_3 = arima.sim(list(ar = (-coefs_3)), n)
+```
+
+```{r, echo=FALSE}
+dygraph(trajectoire_1, main = "Trajectoire simulée de la première série",  ylab = "X_t", xlab='temps') %>% 
+  dyRangeSelector()
+
+dygraph(trajectoire_2, main = "Trajectoire simulée de la première série",  ylab = "X_t", xlab='temps') %>% 
+  dyRangeSelector()
+
+
+dygraph(trajectoire_3, main = "Trajectoire simulée de la première série",  ylab = "X_t", xlab='temps') %>% 
+  dyRangeSelector()
+```
+
+
+
+
+
+
+
+
+<br>
+
+#### QUESTION 4 : A partir de la trajectoire simulée, comparer graphiquement les ACF théoriques et estimées
+<br>
+```{r}
+length(true_ACF_1)
+```
+
+
+```{r}
+acf(trajectoire_1)
+lines(0:30, true_ACF_1, type = "h")
+```
+
+
+```{r}
+acf(trajectoire_1,col = alpha("blue", 0.5), lwd=2)
+lines(0:(length(true_ACF_1)-1), true_ACF_1, type = "h", col = alpha("red", 0.5), lty = 2, lwd = 2)
+legend("topright",
+       legend = c("ACF empiriques", "ACF théoriques"), 
+       col = c("blue","red"),
+       lty = c(1,2))
+
+acf(trajectoire_2, col = alpha("blue", 0.5), lwd=2)
+lines(0:(length(true_ACF_2)-1), true_ACF_2, type = "h", col = alpha("red", 0.5), lty = 2, lwd = 2)
+legend("topright",
+       legend = c("ACF empiriques", "ACF théoriques"), 
+       col = c("blue","red"),
+       lty = c(1,2))
+
+acf(trajectoire_3, col = alpha("blue", 0.5), lwd=2)
+lines(0:(length(true_ACF_3)-1), true_ACF_3, type = "h", col = alpha("red", 0.5), lty = 2, lwd = 2)
+legend("topright",
+       legend = c("ACF empiriques", "ACF théoriques"), 
+       col = c("blue","red"),
+       lty = c(1,2))
+```
+
+
+
+
+
+<br>
+
+#### QUESTION 5 : Représenter en fonction de $n$ l’évolution des estimateurs de $(a_1, a_2)$
+<br>
+
+Pour la première trajectoire
+
+```{r}
+n_values = seq(10, 2500, by = 10)
+
+fit_AR2 = function(data, n){
+  fit = arima(data[1:n], order = c(2,0,0), include.mean = FALSE, method = "ML")
+  #PB pour la trajetoire 2 car non inversible donc rajout method ML
+  return(c(-fit$coef[1], -fit$coef[2]))
+}
+
+
+mat1 = matrix(0, ncol = 2, nrow = length(n_values))
+
+for (i in 1:length(n_values)){
+  mat1[i,] = fit_AR2(trajectoire_1, n_values[i])
+  
+}
+
+```
+
+```{r, echo =FALSE}
+
+plot(mat1[,1], type = 'l', col = "red", ylim = c(min(mat1[,1], mat1[,2]), max(mat1[,1], mat1[,2])))
+lines(mat1[,2], col = "red")
+abline(a = coefs_1[1], b=0, col = "blue", lty = 2)
+abline(a = coefs_1[2], b=0, col = "blue", lty = 2)
+```
+
+Pour la deuxième trajectoire
+
+```{r}
+mat2 = matrix(0, ncol = 2, nrow = length(n_values))
+
+for (i in 1:length(n_values)){
+  mat2[i,] = fit_AR2(trajectoire_2, n_values[i])
+}
+
+```
+
+```{r, echo =FALSE}
+
+plot(mat2[,1], type = 'l', col = "red", ylim = c(min(mat2[,1], mat2[,2]), max(mat2[,1], mat2[,2])))
+lines(mat2[,2], col = "red")
+abline(a = coefs_2[1], b=0, col = "blue", lty = 2)
+abline(a = coefs_2[2], b=0, col = "blue", lty = 2)
+```
+
+
+Pour la troisième trajectoire
+
+```{r}
+mat3 = matrix(0, ncol = 2, nrow = length(n_values))
+
+for (i in 1:length(n_values)){
+  mat3[i,] = fit_AR2(trajectoire_3, n_values[i])
+  
+}
+
+```
+
+```{r, echo =FALSE}
+
+plot(mat3[,1], type = 'l', col = "red", ylim = c(min(mat3[,1], mat3[,2]), max(mat3[,1], mat3[,2])))
+lines(mat3[,2], col = "red")
+abline(a = coefs_3[1], b=0, col = "blue", lty = 2)
+abline(a = coefs_3[2], b=0, col = "blue", lty = 2)
+```
+
+
+
+
+
+<br>
+
+<br>
+
+# **EXERCICE 2 : Analyse de la série data(lynx) **
+<br>
+
+On note la série $(Ly_t)_t$ . On cherche à modéliser les 109 premières valeurs de cette série
+par un processus stationnaire AR(p). 
+<br>
+Les 5 dernières valeurs sont conservées pour évaluer les performances des prévisions réalisées.
+
+```{r}
+# Importation des données 
+data(lynx)
+Ly = lynx[1:109]
+```
+
+
+<br>
+ <center style="font-size: 2em;">**Modèlisation**</center>
+<br>
+
+
+<br>
+
+#### QUESTION 1 : Tracer la série $(Ly_t)$, ses autocorrélations empiriques et ses autocorrélations partielles empiriques. Commenter
+<br>
+
+
+```{r, echo =FALSE}
+
+
+dygraph(lynx, main = "Trajectoire de la série lynx",  ylab = TeX("$Ly_t$"), xlab='temps') %>% 
+  dyRangeSelector()
+
+par(mfrow=c(1, 2))
+acf(Ly)
+pacf(Ly)
+par(mfrow=c(1, 1))
+```
+On peut reconnaitre un porcessus AR avec une acf qui décroit exponentiellement et une pacf qui a un cut off à partir du lag 8.
+
+<br>
+
+#### QUESTION 2 : Modéliser cette série par un processus AR d’ordre $p$
+<br>
+
+On va donc modéliser plusieurs processus avec au maximum $p=8$. Pour cela on va utiliser la fonction **auto.arima**
+
+```{r}
+modele_ar = auto.arima(ts(Ly),d=0,D=0,max.p = 8, max.q = 0, max.order = 8, start.p = 8, stationary = TRUE, seasonal = FALSE, ic = "bic", trace = TRUE)
+```
+
+```{r}
+summary(modele_ar)
+```
+
+
+<br>
+
+#### QUESTION 3 : Peut on valider la modélisation obtenue
+<br>
+
+Si la modélisation choisie est valide, alors les résidus du modèle doivent former un bruit blanc.
+<br>
+On peut alors regarder si l'ACF empirique et la PACF empirique des résidus sont similaires à celles d'un bruit blanc :
+
+```{r}
+par(mfrow=c(1, 2))
+acf(modele_ar[["residuals"]])
+pacf(modele_ar[["residuals"]])
+par(mfrow=c(1, 1))
+```
+
+Les autocorrélations empiriques suggèrent donc que les résidus forment un bruit blanc.
+
+Il est néanmoins important de vérifier si les paramètres du modèle sont significatifs (surtout le coefficient d'ordre p !!!).
+
+On peut le faire (manuellement) par un test asymptotique de la significativité individuelle des coefficients en comparant par exemple les coefficients standardisés aux quantiles de la loi normale standard ($\pm 1.96$ pour un test bilatéral au risque $\alpha = 5\%$) : 
+
+```{r}
+abs(modele_ar[["coef"]] / sqrt(diag(modele_ar[["var.coef"]]))) >= 1.96
+```
+
+Il est également possible d'utiliser la fonction `coeftest` de la librairie `lmtest` : 
+
+```{r}
+coeftest(modele_ar)
+```
+
+On peut alors ré-estimer le modèle en fixant les coefficients non significatifs à 0 (ce qui revient à supprimer les variables non significatives dans la régression linéaire multiple : cette étape fait donc partie de la sélection du modèle et non de la validation proprement-dite)
+
+```{r}
+modele_ar_final = Arima(Ly, order = c(8,0,0), include.mean = TRUE, method = c("CSS-ML", "ML", "CSS"),
+  fixed = c(NA, NA, 0, 0, 0, 0, 0, NA, NA))
+```
+
+```{r}
+summary(modele_ar_final)
+```
+
+```{r, echo=FALSE}
+par(mfrow=c(1, 2))
+acf(modele_ar_final[["residuals"]])
+pacf(modele_ar_final[["residuals"]])
+par(mfrow=c(1, 1))
+```
+
+
+Les ACF et PACF empiriques des résidus du modèle correspondent à ceux d'un bruit blanc. On peut donc "a priori" valider ce modèle.
+<br>
+
+<br>
+(Il faut noter quand même que la variance des résidus `sigma^2` est très élevée !!! Une transformation `log` pourrait être intéressante si nécessaire)
+
+
+
+
+<br>
+
+#### QUESTION 4 : Calculer et représenter les racines du polynôme auto-régressif 
+<br>
+
+
+```{r}
+# On prend le modèle AR avec coef non significatifs
+modele_ar_coef = modele_ar[["coef"]][paste0('ar',1:8)] 
+```
+
+```{r}
+# On calcul les racines 
+racines_poly_ar = polyroot(c(1, -modele_ar_coef))
+```
+
+```{r, echo=FALSE}
+print(round(racines_poly_ar,2))
+
+print(" ")
+txt = c("Module de la 1 ière racine : ", paste0("Module de la ", 2:8, " ième racine : "))
+print(paste(txt, round(abs(racines_poly_ar),2)))
+
+```
+
+```{r}
+
+# On prend le modèle AR avec coef non significatifs fixés à 0
+modele_ar_final_coef = modele_ar_final[["coef"]][paste0('ar',1:8)] 
+```
+
+```{r}
+# On calcul les racines
+racines_poly_ar_final = polyroot(c(1, -modele_ar_final_coef))
+```
+
+```{r, echo=FALSE}
+print(round(racines_poly_ar_final,2))
+
+print(" ")
+txt = c("Module de la 1 ière racine : ", paste0("Module de la ", 2:8, " ième racine : "))
+print(paste(txt, round(abs(racines_poly_ar_final),2)))
+```
+
+Toutes les racines sont en dehors du disque unité : le processus estimé est causal
+
+On peut les représenter et voir leurs positions par rapport rapport au cercle unité :
+
+```{r}
+# racines
+cm = 1/2.54 # conversion centimètres en pouces
+xlim = range(c(-1, 1, Re(racines_poly_ar_final)))
+ylim = range(c(-1, 1, Im(racines_poly_ar_final)))
+ysize = par("fin")[2]
+
+
+par(fin=c(ysize, ysize))
+plot(racines_poly_ar_final, pch = "*", cex = 2, col = "red",
+  xlim = xlim, 
+  ylim = ylim,
+  main = "Racines du polynôme AR et cercle unité",
+  xlab = "axe réel", ylab = "axe imaginaire")
+
+# ajout du cercle unité
+x = seq(-1,1, length.out = 100)
+y = c(sqrt(1 - x^2), -sqrt(1 - rev(x)^2))
+lines(c(x,rev(x)), y, col = "blue")
+```
+
+
+
+
+<br>
+ <center style="font-size: 2em;">**Comparaison avec une série simulée suivant le modèle estimé**</center>
+<br>
+
+
+<br>
+
+#### QUESTION 5 : Simuler une trajectoire de longueur 109 suivant le modèle autorégressif obtenu à la question 2)
+<br>
+
+On simule en tenant compte de la variance des résidus et du fait que le processus estimé est non centré (on sait que `intercept = mu * (1 - sum(coef(AR)))`, où `mu` désigne la moyenne du processus) :
+
+```{r}
+# On pose nos paramètres
+sd = sqrt(modele_ar_final$sigma2)
+mu = modele_ar_final[["coef"]][["intercept"]]/sum(c(1, -modele_ar_final_coef))
+
+
+trajectoire = mu + arima.sim(list(ar = modele_ar_final$model$phi), 109, sd = sd)
+
+trajectoire
+```
+
+On peut déjà remarquer que cette série simulée prend de plus grandes valeurs par rapport aux valeurs prises par rapport à la série lynx. Ce constat peut s'expliquer entre autres par la différence qu'il peut y avoir entre la moyenne théorique `mu` estimée ci-dessus pour un processus AR(p) stationnaire avec la moyenne théorique d'un processus présentant une tendance saisonnière similaire à celle du processus sous-jacent aux données lynx.
+
+
+
+<br>
+
+#### QUESTION 6 : Tracer la série simulée, ses autocorrélations empiriques et ses autocorrélations partielles empiriques. Commenter
+<br>
+
+
+```{r, echo=FALSE}
+dygraph(trajectoire, main = "Trajectoire de la série simulée",  ylab = "X_t", xlab='temps') %>% 
+  dyRangeSelector()
+
+par(mfrow = c(1,2))
+acf(trajectoire)
+pacf(trajectoire)
+```
+A part la taille des valeurs prises par la série simulée déjà évoquées, on voit aussi que l'aspect global de la série n'est pas le même que celui de la série lynx.
+
+En effet, là où la série lynx semble présenter une périodicité d'environ 10 ans, il n'en est pas de même de la série simulée (ce qui est tout à fait normal pour un processus AR).
+<br>
+
+Son ACF empirique présente une pseudo-période de 8 ans (due aux racines complexes du polynôme AR) et son PACF empirique laisserait penser que c'est un processus AR d'ordre $p < 8$ et non $8$ (tout dépend de l'aléa dans les différentes simulations : les résultats ne seront pas forcément les mêmes d'une simulation à une autre, sauf si la graine aléatoire est fixée au préalable), un phénomène probablement dû au nombre faible de données ($109$ ici) ne permettant pas des estimations assez consistantes des autocorrélations d'ordre supérieur dans ce cas précis (en simulant une série de taille largement plus grande que 109, on obtiendrait le comportement attendu pour la PACF empirique). 
+
+<br>
+Néanmoins, ce constat est un signal d'alerte pour faire attention aux estimations obtenues pour la série lynx : $109$ ce n'est peut-être pas assez et il faut donc être vigilant quant aux conclusions inférées à partir de la modélisation faite.
+
+
+
+
+<br>
+ <center style="font-size: 2em;">**Prévision**</center>
+<br>
+
+
+
+<br>
+
+#### QUESTION 7 : À partir du modèle estimé, calculer les prévisions $\hat{L}y_{110}, · · · , \hat{L}y_{114}$. Représenter sur un même graphique les prévisions, les valeurs de la série et l’intervalle de prévision
+<br>
+
+
+On peut regarder ce que l'on obtient avec le modèle AR estimé précédemment en terme des performances prédictives en utilisant les dernières valeurs de la série non incluse dans la modélisation
+
+```{r}
+pred = forecast(modele_ar_final, h=5)
+print(pred)
+
+Ly_test = lynx[110:114]
+print(Ly_test)
+```
+On peut calculer l'erreur moyenne quadratique des prédictions à l'horizon $h = 5$ :
+
+```{r}
+MSE_pred = sum((pred$mean - Ly_test)^2)/length(pred$mean)
+print(MSE_pred)
+```
+La MSE en prédiction est énorme. En regardant les prédictions ponctuelles de près, c'est surtout les deux dernières valeurs qui font exploser la MSE : 
+
+```{r}
+print(pred$mean - Ly_test)
+```
+
+N.B. Si on avait conservé le modèle avec plusieurs coefficients non significatifs, les performances prédictives auraient été encore pires avec une MSE davantage grande.
+<br>
+
+
+On peut ensuite représenter sur un même graphique les prévisions, les valeurs de la série et l'intervalle de prévision (et pourquoi pas les valeurs passées de la série telles que estimées par le modèle lors de son ajustement : ce dernier point est à faire lors de la validation du modèle normalement). 
+
+La fonction `autoplot` de la librairie `ggplot2` fait presque tout le travail en une ligne de code si on lui passé un objet produit par la fonction `forecast` de la librairie du même nom : 
+
+```{r}
+autoplot(pred, main="Prédictions de cinq dernières valeurs de la série lynx", ylab='Nombre de lynx', xlab='Années') + theme_light()
+```
+
+Sinon, on peut aussi faire les choses "à la main" : 
+
+```{r, echo=FALSE}
+ylim = range(c(modele_ar_final$fitted %>% as.numeric(),
+               Ly,Ly_test,
+               pred$upper[,2] %>% as.numeric(),
+               pred$lower[,2] %>% as.numeric()))
+
+xlim = c(1,120)
+
+
+par(mar = c(5,4,4,10), xpd = TRUE)
+
+plot(Ly, type = "l", lty=1, col="orange",
+     ylim=ylim,
+     xlim = xlim,
+     xlab = "Années", 
+     ylab = "Nombre de lynx")
+
+polygon(c(110:114, rev(110:114)), c(pred$upper[,1], rev(pred$lower[,1])),
+        col=rgb(1, 0, 0,0.6), border = FALSE)
+
+polygon(c(110:114, rev(110:114)), c(pred$upper[,2], rev(pred$lower[,2])),
+        col=rgb(1, 0, 0,0.3), border = FALSE)
+
+lines(110:114, as.numeric(pred$mean), type="l", lty=1, col="blue")
+
+lines(110:114, Ly_test, type="l", lty=1, col="green")
+
+lines(as.numeric(modele_ar_final$fitted), type = "l", lty = 2, col = "red")
+
+title(main = "Prédictions de cinq dernières valeurs de la série lynx" , col.main = "brown")
+legend(x="topright", inset=c(-0.3, 0),
+       legend = c("Ly", "prédictions", "Ly_test", "fitted values","IC 80%", "IC 95%"),
+       fill = c(NA, NA, NA, NA, rgb(1, 0, 0,0.6), rgb(1, 0, 0,0.3)),
+       col = c("orange", "blue",  "green", "red", NA, NA),
+       lty = c(1, 1, 1, 2, 0, 0), # ou c(1,1,NA,NA)
+       box.col="brown",
+       text.col = "gray",
+       title = "Légende", title.col = "cyan")
+```
+
+Pour conclure, nous pouvons voir que ce modèle est potentiellement adapté à des fins de prévision à très court terme (horizons $h = 2$ ans ou $h =3$ ans).
+
+En effet, même si il s'ajuste un peu bien sur ces données lynx (cf. la courbe `fitted values` ci-dessus) et semble suivre le phénomène périodique de la série, nous savons qu'il est non périodique (AR(8)) et nous avons vu précédemment qu'une série simulée suivant ce modèle ne présentait pas les mêmes structures macroscopiques.
+
+De plus, en simulant une série plus longue, on perd de plus en plus les détails périodiques. D'où les prévisions à long terme qui s’éloigneront davantage de la vraie tendance (saisonnière) sous-jacente au processus générant les données.
+
+
+Enfin, il est impossible de ne pas noter la surdispersion des intervalles de prévision (les bornes inférieures à 95% et 80% donnent des nombres de lynx négatifs !!!).
+
+
+<br>
+
+
+<br>
+
+# **EXERCICE 3 : Analyse de la série varve **
+<br>
+
+
+La série varve, disponible dans la librarie astsa, contient l’enregistrement des dépots sédimentaires (varve glacière) dans le Massachusetts pendant 634 années ( il y a près de 12 000 ans). La série (notée $x_t$) montre une certaine non-stationnalité.
+
+<br>
+
+#### QUESTION 1 : Comparer la variance de l’échantillon sur la première moitié et la seconde moitié des données. Commenter
+<br>
+
+
+```{r}
+dygraph(varve, main = "Trajectoire de la série varve",  ylab = "X_t", xlab='temps') %>% 
+  dyRangeSelector()
+```
+
+```{r}
+var_moitie_1 = var(varve[1:317])
+var_moitie_2 = var(varve[318:634])
+```
+
+```{r, echo=FALSE}
+print(paste("Variance de la première moitié : ", var_moitie_1))
+print(paste("Variance de la seconde moitié : ", var_moitie_2))
+print(paste("Comparaison v2/v1 : ", var_moitie_2/var_moitie_1))
+```
+La variance de la seconde moitié de données vaut plus de quatre fois celle de la première moitié. La variance n'est donc pas constante et la série est par conséquent non stationnaire.
+
+
+<br>
+
+#### QUESTION 2 : On applique la transformation $y_t = log(x_t)$. Illustrer que cette transformation stabilise la variance de la série. Représenter l’évolution de la variance empirique calculée sur des blocs de longueur $m$. (utiliser **rollapply** de la librairie **zoo** )
+<br>
+
+```{r}
+# Transformation log 
+yt = log(varve)
+```
+
+```{r, echo=FALSE}
+dygraph(yt, main = "Trajectoire de la série log(varve)",  ylab = "Y_t", xlab='temps') %>% 
+  dyRangeSelector()
+```
+
+On compare  à nouveau les variances 
+```{r}
+print(paste("Variance de la première moitié : ", var(yt[1:317])))
+print(paste("Variance de la seconde moitié : ", var(yt[318:634])))
+print(paste("Comparaison v2/v1 : ", var(yt[318:634])/var(yt[1:317])))
+
+```
+
+```{r}
+m = 30
+evol_var = rollapplyr(yt, width = m, FUN = var)
+
+
+dygraph(evol_var, main = paste0("Evolution variance empirique Blocs de longueur m = ", m),
+        ylab = "Variance empirique",
+        xlab='Blocs') %>% 
+  dyRangeSelector()
+```
+La variance se stabilise en moyenne autour de 0.2 pour des blocs de longueur $m=30$
+
+
+<br>
+
+#### QUESTION 3 : Tracer les histogrammes de $x_t$ et $y_t$. Commenter l’effet de la transformation log sur la loi.
+<br>
+
+
+```{r, echo=FALSE}
+hist(varve, col = "skyblue", freq = FALSE)
+hist(yt, col = "skyblue", freq = FALSE)
+```
+
+
+La transformation `log` rend la loi de $y_t$ moins asymétrique que celle de $x_t$
+
+
+<br>
+
+#### QUESTION 4 : Représenter les autocorrélations de $y_t$. Commenter
+<br>
+
+```{r, echo=FALSE}
+par(mfrow = c(1,2))
+acf(yt, lag.max = 30)
+pacf(yt, lag.max = 30)
+```
+
+L'ACF empirique suggère la présence d'une tendance polynomiale dans la dynamique de $y_t$. 
+
+
+<br>
+
+#### QUESTION 5 : Calculer $u_t = y_t − y_{t−1}$ et analyser les propriétés de cette séries. La différenciation des données $y_t$ produit elle une série raisonnablement stationnaire ?
+<br>
+
+```{r}
+ut = diff(yt)
+```
+
+```{r, echo=FALSE}
+dygraph(ut, main = "Trajectoire de la série diff(log(varve))",  ylab = "U_t", xlab='temps') %>% 
+  dyRangeSelector()
+```
+Visuellement, la série semble stationnaire. 
+<br>
+
+```{r}
+adf.test(ut)
+kpss.test(ut)
+```
+
+En complétant l'analyse visuelle avec des tests de stationnarité au risque $\alpha = 5\%$, le test ADF rejette la non stationnarité et le test KPSS ne rejette pas la stationnarité.
+
+
+
+
+<br>
+
+#### QUESTION 6 : Représenter les autocorrélations empiriques et les autocorrélations partielles empiriques de la série $(u_t)$ Le modèle MA(1) vous semble-t-il justifié pour modéliser la série $(u_t)$ ?
+<br>
+
+```{r, echo=FALSE}
+par(mfrow = c(1,2))
+acf(ut, lag.max = 30)
+pacf(ut, lag.max = 30)
+```
+
+L'ACF empirique  suggère que la modélisation MA(1) comme une probable modélisation adéquate sur la série différenciée (et la PACF empirique présente une décroissante exponentielle en valeur absolue avec toutefois des pics atypiques)
+
+
+<br>
+
+#### QUESTION 7 : Calculer une estimation des paramètres du modèe ARIMA(0,1,1) sur la série $(y_t)$
+<br>
+
+
+```{r}
+modele_0_1_1 = Arima(yt, order = c(0,1,1))
+summary(modele_0_1_1)
+```
+
+<br>
+
+#### QUESTION 8 : Peut on valider le modèle estimé sur la série $(y_t)$ 
+<br>
+
+
+```{r}
+coeftest(modele_0_1_1)
+```
+Le coefficient du modèle est significatif. On peut passer à l'analyse des résidus :
+
+```{r, echo=FALSE}
+dygraph(modele_0_1_1$residuals, main = "Résidus du modèle ARIMA(0,1,1) sur la série log(varve)",  ylab = "résidus", xlab='temps') %>% 
+  dyRangeSelector()
+
+# blancheur
+par(mfrow = c(1,2))
+acf(modele_0_1_1$residuals, lag.max = 30)
+pacf(modele_0_1_1$residuals, lag.max = 30)
+```
+
+```{r}
+Box.test(modele_0_1_1$residuals, lag = 2, fitdf = 1)
+```
+
+Les ACF et PACF empiriques de résidus du modèle ne correspondent pas à celles d'un bruit blanc ; ce qui est confirmé par le test de portemanteau (ici Box-Pierce) qui rejette l'hypothèse nulle de blancheur (indépendance) des résidus. On ne peut donc pas valider ce modèle.
+
+
+
+Si les résidus formaient un bruit blanc, on aurait alors pu vérifier la normalité, hypothèse utilisée souvent pour le calcul des intervalles de prédiction :
+
+```{r}
+hist(modele_0_1_1$residuals, freq = FALSE, col = "skyblue")
+```
+```{r}
+shapiro.test(modele_0_1_1$residuals)
+```
+
+On aurait pu conclure que les résidus sont approximativement gaussiens (histogramme grossièrement semblable à celui d'une gaussienne et le test de `Shapiro Wilk` ne rejette pas l'hypothèse de normalité au risque 5%)
+
+
+<br>
+
+#### QUESTION 9 : Si ce modèle n’est pas validé, proposer une autre modélisation ARIMA pour la série $(y_t)$
+<br>
+
+On pourrait explorer différents modèles différenciés proches de ARIMA(0,1,1) (par exemple ARIMA(1,1,1) avec et sans drift, etc) et garder celui qui donne des résultats satisfaisants. On peut aussi s'aider de la fonction `auto.arima` pour faire ces tests de manière automatisée et garder le meilleur modèle suivant le critère d'information de son choix (BIC, AIC, etc) 
+
+
+
+```{r}
+auto.arima(yt, d=1, stationary = FALSE, seasonal = FALSE, ic = "bic", trace = TRUE)
+```
+
+
+
+
+On va ajuster le modèle ARIMA(1,1,1) sans drift (car meilleur modèle au sens du BIC).
+
+
+On remarque tout de même que notre série non différenciée en possède. On pourrait donc également tester un modèle avec drift.
+
+```{r}
+modele_arima = Arima(yt, order = c(1,1,1), include.drift = FALSE)
+summary(modele_arima)
+```
+```{r}
+coeftest(modele_arima)
+```
+On étudit les résidus
+
+```{r, echo=FALSE}
+# résidus
+
+dygraph(modele_arima$residuals, main = "Résidus du modèle ARIMA(1,1,1) sur la série log(varve)",  ylab = "résidus", xlab='temps') %>% 
+  dyRangeSelector()
+
+# blancheur
+par(mfrow = c(1,2))
+acf(modele_arima$residuals, lag.max = 30)
+pacf(modele_arima$residuals, lag.max = 30)
+```
+
+```{r}
+Box.test(modele_arima$residuals, lag = 3, fitdf = 2)
+```
+
+```{r, echo=FALSE}
+hist(modele_arima$residuals, freq = FALSE, col = "skyblue")
+```
+
+```{r}
+shapiro.test(modele_arima$residuals)
+```
+
+
+Les résidus satisfont les différents tests non satisfaits précédemment (blancheur) et sont approximativement gaussiens
+
+
+
+<br>
+
+#### QUESTION 10 : Pour la modélisation que vous avez retenue (et donc validée ) calculer la prévision aux horizons 1 à 20 avec des intervalles de prévision, pour la série $(y_t)$ puis la série initiale **varve**
+<br>
+
+On utilise donc le modèle ARMA(1,1,1) sans drift pour prévoir $y_t$ et ensuite $x_t$
+
+```{r}
+pred_yt = forecast(modele_arima, h = 20)
+```
+
+```{r, echo=FALSE}
+autoplot(pred_yt, main="Prédictions de 20 prochaines valeurs de la série log(varve)", ylab='Y_t', xlab='temps') + theme_light()
+```
+
+Pour les prédictions de $x_t$, il ne faut pas oublier le facteur multiplicatif de correction induit par le passage du `log` à `exp` :
+
+```{r}
+pred = pred_yt
+pred$mean = exp(pred$mean + pred$model$sigma2/2)
+pred$lower = exp(pred$lower)
+pred$upper = exp(pred$upper)
+pred$fitted = exp(pred$fitted + pred$residuals)
+pred$x = exp(pred$x)
+
+```
+
+
+```{r, echo=FALSE}
+autoplot(pred, main="Prédictions de 20 prochaines valeurs de la série varve", ylab='X_t', xlab='temps') + theme_light()
+```
+
+
+On fait une visualisation plus détaillée
+```{r, echo=FALSE}
+ylim = range(c(pred$fitted %>% as.numeric(), varve,
+               pred$upper[,2] %>% as.numeric(),
+               pred$lower[,2] %>% as.numeric()))
+
+xlim = c(1,654)
+
+par(mar=c(5, 4, 4, 10), xpd=TRUE)
+
+plot(varve, type = "l", lty=1, col="orange",
+     ylim=ylim, xlim = xlim,
+     xlab = "temps", ylab = "X_t"
+)
+
+polygon(c(635:654, rev(635:654)), c(pred$upper[,1], rev(pred$lower[,1])),
+        col=rgb(1, 0, 0,0.6), border = FALSE)
+
+polygon(c(635:654, rev(635:654)), c(pred$upper[,2], rev(pred$lower[,2])),
+        col=rgb(1, 0, 0,0.3), border = FALSE)
+
+lines(635:654, as.numeric(pred$mean), type="l", lty=1, col="blue")
+
+lines(
+  as.numeric(pred$fitted),
+  type = "l", lty = 2, col = "red"
+)
+
+title(main = "Prédictions de 20 prochaines valeurs de la série varve" ,
+      col.main = "brown")
+legend(x="topright", inset=c(-0.3, 0),
+       legend = c("série varve", "prédictions", "fitted values","IC 80%", "IC 95%"),
+       fill = c(NA, NA, NA, rgb(1, 0, 0,0.6), rgb(1, 0, 0,0.3)),
+       col = c("orange", "blue", "red", NA, NA),
+       lty = c(1, 1, 2, 0, 0), # ou c(1,1,NA,NA)
+       box.col="brown",
+       text.col = "gray",
+       title = "Légende", title.col = "cyan")
+```
+
+Les prévisions sont similaires à celles d'un modèle MA(1) pas adapté à de la prévision à un horizon lointain.
+
+
+
+
+
+

@@ -1,0 +1,431 @@
+---
+title: "Fiche 06"
+author: "Clément Poupelin"
+date: "2025-02-xx"
+date-modified: "`r Sys.Date()`"
+format: 
+  html:
+    embed-resources: false
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc-location: right
+    page-layout: article
+    code-overflow: wrap
+toc: true
+number-sections: false
+editor: visual
+categories: ["categorie 1", "cotegorie 2"]
+image: ""
+description: "Description"
+---
+
+# Intervenant.e.s
+
+### Rédaction
+
+-   **Clément Poupelin**, [clementjc.poupelin\@gmail.com](mailto:clementjc.poupelin@gmail.com){.email}\
+
+### Relecture
+
+-   
+
+# Setup
+
+:::: panel-tabset
+## Packages
+
+```{r, setup, warning=FALSE, message=FALSE}
+# Données
+library(dplyr)        # manipulation des données
+
+
+# Plots
+## ggplot
+library(ggplot2)
+library(gridExtra)
+```
+
+## Fonctions
+
+::: panel-tabset
+### Fonction 1
+
+### Fonction 2
+:::
+
+## Seed
+::::
+
+# Données
+
+# Analyse
+
+::: callout-note
+METTRE LES REMARQUES
+:::
+
+::: callout-warning
+METTRE LES POINTS D'ATTENTION
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+METTRE LES CONCLUSIONS
+:::
+
+# Conclusion
+
+# Session info
+
+```{r}
+sessioninfo::session_info(pkgs = "attached")
+```
+
+```{r, include=FALSE}
+# chargement des packages et scripts nécessaires
+library(astsa)
+library(lmtest)
+library(latex2exp)
+library(tseries)
+library(dygraphs)
+library(scales) # pour l'opacité 
+library(forecast)
+library(tseries)
+library(ggplot2)
+library(forecast)
+```
+# **EXERCICE 1 : **
+<br>
+
+Sur la série de vente de voitures (avant la rupture), montrer que la modélisation SARIMA
+ne fournit pas une solution satisfaisante.
+www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt
+<br>
+
+
+```{r}
+url_TP3 = "http://www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt"
+X = scan(url_TP3) # pour importer le dataframe en 1 vecteur de donnée (et non un dataframe de dim n*m)
+
+Xt = ts(X, frequency =12)
+
+Xt = window(Xt, start=start(Xt), end=24) # Avant rupture
+```
+
+
+```{r, echo=FALSE}
+
+plot(Xt, col = "purple", main = "Série Temporelle")
+par(mfrow=c(1, 2)) 
+acf(Xt, col = "purple", main = "ACF de notre série")
+pacf(Xt, col = "purple", main = "PACF de notre série")
+
+```
+
+On tente de trouver une modelisation sarima qui prend en compte la présence d'une tendance et une saisonnalité de période 12
+```{r}
+sarima_voitures = auto.arima(Xt, 
+                             d=1, 
+                             D=1,
+                             start.q = 1,
+                             start.p = 1,
+                             max.order = 4, 
+                             stationary = FALSE,
+                             seasonal = TRUE, 
+                             ic = "bic", 
+                             trace = TRUE)
+```
+```{r}
+summary(sarima_voitures)
+```
+Si la modélisation choisie est valide, alors les résidus du modèle doivent former un bruit blanc.
+On peut alors regarder si l’ACF empirique et la PACF empirique des résidus sont similaires à celles d’un bruit blanc :
+
+
+```{r, echo=FALSE}
+par(mfrow=c(1, 2))
+acf(sarima_voitures[["residuals"]])
+pacf(sarima_voitures[["residuals"]])
+```
+On peut utiliser la fonction **coeftest** de la librairie **lmtest** :
+```{r}
+coeftest(sarima_voitures)
+```
+Toutes las variables sont considérées comme significatives. Pourtant, les ACF et PACF ne seblent pas représenter un Bruit Blanc.
+
+
+Essayons quelques tests:
+<br>
+
+Test de Ljung-Box :
+Utilisez le test de Ljung-Box pour tester l'hypothèse que les autocorrélations jusqu'à un certain nombre de retards (lag) sont nulles.
+```{r}
+Box.test(sarima_voitures[["residuals"]], lag = 20, type = "Ljung-Box")
+
+```
+Si la p-value associée au test de Ljung-Box est significativement élevée, cela suggère que la série est un bruit blanc. Ici, ce n'est pas le cas.
+
+<br>
+
+Test d'adéquation de Kolmogorov-Smirnov :
+Vous pouvez également utiliser le test d'adéquation de Kolmogorov-Smirnov pour comparer la distribution empirique de vos données avec une distribution normale.
+```{r}
+ks.test(sarima_voitures[["residuals"]], "pnorm")
+
+
+```
+Si la p-value est élevée, cela suggère que la série suit une distribution normale, ce qui est caractéristique d'un bruit blanc. Ici, ce n'est pas le cas.
+<br>
+
+<br>
+
+On peut donc conclure que la modélisation SARIMA ne fournit pas une solution satisfaisante.
+
+
+
+<br>
+
+<br>
+
+# **EXERCICE 2 : **
+<br>
+
+On souhaite prévoir le nombre d’usagers de la SNCF pour les 12 mois de l’année 2001.
+Pour réaliser la prévision, on dispose des données mensuelles sur 11 années entre 1990 et
+2000. Ces données sont disponibles dans le fichier suivant
+www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt
+
+
+```{r}
+url = "http://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-1990-2000.txt"
+y = scan(url) # pour importer le dataframe en 1 vecteur de donnée (et ne pas avoir un truc de dim n*m)
+yt = ts(y, frequency = 12) # car données sur évolution annuelle 
+
+```
+<br>
+
+#### QUESTION 1 : Justifier le choix d’une modélisation SARIMA sur cette série à l’aide de quelques graphiques. En déduire une estimation de $(d, D, s)$
+<br>
+
+```{r, echo=FALSE}
+plot(yt, col = 'purple', 
+     main = TeX("Série Temporelle $Y_t$"))
+par(mfrow=c(1, 2)) 
+acf(yt, col = 'purple', 
+    main = TeX("ACF de $Y_t$"))
+pacf(yt, col = 'purple', 
+    main = TeX("PACF de $Y_t$"))
+par(mfrow=c(1, 1)) 
+
+```
+
+
+Ca ne ressemble pas à un MA ou un AR donc on peut tenter du SARIMA
+```{r}
+dy = diff(yt)
+
+tsplot(cbind(yt,dy), col = "purple", main = "Comparaison yt et (I-B)yt")
+```
+
+```{r, echo=FALSE}
+
+par(mfrow=c(1, 2)) 
+acf(dy, col = 'purple', 
+    main = TeX("ACF de $(I-B)Y_t$"))
+pacf(dy, col = 'purple', 
+     main = TeX("PACF de $(I-B)Y_t$"))
+par(mfrow=c(1, 1)) 
+
+
+```
+
+
+
+avec l'acf, on peut vouloir s=12, D=1, d=1
+
+
+**RAPPEL : **
+Le modèle SARIMA d’ordres $(p, d, q)(P, D, Q)_s$ s’écrit de la forme
+
+\begin{align}
+  \Phi(B^s)\phi(B)(I-B^s)^D(I-B)^dX_t = \Theta(B^s)\theta(B)w_t
+\end{align}
+
+
+Les polynômes $\phi$ et $\theta$ représente la partie ARMA 
+
+
+
+Les polynômes $\Phi$ et $\Theta$ représente la partie ARMA saisonnière
+
+
+ $(I-B^s)^D$ et $(I-B)^d$ permettent de prendre en compte la non-stationnarité
+
+
+En général $D=1$ (ou $2$) 
+
+
+
+<br>
+
+#### QUESTION 2 : Valider un ou plusieurs modèles SARIMA sur cette série
+<br>
+
+```{r}
+modele_sarima = auto.arima(yt, 
+                           d=1, 
+                           D=1,
+                           start.q = 1,
+                           start.p = 1, 
+                           max.order = 4, 
+                           stationary = FALSE, 
+                           seasonal = TRUE, 
+                           ic = "bic", 
+                           trace = TRUE)
+```
+```{r}
+summary(modele_sarima)
+```
+
+De manière non automatique 
+
+```{r, results='hide'}
+mod1 = sarima(yt, p=1, d=1, q=1, P=0, D=1, Q=0, S=12)
+mod2 = sarima(yt, p=2, d=1, q=2, P=0, D=1, Q=0, S=12)
+mod3 = sarima(yt, p=3, d=1, q=3, P=0, D=1, Q=0, S=12)
+
+```
+```{r}
+mod1
+mod2
+mod3
+
+```
+
+En regadant un peu la significativité ainsi que les critères AIC, AICc et BIC, on pourrait vouloir tenter de retenir les modèles mod2 et mod3.
+
+
+
+<br>
+
+#### QUESTION 3 : Pour les modèles SARIMA validés à la question précedente, calculer les prévisions mensuelles pour l’année 2001. Representer les differentes prévisions et les régions de confiance.
+<br>
+
+Regardons pour nos modèles mod2 et mod3
+```{r}
+par(mfrow=c(2, 1)) 
+s1 = sarima.for(yt, n.ahead = 12, p=2, d=1, q=2, P=0, D=1, Q=0, S=12) 
+s2 = sarima.for(yt, n.ahead = 12, p=3, d=1, q=3, P=0, D=1, Q=0, S=12) 
+
+```
+
+Maintenant, si on prend le modèle choisi par **auto.arima**
+```{r}
+s3 = sarima.for(yt, n.ahead = 12, p=1, d=0, q=1, P=0, D=0, Q=2, S=12) 
+```
+
+
+
+<br>
+
+#### QUESTION 4 : Evaluer la qualité de vos prévisions en les comparant avec les valeurs observées en 2001. Vous pouvez par exemple calculer les erreurs quadratiques
+$\sum_{h=1}^{12}(\hat{x}_{n:h} − x_{n+h})^2$. 
+<br>
+
+Les sont disponibles dans le fichier
+https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt
+
+```{r}
+url_2001 = "https://www.math.sciences.univ-nantes.fr/~philippe/lecture/donnees-sncf-2001.txt"
+y_2001 = scan(url_2001) 
+yt_2001 = ts(y_2001, frequency = 12, start = 12) 
+```
+
+```{r, echo=FALSE}
+plot(yt_2001, main = "Donnnées obsérvées pour l'année 2001")
+```
+
+```{r}
+eq1=c()
+for (i in 1:12){
+  eq1[i] = (s1$pre[1] - yt_2001[i])^2
+}
+EQ1 = sum(eq1)
+
+eq2=c()
+for (i in 1:12){
+  eq2[i] = (s2$pre[1] - yt_2001[i])^2
+}
+EQ2 = sum(eq2)
+
+EQ1
+EQ2
+# EQ2 est plus petite donc mod3 meilleur que mod2
+```
+
+
+ avec le modèle de **auto.arima**
+```{r}
+eq3=c()
+for (i in 1:12){
+  eq3[i] = (s3$pre[1] - yt_2001[i])^2
+}
+EQ3 = sum(eq3)
+
+EQ1
+EQ2
+EQ3
+```
+Ici, l'erreur est beaucoup plus petite donc le modèle semble meilleur
+
+
+<br>
+
+#### QUESTION 5 : Comparer avec la qualité des prévision SARIMA avec celles données par la méthode de
+Holt Winter
+<br>
+
+
+```{r}
+HW1 = HoltWinters(yt, start.periods = 2)
+
+#plot(yt, xlim=c(0,14))
+#lines(HW1$fitted[,1], lty=2, col="blue")
+
+HW1.pred = predict(HW1, 12, prediction.interval = TRUE, level=0.95)
+#Visually evaluate the prediction
+#plot(yt, xlim=c(8,15), ylim = c(2500, 4000) )
+plot(yt_2001, col = "black", lwd=2, ylim = c(2600, 5000))
+#lines(HW1$fitted[,1], lty=2, col="blue")
+lines(HW1.pred[,1], col="blue", lty = 2)
+
+polygon(c(seq(12,13-1/12, by = 1/12), rev(seq(12,13-1/12, by = 1/12))), c(HW1.pred[,2], rev(HW1.pred[,3])), col=rgb(0, 0, 1,0.4), border = NA)
+# RGB (Rouge, Vert, Bleu), où (0, 0, 1)
+
+lines(s3$pred, col = "red", lty = 2)
+legend("topleft",
+       legend = c("yt_2001", "prédiction estimée", "prédictions HW", "intervalle de\n prédictions HW"),
+       col = c("black", "red", "blue", rgb(0, 0, 1,0.4)),
+       lty = c(1, 2, 2, 1),
+       lwd = c(2, 1, 1, 12))
+
+
+```
+
+
+<br>
+
+#### QUESTION 6 : Conclure
+<br>
+
+
+
+<br>
