@@ -1,4 +1,4 @@
-# **Blog - UE code : Séries temporelles**
+# **Blog - UE X3MS040 : Séries temporelles**
 
 ## Contexte
 

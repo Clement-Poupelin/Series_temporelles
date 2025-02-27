@@ -15,7 +15,23 @@ website:
     left:
       - icon: file-earmark-font-fill
         text: Feuille de TP
-        href: TP_StatGdeDim.pdf
+        menu: 
+          - href: Enonce/Fiche1-20-21.pdf
+            text: Fiche 1
+          - href: Enonce/Fiche2-20-21.pdf
+            text: Fiche 2
+          - href: Enonce/Fiche3-20-21.pdf
+            text: Fiche 3
+          - href: Enonce/Fiche4-20-21.pdf
+            text: Fiche 4
+          - href: Enonce/Fiche5-20-21.pdf
+            text: Fiche 5
+          - href: Enonce/Fiche6-20-21.pdf
+            text: Fiche 6
+          - href: Enonce/fiche6_bootstrap.pdf
+            text: Fiche 6 Bootstrap
+          - href: Enonce/Fiche7-20-21.pdf
+            text: Fiche 7
         
     right:
       - href: https://clement-poupelin.github.io/Series_temporelles/
