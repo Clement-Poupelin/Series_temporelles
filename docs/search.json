@@ -28,9 +28,9 @@
     "text": "Intervenant.e.s\nLes rédacteurs et relecteurs des articles sont mentionnés sur chaque document du blog. Le travail collaboratif permet d’assurer la clarté, la rigueur et la qualité des contenus proposés."
   },
   {
-    "objectID": "posts/Exercice_Template.html",
-    "href": "posts/Exercice_Template.html",
-    "title": "Exercice",
+    "objectID": "posts/Exercice_01.html",
+    "href": "posts/Exercice_01.html",
+    "title": "Exercice 01",
     "section": "",
     "text": "Intervenant.e.s\n\nRédaction\n\nClément Poupelin, clementjc.poupelin@gmail.com\n\n\n\n\nRelecture\n\n\n\n\n\n\nSetup\n\nPackagesFonctionsSeed\n\n\n\n\n\n\nFonction 1Fonction 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDonnées\n\n\nAnalyse\n\n\n\n\n\n\nNote\n\n\n\nMETTRE LES REMARQUES\n\n\n\n\n\n\n\n\nWarning\n\n\n\nMETTRE LES POINTS D’ATTENTION\n\n\n\n\n\n\nRésultats\n\n\nMETTRE LES CONCLUSIONS\n\n\n\nConclusion\n\n\nSession info\n\n\nShow the code\n# sessioninfo::session_info(pkgs = \"attached\")"
   },
@@ -39,6 +39,6 @@
     "href": "index.html",
     "title": "Séries temporelles",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n         \n          Modified - Oldest\n        \n         \n          Modified - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nExercice\n\n\n1 min\n\n\n\ncategorie 1\n\n\ncotegorie 2\n\n\n\nDescription\n\n\n\nAuthors.s\n\n\nFeb 17, 2025\n\n\n\n\n\n2/27/25, 10:19:43 AM\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n         \n          Modified - Oldest\n        \n         \n          Modified - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nExercice 01\n\n\n1 min\n\n\n\ncategorie 1\n\n\ncotegorie 2\n\n\n\nDescription\n\n\n\nClément Poupelin\n\n\nFeb 17, 2025\n\n\n\n\n\n2/27/25, 1:37:40 PM\n\n\n\n\n\n\n\nNo matching items"
   }
 ]

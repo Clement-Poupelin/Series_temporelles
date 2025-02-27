@@ -1,6 +1,6 @@
 ---
-title: "Exercice "
-author: "Authors.s"
+title: "Exercice 01"
+author: "Clément Poupelin"
 date: "2025-02-17"
 date-modified: "`r Sys.Date()`"
 format: 
@@ -45,20 +45,15 @@ description: "Description"
 ::: panel-tabset
 ### Fonction 1
 
-
 ### Fonction 2
-
 :::
 
 ## Seed
-
 ::::
 
 # Données
 
-
-
-# Analyse 
+# Analyse
 
 ::: callout-note
 METTRE LES REMARQUES
@@ -76,7 +71,7 @@ Résultats
 ::::
 
 ::: success
-METTRE LES CONCLUSIONS 
+METTRE LES CONCLUSIONS
 :::
 
 # Conclusion
