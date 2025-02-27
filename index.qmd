@@ -1,5 +1,5 @@
 ---
-title: "Statistique en grande dimension"
+title: "Séries temporelles"
 listing:
   contents: posts
   fields: [image, title, categories, description, reading-time, author, date, file-modified]
