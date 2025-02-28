@@ -1,5 +1,5 @@
 ---
-title: "Fiche 03"
+title: "Exercie 3.1"
 author: "Clément Poupelin"
 date: "2025-02-xx"
 date-modified: "`r Sys.Date()`"
@@ -16,9 +16,9 @@ format:
 toc: true
 number-sections: false
 editor: visual
-categories: ["categorie 1", "cotegorie 2"]
+categories: ["Fiche 3", "Tendance", "Saisonnalité"]
 image: ""
-description: "Description"
+description: "Nous allons illustrer l'étude de la **tendance** et de la **saisonnalité** à partir d'une base de données sur la vente de voitures"
 ---
 
 # Intervenant.e.s
@@ -40,6 +40,7 @@ description: "Description"
 # Données
 library(dplyr)        # manipulation des données
 
+library(latex2exp)
 
 # Plots
 ## ggplot
@@ -60,48 +61,7 @@ library(gridExtra)
 
 # Données
 
-# Analyse
-
-::: callout-note
-METTRE LES REMARQUES
-:::
-
-::: callout-warning
-METTRE LES POINTS D'ATTENTION
-:::
-
-:::: success-header
-::: success-icon
-:::
-
-Résultats
-::::
-
-::: success
-METTRE LES CONCLUSIONS
-:::
-
-# Conclusion
-
-# Session info
-
-```{r}
-sessioninfo::session_info(pkgs = "attached")
-```
-
-
-
-```{r, include=FALSE}
-# chargement des packages et scripts nécessaires
-library(latex2exp)
-library(lmtest)
-library(dygraphs)
-```
-
-# **EXERCICE 1 : **
-
-**Tendance et saisonnalité** : étude de la série de vente de voitures.
-http://www.math.sciences.univ-nantes.fr/~philippe/lecture/voiture.txt
+**Tendance et saisonnalité** : étude de la série de vente de voitures. http://www.math.sciences.univ-nantes.fr/\~philippe/lecture/voiture.txt
 
 On conserve uniquement le début de la série avant la rupture.
 
@@ -123,12 +83,13 @@ legend("topleft",
 ```
 
 On constate une rupture au niveau du temps 24. On ne conserve donc que la première partie pour notre analyse.
+
 ```{r}
 Xt = window(Xt, start=start(Xt), end=24)
 ```
 
 
-#### QUESTION 1 : A l’aide de la suite des covariances empiriques, mettre en évidence la présence d’une tendance et d’une composante saisonnière dans cette série
+QUESTION 1 : A l’aide de la suite des covariances empiriques, mettre en évidence la présence d’une tendance et d’une composante saisonnière dans cette série
 
 ```{r, echo=FALSE}
 
@@ -142,17 +103,18 @@ pacf(Xt, col = 'purple',
 par(mfrow=c(1,1))
 ```
 
-On constate effectivement une tendance globale sur toute la série au vu de nos deux graphes. 
-De plus, l'ACF nous permet de voir une composante saisonnière qui serait probablement de période 12.
+On constate effectivement une tendance globale sur toute la série au vu de nos deux graphes. De plus, l'ACF nous permet de voir une composante saisonnière qui serait probablement de période 12.
 
+# Anayse inférentielle
 
+::: panel-tabset
 
-## APPROCHE 1
+## Approche 1
 
-
-#### QUESTION 2 : Estimer la tendance et la composante saisonnière de cette série
+QUESTION 2 : Estimer la tendance et la composante saisonnière de cette série
 
 Pour cette partie, on peut se référé au cours de Séries Temporelle (slides 37-51).
+
 ```{r}
 #### ETAPE 1 : LISSAGE/FILTRAGE ####
 
@@ -208,8 +170,6 @@ par(mfrow=c(1, 1))
 
 Le lissage d'une série chronologique (ou le filtrage) est utilisé pour découvrir certaines caractéristiques d'une série temporelle, telles que la tendance et les composantes saisonnières.
 
-
-
 ```{r}
 #### ETAPE 2 : ELIMINATION SAISONNALITE ET TENDANCE ####
 
@@ -243,7 +203,6 @@ summary(mod)
 P.est = ts(mod$fitted.values, frequency = frequency(Xt)) # Tendance estimée
 ```
 
-
 ```{r, echo=FALSE}
 plot(Xt , col = "purple", main ="")
 lines(Q, col = "darkgoldenrod", main ="Xt - s.est", lwd =2)
@@ -257,11 +216,7 @@ legend(
 ```
 
 
-
-
-
-#### QUESTION 3 : Éliminer la tendance et la composante saisonnière à partir de vos estimations. On note $(R_j)_j$ la série obtenue
-
+QUESTION 3 : Éliminer la tendance et la composante saisonnière à partir de vos estimations. On note $(R_j)_j$ la série obtenue
 
 ```{r}
 Rj = Xt - P.est - S.est
@@ -304,9 +259,7 @@ par(mfrow=c(1, 1))
 ```
 
 
-#### QUESTION 4 : La série $(R_j)_j$ peut elle être modélisée par un bruit blanc ? Discuter le résultat
-
-
+ QUESTION 4 : La série $(R_j)_j$ peut elle être modélisée par un bruit blanc ? Discuter le résultat
 
 ```{r, echo=FALSE}
 
@@ -336,64 +289,41 @@ par(mfrow=c(1, 1))
 
 
 ```
- 
- 
-on a l'impression d'avoir un bruit u peu centré $(E(R_j)=0)$
- mais pas dingue avec une variance pas super constante.
- Mais, avec l'acf, ont voit tout de meme une corrélation faible
-qui pourrait faire pensé à un BB.
 
- CONCLUSION : ??
+on a l'impression d'avoir un bruit u peu centré $(E(R_j)=0)$ mais pas dingue avec une variance pas super constante. Mais, avec l'acf, ont voit tout de meme une corrélation faible qui pourrait faire pensé à un BB.
 
+CONCLUSION : ??
 
+Normalité (Test shapiro)
 
- Normalité (Test shapiro)
 ```{r}
 shapiro.test(Rj)
 ```
 
+Vérification par le test de Shapiro-Wilk (normalité : p-value \> 0,05) On garde l'hypothèse de la normalité
 
-
- Vérification par le test de Shapiro-Wilk (normalité : p-value > 0,05) 
- On garde l'hypothèse de la normalité
-
-
- Corrélation 
+Corrélation
 
 ```{r}
 cor.test(1:length(Rj), Rj)
 ```
 
- Les deux valeurs importantes de ce résultat sont la corrélation (50%) 
- et sa p-value (1*10^-8%). 
- Le test nous dit en outre qu’il y a 95% de chances 
- que la “véritable corrélation” entre temps et valeur 
- soit comprise dans “l’intervalle de confiance” entre 36% et 61%.
- Notez que 0% est un nombre non inclus dans cette fourchette:
- en d’autres mots, il se pourrait très bien que valeur et 
- temps soient du tout corrélés.
- En bref, l’algorithme détecte une corrélation.
+Les deux valeurs importantes de ce résultat sont la corrélation (50%) et sa p-value (1\*10\^-8%). Le test nous dit en outre qu’il y a 95% de chances que la “véritable corrélation” entre temps et valeur soit comprise dans “l’intervalle de confiance” entre 36% et 61%. Notez que 0% est un nombre non inclus dans cette fourchette: en d’autres mots, il se pourrait très bien que valeur et temps soient du tout corrélés. En bref, l’algorithme détecte une corrélation.
 
 
- BB
+Le test de la statisticienne finnoise Greta Ljung (et de son directeur de thèse George Box) examine l’autocorrélation d’une série temporelle. Son “hypothèse nulle” est d’avoir affaire à du “bruit blanc”.
 
- Le test de la statisticienne finnoise Greta Ljung 
- (et de son directeur de thèse George Box) examine l’autocorrélation 
- d’une série temporelle. Son “hypothèse nulle” est d’avoir affaire 
- à du “bruit blanc”.
 ```{r}
 Box.test(Rj, type="Ljung-Box") 
 ```
 
- La p-value est faible (8e-09).
- Le test nous permet donc de rejeter l’hypothèse 
- d’avoir affaire à du bruit blanc
+La p-value est faible (8e-09). Le test nous permet donc de rejeter l’hypothèse d’avoir affaire à du bruit blanc
 
 
-## APPROCHE 2
 
+## Approche 2
 
-#### QUESTION 5 : Éliminer la tendance et la composante saisonnière en appliquant un ou plusieurs filtres linéaires de la forme $(I − L^s)^d$. On note $(R'_j)_j$ la série obtenue.
+QUESTION 5 : Éliminer la tendance et la composante saisonnière en appliquant un ou plusieurs filtres linéaires de la forme $(I − L^s)^d$. On note $(R'_j)_j$ la série obtenue.
 
 Etant donné que l'on a détecter une tendance et une saisonnalité de période 12, on peut tenter une différenciation de la série avec $s=12$ et $d=1$.
 
@@ -434,8 +364,8 @@ par(mfrow=c(1, 1))
 
 ```
 
+pour enlever le pb en 12, on se propose d'appliquer à nouveau la différence
 
-pour enlever le pb en 12, on se propose d'appliquer à nouveau la différence 
 ```{r}
 R2 = diff(R1)
 ```
@@ -476,7 +406,31 @@ pacf(R2, col = "darkorange", main = "serie diff")
 par(mfrow=c(1, 1)) 
 ```
 
-#### QUESTION 6 : La série $(R'_j)_j$ peut elle être modélisée par un bruit blanc ? Discuter le résultat
+QUESTION 6 : La série $(R'_j)_j$ peut elle être modélisée par un bruit blanc ? Discuter le résultat
 
 
-## CONCLUSION
+
+:::
+
+
+
+# Conclusion
+
+# Session info
+
+```{r}
+sessioninfo::session_info(pkgs = "attached")
+```
+
+```{r, include=FALSE}
+# chargement des packages et scripts nécessaires
+library(latex2exp)
+library(lmtest)
+library(dygraphs)
+```
+
+
+
+
+
+
