@@ -21,8 +21,6 @@ image: ""
 description: "L'objectif de ce document est détudier la différence entre une **marche aléatoire** et un **signal linéraire bruité**"
 ---
 
-
-
 # Intervenant.e.s
 
 ### Rédaction
@@ -53,7 +51,6 @@ library(gridExtra)
 ## Fonctions
 
 ::: panel-tabset
-
 ### Marche aléatoire
 
 ```{r}
@@ -78,7 +75,7 @@ noisy_serie <- function(n, delta) {
 }
 ```
 
-## Plot des simulations
+### Plot des simulations
 
 ```{r}
 plot_simulation_time_series <- function(data, main_title, y_lab) {
@@ -108,28 +105,24 @@ plot_simulation_time_series <- function(data, main_title, y_lab) {
   
 }
 ```
-
-
-
 :::
 
 ## Seed
+
 ```{r}
 set.seed(140400)
 ```
-
-
 ::::
 
 # Données
 
 Pour cette exercice, nous allons étudier deux types de séries temporelles : **les marches aléatoires** et **les signaux linéaires bruités**.
 
-Pour cela nous allons simuler : 
+Pour cela nous allons simuler :
 
-- dix marches aléatoires $(x_t)_t$ avec dérive de longueur $n=100$, de paramètre $\delta=.01$ et de variance $\sigma_W^2=1$ pour le bruit.
+-   dix marches aléatoires $(x^1_t)_t$de la forme $x^1_t = \delta + w_t$ avec dérive de longueur $n=100$, de paramètre $\delta=.01$ et de variance $\sigma_W^2 = 1$ pour le bruit.
 
-- dix séries $(x_t)_t$ de la forme $x_t = \delta_t + w_t$ (tendance+bruit blanc) de longueur $n = 100$, de paramètre $\delta = .01$ et de variance $\sigma^2_W = 1$
+-   dix séries $(x^2_t)_t$ de la forme $x^2_t = \delta t + w_t$ (tendance + bruit blanc) de longueur $n = 100$, de paramètre $\delta = .01$ et de variance $\sigma^2_W = 1$
 
 ::: callout-note
 Si on pose que $x_0 = w_0$, on peut écrire notre marche aléatoire comme $x_t = \delta t + \sum_{i=0}^{t}w_i$
@@ -142,7 +135,6 @@ I <- 10       ## number of series
 ```
 
 ::: panel-tabset
-
 ## Marche aléatoire
 
 ```{r}
@@ -167,36 +159,42 @@ plot_simulation_time_series(sim2, main_title = paste("Simulation of", I, "linear
 
 # Estimation du modèle de régression linéaire
 
-::: panel-tabset
+Pour les deux types de séries, nous allons estimer le modèle de régression linéaire 
+$$x^\xi_t = \beta t + w_t \quad \text{pour} \quad \xi=1,2$$
 
+::: panel-tabset
 ## Marche aléatoire
 
 ```{r}
 sim_coeff <- apply(sim, 1, function(x) {
-  mod <- lm(x ~ 0 + seq(1, n))  # Régression sans intercept
-  return(mod$coefficients)  # Retourner le coefficient de la régression
+  mod <- lm(x ~ 0 + seq(1, n)) 
+  return(mod$coefficients)  
 })
-```
 
+df_sim_coeff <- data.frame(coeff = paste("beta_", seq(1,10)), estimation = round(sim_coeff, 3))
+
+t(df_sim_coeff) %>% DT::datatable()
+```
 
 ## Signal linéaire bruité
 
 ```{r}
 sim2_coeff <- apply(sim2, 1, function(x) {
-  mod <- lm(x ~ 0 + seq(1, n))  # Régression sans intercept
-  return(mod$coefficients)  # Retourner le coefficient de la régression
+  mod <- lm(x ~ 0 + seq(1, n))  
+  return(mod$coefficients)  
 })
-```
+df_sim2_coeff <- data.frame(coeff = paste("beta_", seq(1,10)), estimation = round(sim2_coeff, 3))
 
+t(df_sim2_coeff) %>% DT::datatable()
+```
 :::
 
-Avec ces résulats, nous pouvons par la suite représenter sur un même graphique les dix droites estimées et la tendance moyenne théorique $\delta_t=.01t$.
+Avec ces résulats, nous pouvons par la suite représenter sur un même graphique les dix droites estimées et la tendance moyenne théorique $\delta t=.01t$.
 
-::: panel-tabset
-
+::::::::: panel-tabset
 ## Marche aléatoire
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 time <- seq(1, n)
 
 # Créer un data.frame pour les courbes simulées
@@ -231,7 +229,6 @@ ggplot(sim_data, aes(x = time, y = value, group = group, color = factor(group)))
   annotate("text", x = 10, y = 9, label = TeX("Theoretical trend $\\delta_t = 0.01t$"), color = "red", hjust = 0)
 ```
 
-
 :::: success-header
 ::: success-icon
 :::
@@ -240,11 +237,13 @@ Résultats
 ::::
 
 ::: success
-METTRE LES CONCLUSIONS
+Nous pouvons facilement voir que les estimations ne semble pas du tout suivre la tendance moyenne théoriques.\
+La variance des estimations semble même croitre au cours du temps.
 :::
 
 ## Signal linéaire bruité
-```{r}
+
+```{r, warning=FALSE, message=FALSE}
 time <- seq(1, n)
 
 # Créer un data.frame pour les courbes simulées
@@ -277,8 +276,6 @@ ggplot(sim_data, aes(x = time, y = value, group = group, color = factor(group)))
   annotate("text", x = 10, y = 9, label = TeX("Theoretical trend $\\delta_t = 0.01t$"), color = "red", hjust = 0)
 ```
 
-
-
 :::: success-header
 ::: success-icon
 :::
@@ -287,23 +284,29 @@ Résultats
 ::::
 
 ::: success
-METTRE LES CONCLUSIONS
+Nous constatons ici que l'estimation semble très bien fonctionner avec des lignes qui semblent toutes proches de la tendance moyenne théorique.
 :::
-
-
-:::
-
-
+:::::::::
 
 # Conclusion
 
-Nos avonc pu observé que blablabla
+Nous avons pu voir avec cette exercice que la tendance théorique (le drift) est mieux estimée par régression dans le cas d'un signal bruité que celui de la marche aléatoire.
+
+Cela s'explique par le fait que, dans le cas de la marche aléatoire, la variance de $x_t$ croît linéairement avec le temps. En effet, 
+\begin{align*} 
+Var(x_t) &= Var(\delta t + \sum_{i=0}^{t}w_i)\\
+&= Var(\sum_{i=0}^{t}w_i)\\ 
+&= \sum_{i=0}^{t}Var(w_i)\\ 
+&= \sum_{i=0}^{t}\sigma^2_w\\ 
+&= t\sigma^2_w 
+\end{align*}
+
+Cela fait donc défaut à l'hypothèse d'homoscédacité cruciale pour la régression linéaire.
+
+Par contre, du côté du signal bruite on conserve l'homoscédacité avec le cas très idéal du bruit iid (indépendant et identiquement distribué) et gaussien. 
 
 # Session info
 
 ```{r}
 sessioninfo::session_info(pkgs = "attached")
 ```
-
-
-
