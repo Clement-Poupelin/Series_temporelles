@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Clément Poupelin">
 <meta name="description" content="Description">
 
-<title>Fiche 04 – Séries temporelles</title>
+<title>Séries temporelles - Fiche 04</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -84,13 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -99,42 +93,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../custom.css">
 </head>
@@ -142,10 +108,10 @@ window.Quarto = {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a href="https://www.univ-nantes.fr/" class="navbar-brand navbar-brand-logo">
     <img src="../img/logo_univ_nantes_complet.png" alt="" class="navbar-logo">
     </a>
@@ -154,48 +120,48 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-feuille-de-tp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-feuille-de-tp" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-file-earmark-font-fill" role="img">
 </i> 
  <span class="menu-text">Feuille de TP</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-feuille-de-tp">    
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche1-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche1-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche2-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche2-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche3-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche3-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche4-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche4-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 4</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche5-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche5-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 5</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche6-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche6-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 6</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/fiche6_bootstrap.pdf">
+    <a class="dropdown-item" href="../Enonce/fiche6_bootstrap.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 6 Bootstrap</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche7-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche7-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 7</span></a>
   </li>  
     </ul>
@@ -203,67 +169,67 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="https://clement-poupelin.github.io/Series_temporelles/"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="https://clement-poupelin.github.io/Series_temporelles/" rel="" target="">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
-<span class="menu-text">About</span></a>
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/Clement-Poupelin">
+    <a class="dropdown-item" href="https://github.com/Clement-Poupelin" rel="" target="">
  <span class="dropdown-text">Clément Poupelin</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/nonomtrt">
+    <a class="dropdown-item" href="https://github.com/nonomtrt" rel="" target="">
  <span class="dropdown-text">Noémie Matrat</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-linkedin" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-linkedin" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-linkedin" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-linkedin">    
         <li>
-    <a class="dropdown-item" href="http://www.linkedin.com/in/cl%C3%A9ment-poupelin-7675311a7/">
+    <a class="dropdown-item" href="http://www.linkedin.com/in/cl%C3%A9ment-poupelin-7675311a7/" rel="" target="">
  <span class="dropdown-text">Clément Poupelin</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://www.linkedin.com/in/no%C3%A9mie-matrat-86a34a200/">
+    <a class="dropdown-item" href="https://www.linkedin.com/in/no%C3%A9mie-matrat-86a34a200/" rel="" target="">
  <span class="dropdown-text">Noémie Matrat</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:clementjc.poupelin@gmail.com"> <i class="bi bi-envelope" role="img">
+    <a class="nav-link" href="mailto:clementjc.poupelin@gmail.com" rel="" target=""><i class="bi bi-envelope" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="http://clement-poupelin.github.io/"> <i class="bi bi-person-circle" role="img">
+    <a class="nav-link" href="http://clement-poupelin.github.io/" rel="" target=""><i class="bi bi-person-circle" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.instagram.com/clement__poupelin"> <i class="bi bi-instagram" role="img">
+    <a class="nav-link" href="https://www.instagram.com/clement__poupelin" rel="" target=""><i class="bi bi-instagram" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -340,7 +306,6 @@ window.Quarto = {
 
 
 
-
 <section id="intervenant.e.s" class="level1">
 <h1>Intervenant.e.s</h1>
 <section id="rédaction" class="level3">
@@ -364,8 +329,8 @@ window.Quarto = {
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -443,8 +408,8 @@ Warning
 <section id="session-info" class="level1">
 <h1>Session info</h1>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>(<span class="at">pkgs =</span> <span class="st">"attached"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -481,40 +446,40 @@ Warning
 <h4 class="anchored" data-anchor-id="question-2-tracer-les-valeurs-des-lacf-rhoh-pour-h-1-2-.-vérifier-vos-résultats-en-utilisant-la-fonction-armaacf.">QUESTION 2 : Tracer les valeurs des l’ACF <span class="math inline">\(\rho(h)\)</span> pour <span class="math inline">\(h = 1, 2\)</span> . Vérifier vos résultats en utilisant la fonction <strong>ARMAacf</strong>.</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On pose nos paramètres</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">1.6</span>, <span class="sc">-</span><span class="fl">0.4</span>, <span class="sc">-</span><span class="fl">1.2</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>a2 <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.64</span>, <span class="sc">-</span><span class="fl">0.45</span>, <span class="fl">0.85</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">1</span>], <span class="sc">-</span>a2[<span class="dv">1</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">2</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         0          1          2 
  1.0000000 -0.9756098  0.9209756 </code></pre>
 </div>
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">2</span>], <span class="sc">-</span>a2[<span class="dv">2</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">2</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        0         1         2 
 1.0000000 0.7272727 0.7409091 </code></pre>
 </div>
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">3</span>], <span class="sc">-</span>a2[<span class="dv">3</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">2</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          0           1           2 
  1.00000000  0.64864865 -0.07162162 </code></pre>
 </div>
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lag.max = n fait calculer et afficher les n premières valeurs en partant de 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -525,8 +490,8 @@ Warning
 <p><br></p>
 <p>On se propose de Généraliser en comparant les fonctions calculés en question 1 avec <strong>ARMAacf</strong> et la fonction <strong>acf</strong> de r, <span class="math inline">\(\forall h\)</span>.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On code notre fonction AR(2)</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -545,16 +510,12 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On code des fonction pour définir \rho à partir des calculs de la question 1</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>rho1 <span class="ot">=</span> <span class="cf">function</span>(h){</span>
@@ -580,46 +541,22 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-6.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-8-6.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -633,8 +570,8 @@ Warning
 <p><br></p>
 <p>On se base sur les 3 processus AR(2) définit en questions 3</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fonction pour simuler et prévoir</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>simu_and_pred <span class="ot">=</span> <span class="cf">function</span>(coef1, coef2){</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># simulations</span></span>
@@ -681,25 +618,13 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_04_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -751,33 +676,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -846,15 +744,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -889,7 +785,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -921,29 +828,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -995,27 +880,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/github\.com\/Clement-Poupelin\/Series_temporelles");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1025,17 +893,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1047,130 +906,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -1214,7 +950,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1240,32 +975,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1364,14 +1073,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
 <span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, warning=FALSE, message=FALSE}</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="in"># Données</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="in">library(dplyr)        # manipulation des données</span></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
 <span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="in"># Plots</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="in">## ggplot</span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="in">library(gridExtra)</span></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplot</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
 <span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fonctions</span></span>
@@ -1418,19 +1127,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=FALSE}</span></span>
-<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="in"># chargement des packages et scripts nécessaires</span></span>
-<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="in">library(astsa)</span></span>
-<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="in">library(lmtest)</span></span>
-<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="in">library(latex2exp)</span></span>
-<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="in">library(tseries)</span></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="co"># chargement des packages et scripts nécessaires</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(astsa)</span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lmtest)</span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tseries)</span>
 <span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 3 : **</span></span>
-<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : Tracer les valeurs des l’ACF $\rho(h)$ pour $h = 1, 2$ . Vérifier vos résultats en utilisant la fonction **ARMAacf**.</span></span>
-<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a><span class="co"># On pose nos paramètres</span></span>
@@ -1452,7 +1161,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>Pour $h = 1, 2$ on retrouve bien les valeurs calculées à la question 1.</span>
 <span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a><span class="fu">#### **BONUS** :</span></span>
-<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>On se propose de Généraliser en comparant les fonctions calculés en question 1 avec **ARMAacf** et la fonction **acf** de r, $\forall h$. </span>
@@ -1477,19 +1186,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(3, 1))</span></span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 1:3){</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a><span class="in">  plot(ts(AR2(n, a1[i], a2[i])), </span></span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a><span class="in">       main = TeX(paste("$X_t + $",a1[i],"$X_{t-1} +$", a2[i], "$X_{t-2} = w_t$")), </span></span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a><span class="in">       col = "purple",</span></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a><span class="in">       ylab = "")</span></span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a><span class="in">  mtext(TeX("$X_t$"),                     </span></span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a><span class="in">        side = 2,</span></span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a><span class="in">        line = 2,</span></span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a><span class="in">        las = 1)</span></span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>))</span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>){</span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">ts</span>(<span class="fu">AR2</span>(n, a1[i], a2[i])), </span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"$X_t + $"</span>,a1[i],<span class="st">"$X_{t-1} +$"</span>, a2[i], <span class="st">"$X_{t-2} = w_t$"</span>)), </span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"purple"</span>,</span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mtext</span>(<span class="fu">TeX</span>(<span class="st">"$X_t$"</span>),                     </span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>        <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>        <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>        <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a></span>
@@ -1521,126 +1230,126 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="in">plot(ts(AR2(n, a1[1], a2[1])), </span></span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("$X_t + $",a1[1],"$X_{t-1} +$", a2[1], "$X_{t-2} = w_t$")), </span></span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "purple",</span></span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "")</span></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="in">mtext(TeX("$X_t$"),                     </span></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ts</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">1</span>], a2[<span class="dv">1</span>])), </span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"$X_t + $"</span>,a1[<span class="dv">1</span>],<span class="st">"$X_{t-1} +$"</span>, a2[<span class="dv">1</span>], <span class="st">"$X_{t-2} = w_t$"</span>)), </span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"purple"</span>,</span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">TeX</span>(<span class="st">"$X_t$"</span>),                     </span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
 <span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 3))</span></span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="in">t = 0:n</span></span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="in">plot(t, rho1(t), col="red", main = TeX("$rho(h)$"), type = "h", ylab = "", xlim = c(0,20))</span></span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="in">mtext("ACF",                     </span></span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h = 0)</span></span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="in">#abline(h = -0.976, col = "blue") #rho(1)</span></span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a><span class="in">#abline(h = 0.921, col = "blue") #rho(2)</span></span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span>n</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, <span class="fu">rho1</span>(t), <span class="at">col=</span><span class="st">"red"</span>, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"$rho(h)$"</span>), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"ACF"</span>,                     </span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(h = -0.976, col = "blue") #rho(1)</span></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a><span class="co">#abline(h = 0.921, col = "blue") #rho(2)</span></span>
 <span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="in">plot(0:20, ARMAacf(ar = c(-a1[1], -a2[1]), ma = 0, lag.max = 20, pacf = FALSE),</span></span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="in">     main = "utilisation de ARMAacf", type="h",</span></span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab="lag",</span></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "ACF", </span></span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "red")</span></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h=0)</span></span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="in">## ATTENTION AU SIGNE DES COEFF DANS ARMAacf </span></span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>, <span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">1</span>], <span class="sc">-</span>a2[<span class="dv">1</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">20</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"utilisation de ARMAacf"</span>, <span class="at">type=</span><span class="st">"h"</span>,</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"lag"</span>,</span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"ACF"</span>, </span>
+<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="al">ATTENTION</span><span class="do"> AU SIGNE DES COEFF DANS ARMAacf </span></span>
 <span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="in">acf(AR2(n, a1[1], a2[1]),</span></span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="in">    main = "Fonction ACF de r", </span></span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="in">    col = "red")</span></span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">1</span>], a2[<span class="dv">1</span>]),</span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Fonction ACF de r"</span>, </span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="in">plot(ts(AR2(n, a1[2], a2[2])), </span></span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("$X_t + $",a1[2],"$X_{t-1} +$", a2[2], "$X_{t-2} = w_t$")), </span></span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "purple",</span></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "")</span></span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="in">mtext(TeX("$X_t$"),                     </span></span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ts</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">2</span>], a2[<span class="dv">2</span>])), </span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"$X_t + $"</span>,a1[<span class="dv">2</span>],<span class="st">"$X_{t-1} +$"</span>, a2[<span class="dv">2</span>], <span class="st">"$X_{t-2} = w_t$"</span>)), </span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"purple"</span>,</span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">TeX</span>(<span class="st">"$X_t$"</span>),                     </span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
 <span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 3))</span></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="in">plot(t, rho2(t), col="red", main = TeX("$rho(h)$"), type = "h", ylab = "", xlim = c(0,20))</span></span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="in">mtext("ACF",                     </span></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h = 0)</span></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, <span class="fu">rho2</span>(t), <span class="at">col=</span><span class="st">"red"</span>, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"$rho(h)$"</span>), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))</span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"ACF"</span>,                     </span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
 <span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="in">plot(0:20, ARMAacf(ar = c(-a1[2], -a2[2]), ma = 0, lag.max = 20, pacf = FALSE),</span></span>
-<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="in">     main = "utilisation de ARMAacf", type="h",</span></span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab="lag",</span></span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "ACF", </span></span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "red")</span></span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h=0)</span></span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="in">## ATTENTION AU SIGNE DES COEFF DANS ARMAacf </span></span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>, <span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">2</span>], <span class="sc">-</span>a2[<span class="dv">2</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">20</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"utilisation de ARMAacf"</span>, <span class="at">type=</span><span class="st">"h"</span>,</span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"lag"</span>,</span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"ACF"</span>, </span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="al">ATTENTION</span><span class="do"> AU SIGNE DES COEFF DANS ARMAacf </span></span>
 <span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="in">acf(AR2(n, a1[2], a2[2]),</span></span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a><span class="in">    main = "Fonction ACF de r", </span></span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a><span class="in">    col = "red")</span></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">2</span>], a2[<span class="dv">2</span>]),</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Fonction ACF de r"</span>, </span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="in">plot(ts(AR2(n, a1[3], a2[3])), </span></span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("$X_t + $",a1[3],"$X_{t-1} +$", a2[3], "$X_{t-2} = w_t$")), </span></span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "purple",</span></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "")</span></span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="in">mtext(TeX("$X_t$"),                     </span></span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
+<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ts</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">3</span>], a2[<span class="dv">3</span>])), </span>
+<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"$X_t + $"</span>,a1[<span class="dv">3</span>],<span class="st">"$X_{t-1} +$"</span>, a2[<span class="dv">3</span>], <span class="st">"$X_{t-2} = w_t$"</span>)), </span>
+<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"purple"</span>,</span>
+<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">""</span>)</span>
+<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">TeX</span>(<span class="st">"$X_t$"</span>),                     </span>
+<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
 <span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 3))</span></span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="in">plot(t, rho3(t), col="red", main = TeX("$rho(h)$"), type = "h", ylab = "", xlim = c(0,20))</span></span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="in">mtext("ACF",                     </span></span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a><span class="in">      side = 2,</span></span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a><span class="in">      line = 2,</span></span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a><span class="in">      las = 1)</span></span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h = 0)</span></span>
+<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(t, <span class="fu">rho3</span>(t), <span class="at">col=</span><span class="st">"red"</span>, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"$rho(h)$"</span>), <span class="at">type =</span> <span class="st">"h"</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>))</span>
+<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"ACF"</span>,                     </span>
+<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a>      <span class="at">side =</span> <span class="dv">2</span>,</span>
+<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a>      <span class="at">line =</span> <span class="dv">2</span>,</span>
+<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>      <span class="at">las =</span> <span class="dv">1</span>)</span>
+<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">0</span>)</span>
 <span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a><span class="in">plot(0:20, ARMAacf(ar = c(-a1[3], -a2[3]), ma = 0, lag.max = 20, pacf = FALSE),</span></span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a><span class="in">     main = "utilisation de ARMAacf", type="h",</span></span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab="lag",</span></span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "ACF", </span></span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "red")</span></span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a><span class="in">abline(h=0)</span></span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="in">## ATTENTION AU SIGNE DES COEFF DANS ARMAacf </span></span>
+<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">20</span>, <span class="fu">ARMAacf</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="sc">-</span>a1[<span class="dv">3</span>], <span class="sc">-</span>a2[<span class="dv">3</span>]), <span class="at">ma =</span> <span class="dv">0</span>, <span class="at">lag.max =</span> <span class="dv">20</span>, <span class="at">pacf =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"utilisation de ARMAacf"</span>, <span class="at">type=</span><span class="st">"h"</span>,</span>
+<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"lag"</span>,</span>
+<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"ACF"</span>, </span>
+<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a><span class="do">## </span><span class="al">ATTENTION</span><span class="do"> AU SIGNE DES COEFF DANS ARMAacf </span></span>
 <span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a><span class="in">acf(AR2(n, a1[3], a2[3]),</span></span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a><span class="in">    main = "Fonction ACF de r", </span></span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a><span class="in">    col = "red")</span></span>
+<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">AR2</span>(n, a1[<span class="dv">3</span>], a2[<span class="dv">3</span>]),</span>
+<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>    <span class="at">main =</span> <span class="st">"Fonction ACF de r"</span>, </span>
+<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 5 : **</span></span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Pour les modèles AR(2) définis à l’exercice 3, Simuler une trajectoire (avec $n=100$) pour les 3 modèles, puis calculer et représenter le prédicteur pour $h=1,...,10$ (avec un intervalle de confiance). </span></span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>On se base sur les 3 processus AR(2) définit en questions 3</span>
@@ -1694,68 +1403,68 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a><span class="in">sim.pred_1 = simu_and_pred(a1[1], a2[1])</span></span>
-<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a><span class="in">sim.pred_2 = simu_and_pred(a1[2], a2[2])</span></span>
-<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a><span class="in">sim.pred_3 = simu_and_pred(a1[3], a2[3])</span></span>
+<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a>sim.pred_1 <span class="ot">=</span> <span class="fu">simu_and_pred</span>(a1[<span class="dv">1</span>], a2[<span class="dv">1</span>])</span>
+<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a>sim.pred_2 <span class="ot">=</span> <span class="fu">simu_and_pred</span>(a1[<span class="dv">2</span>], a2[<span class="dv">2</span>])</span>
+<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a>sim.pred_3 <span class="ot">=</span> <span class="fu">simu_and_pred</span>(a1[<span class="dv">3</span>], a2[<span class="dv">3</span>])</span>
 <span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a><span class="in">plot.ts(sim.pred_1[["X_t"]], xlim=c(0,110), ylim = c(-15,15))</span></span>
-<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 95%</span></span>
-<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_1[['X_t']][100],</span></span>
-<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['lower']][['l_95']],</span></span>
-<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['upper']][['u_95']],</span></span>
-<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['X_t']][100]),</span></span>
-<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 80%</span></span>
-<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_1[['X_t']][100],</span></span>
-<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['lower']][['l_80']],</span></span>
-<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['upper']][['u_80']],</span></span>
-<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_1[['X_t']][100]),</span></span>
-<span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a><span class="in"> # trajectoire des prévisions</span></span>
-<span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a><span class="in">lines(100:110, c(sim.pred_1[['X_t']][100], sim.pred_1[['Prev']]),lty = 1, col = "blue")</span></span>
+<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(sim.pred_1[[<span class="st">"X_t"</span>]], <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">110</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>,<span class="dv">15</span>))</span>
+<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 95%</span></span>
+<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_1[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'lower'</span>]][[<span class="st">'l_95'</span>]],</span>
+<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'upper'</span>]][[<span class="st">'u_95'</span>]],</span>
+<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 80%</span></span>
+<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_1[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'lower'</span>]][[<span class="st">'l_80'</span>]],</span>
+<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'upper'</span>]][[<span class="st">'u_80'</span>]],</span>
+<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>          sim.pred_1[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a> <span class="co"># trajectoire des prévisions</span></span>
+<span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">c</span>(sim.pred_1[[<span class="st">'X_t'</span>]][<span class="dv">100</span>], sim.pred_1[[<span class="st">'Prev'</span>]]),<span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
 <span id="cb15-403"><a href="#cb15-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-404"><a href="#cb15-404" aria-hidden="true" tabindex="-1"></a><span class="in"># points prédits</span></span>
-<span id="cb15-405"><a href="#cb15-405" aria-hidden="true" tabindex="-1"></a><span class="in">lines(101:110, sim.pred_1[['Prev']], type = "p", col = "red")</span></span>
+<span id="cb15-404"><a href="#cb15-404" aria-hidden="true" tabindex="-1"></a><span class="co"># points prédits</span></span>
+<span id="cb15-405"><a href="#cb15-405" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">101</span><span class="sc">:</span><span class="dv">110</span>, sim.pred_1[[<span class="st">'Prev'</span>]], <span class="at">type =</span> <span class="st">"p"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-406"><a href="#cb15-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-407"><a href="#cb15-407" aria-hidden="true" tabindex="-1"></a><span class="in">legend("topleft", </span></span>
-<span id="cb15-408"><a href="#cb15-408" aria-hidden="true" tabindex="-1"></a><span class="in">       legend = c("Trajectoire de X(t)", "Trajectoire des prévisions", "prévisions","IC à 80%", "IC à 95%"),</span></span>
-<span id="cb15-409"><a href="#cb15-409" aria-hidden="true" tabindex="-1"></a><span class="in">       col = c("black", "blue", "red", rgb(0, 0, 1,0.3), rgb(0, 0, 1,0.2)),</span></span>
-<span id="cb15-410"><a href="#cb15-410" aria-hidden="true" tabindex="-1"></a><span class="in">       lwd = c(1,1,NA,12,12),</span></span>
-<span id="cb15-411"><a href="#cb15-411" aria-hidden="true" tabindex="-1"></a><span class="in">       pch = c(NA,NA,1, NA, NA))</span></span>
+<span id="cb15-407"><a href="#cb15-407" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
+<span id="cb15-408"><a href="#cb15-408" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Trajectoire de X(t)"</span>, <span class="st">"Trajectoire des prévisions"</span>, <span class="st">"prévisions"</span>,<span class="st">"IC à 80%"</span>, <span class="st">"IC à 95%"</span>),</span>
+<span id="cb15-409"><a href="#cb15-409" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.3</span>), <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>)),</span>
+<span id="cb15-410"><a href="#cb15-410" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="cn">NA</span>,<span class="dv">12</span>,<span class="dv">12</span>),</span>
+<span id="cb15-411"><a href="#cb15-411" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="dv">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>))</span>
 <span id="cb15-412"><a href="#cb15-412" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-413"><a href="#cb15-413" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-414"><a href="#cb15-414" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-415"><a href="#cb15-415" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-416"><a href="#cb15-416" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-417"><a href="#cb15-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-418"><a href="#cb15-418" aria-hidden="true" tabindex="-1"></a><span class="in">plot.ts(sim.pred_2[["X_t"]], xlim=c(0,110), ylim = c(-6,6))</span></span>
-<span id="cb15-419"><a href="#cb15-419" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 95%</span></span>
-<span id="cb15-420"><a href="#cb15-420" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-421"><a href="#cb15-421" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_2[['X_t']][100],</span></span>
-<span id="cb15-422"><a href="#cb15-422" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['lower']][['l_95']],</span></span>
-<span id="cb15-423"><a href="#cb15-423" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['upper']][['u_95']],</span></span>
-<span id="cb15-424"><a href="#cb15-424" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['X_t']][100]),</span></span>
-<span id="cb15-425"><a href="#cb15-425" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-426"><a href="#cb15-426" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 80%</span></span>
-<span id="cb15-427"><a href="#cb15-427" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-428"><a href="#cb15-428" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_2[['X_t']][100],</span></span>
-<span id="cb15-429"><a href="#cb15-429" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['lower']][['l_80']],</span></span>
-<span id="cb15-430"><a href="#cb15-430" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['upper']][['u_80']],</span></span>
-<span id="cb15-431"><a href="#cb15-431" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_2[['X_t']][100]),</span></span>
-<span id="cb15-432"><a href="#cb15-432" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-433"><a href="#cb15-433" aria-hidden="true" tabindex="-1"></a><span class="in"> # trajectoire des prévisions</span></span>
-<span id="cb15-434"><a href="#cb15-434" aria-hidden="true" tabindex="-1"></a><span class="in">lines(100:110, c(sim.pred_2[['X_t']][100], sim.pred_2[['Prev']]),lty = 1, col = "blue")</span></span>
+<span id="cb15-418"><a href="#cb15-418" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(sim.pred_2[[<span class="st">"X_t"</span>]], <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">110</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>,<span class="dv">6</span>))</span>
+<span id="cb15-419"><a href="#cb15-419" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 95%</span></span>
+<span id="cb15-420"><a href="#cb15-420" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-421"><a href="#cb15-421" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_2[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-422"><a href="#cb15-422" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'lower'</span>]][[<span class="st">'l_95'</span>]],</span>
+<span id="cb15-423"><a href="#cb15-423" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'upper'</span>]][[<span class="st">'u_95'</span>]],</span>
+<span id="cb15-424"><a href="#cb15-424" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-425"><a href="#cb15-425" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-426"><a href="#cb15-426" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 80%</span></span>
+<span id="cb15-427"><a href="#cb15-427" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-428"><a href="#cb15-428" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_2[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-429"><a href="#cb15-429" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'lower'</span>]][[<span class="st">'l_80'</span>]],</span>
+<span id="cb15-430"><a href="#cb15-430" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'upper'</span>]][[<span class="st">'u_80'</span>]],</span>
+<span id="cb15-431"><a href="#cb15-431" aria-hidden="true" tabindex="-1"></a>          sim.pred_2[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-432"><a href="#cb15-432" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-433"><a href="#cb15-433" aria-hidden="true" tabindex="-1"></a> <span class="co"># trajectoire des prévisions</span></span>
+<span id="cb15-434"><a href="#cb15-434" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">c</span>(sim.pred_2[[<span class="st">'X_t'</span>]][<span class="dv">100</span>], sim.pred_2[[<span class="st">'Prev'</span>]]),<span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
 <span id="cb15-435"><a href="#cb15-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-436"><a href="#cb15-436" aria-hidden="true" tabindex="-1"></a><span class="in"># points prédits</span></span>
-<span id="cb15-437"><a href="#cb15-437" aria-hidden="true" tabindex="-1"></a><span class="in">lines(101:110, sim.pred_2[['Prev']], type = "p", col = "red")</span></span>
+<span id="cb15-436"><a href="#cb15-436" aria-hidden="true" tabindex="-1"></a><span class="co"># points prédits</span></span>
+<span id="cb15-437"><a href="#cb15-437" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">101</span><span class="sc">:</span><span class="dv">110</span>, sim.pred_2[[<span class="st">'Prev'</span>]], <span class="at">type =</span> <span class="st">"p"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-438"><a href="#cb15-438" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-439"><a href="#cb15-439" aria-hidden="true" tabindex="-1"></a><span class="in">legend("topleft", </span></span>
-<span id="cb15-440"><a href="#cb15-440" aria-hidden="true" tabindex="-1"></a><span class="in">       legend = c("Trajectoire de X(t)", "Trajectoire des prévisions", "prévisions","IC à 80%", "IC à 95%"),</span></span>
-<span id="cb15-441"><a href="#cb15-441" aria-hidden="true" tabindex="-1"></a><span class="in">       col = c("black", "blue", "red", rgb(0, 0, 1,0.3), rgb(0, 0, 1,0.2)),</span></span>
-<span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a><span class="in">       lwd = c(1,1,NA,12,12),</span></span>
-<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a><span class="in">       pch = c(NA,NA,1, NA, NA))</span></span>
+<span id="cb15-439"><a href="#cb15-439" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
+<span id="cb15-440"><a href="#cb15-440" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Trajectoire de X(t)"</span>, <span class="st">"Trajectoire des prévisions"</span>, <span class="st">"prévisions"</span>,<span class="st">"IC à 80%"</span>, <span class="st">"IC à 95%"</span>),</span>
+<span id="cb15-441"><a href="#cb15-441" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.3</span>), <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>)),</span>
+<span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="cn">NA</span>,<span class="dv">12</span>,<span class="dv">12</span>),</span>
+<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="dv">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>))</span>
 <span id="cb15-444"><a href="#cb15-444" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-445"><a href="#cb15-445" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-446"><a href="#cb15-446" aria-hidden="true" tabindex="-1"></a></span>
@@ -1769,50 +1478,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-454"><a href="#cb15-454" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-455"><a href="#cb15-455" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-456"><a href="#cb15-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a><span class="in">plot.ts(sim.pred_3[["X_t"]], xlim=c(0,110), ylim = c(-8,8))</span></span>
-<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 95%</span></span>
-<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_3[['X_t']][100],</span></span>
-<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['lower']][['l_95']],</span></span>
-<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['upper']][['u_95']],</span></span>
-<span id="cb15-463"><a href="#cb15-463" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['X_t']][100]),</span></span>
-<span id="cb15-464"><a href="#cb15-464" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-465"><a href="#cb15-465" aria-hidden="true" tabindex="-1"></a><span class="in"># IC à 80%</span></span>
-<span id="cb15-466"><a href="#cb15-466" aria-hidden="true" tabindex="-1"></a><span class="in">polygon(c(100:110, rev(100:110)),</span></span>
-<span id="cb15-467"><a href="#cb15-467" aria-hidden="true" tabindex="-1"></a><span class="in">        c(sim.pred_3[['X_t']][100],</span></span>
-<span id="cb15-468"><a href="#cb15-468" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['lower']][['l_80']],</span></span>
-<span id="cb15-469"><a href="#cb15-469" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['upper']][['u_80']],</span></span>
-<span id="cb15-470"><a href="#cb15-470" aria-hidden="true" tabindex="-1"></a><span class="in">          sim.pred_3[['X_t']][100]),</span></span>
-<span id="cb15-471"><a href="#cb15-471" aria-hidden="true" tabindex="-1"></a><span class="in">        col=rgb(0, 0, 1,0.2), border = F)</span></span>
-<span id="cb15-472"><a href="#cb15-472" aria-hidden="true" tabindex="-1"></a><span class="in"> # trajectoire des prévisions</span></span>
-<span id="cb15-473"><a href="#cb15-473" aria-hidden="true" tabindex="-1"></a><span class="in">lines(100:110, c(sim.pred_3[['X_t']][100], sim.pred_3[['Prev']]),lty = 1, col = "blue")</span></span>
+<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(sim.pred_3[[<span class="st">"X_t"</span>]], <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">110</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>,<span class="dv">8</span>))</span>
+<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 95%</span></span>
+<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_3[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'lower'</span>]][[<span class="st">'l_95'</span>]],</span>
+<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'upper'</span>]][[<span class="st">'u_95'</span>]],</span>
+<span id="cb15-463"><a href="#cb15-463" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-464"><a href="#cb15-464" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-465"><a href="#cb15-465" aria-hidden="true" tabindex="-1"></a><span class="co"># IC à 80%</span></span>
+<span id="cb15-466"><a href="#cb15-466" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">rev</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>)),</span>
+<span id="cb15-467"><a href="#cb15-467" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(sim.pred_3[[<span class="st">'X_t'</span>]][<span class="dv">100</span>],</span>
+<span id="cb15-468"><a href="#cb15-468" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'lower'</span>]][[<span class="st">'l_80'</span>]],</span>
+<span id="cb15-469"><a href="#cb15-469" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'upper'</span>]][[<span class="st">'u_80'</span>]],</span>
+<span id="cb15-470"><a href="#cb15-470" aria-hidden="true" tabindex="-1"></a>          sim.pred_3[[<span class="st">'X_t'</span>]][<span class="dv">100</span>]),</span>
+<span id="cb15-471"><a href="#cb15-471" aria-hidden="true" tabindex="-1"></a>        <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>), <span class="at">border =</span> F)</span>
+<span id="cb15-472"><a href="#cb15-472" aria-hidden="true" tabindex="-1"></a> <span class="co"># trajectoire des prévisions</span></span>
+<span id="cb15-473"><a href="#cb15-473" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">100</span><span class="sc">:</span><span class="dv">110</span>, <span class="fu">c</span>(sim.pred_3[[<span class="st">'X_t'</span>]][<span class="dv">100</span>], sim.pred_3[[<span class="st">'Prev'</span>]]),<span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"blue"</span>)</span>
 <span id="cb15-474"><a href="#cb15-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-475"><a href="#cb15-475" aria-hidden="true" tabindex="-1"></a><span class="in"># points prédits</span></span>
-<span id="cb15-476"><a href="#cb15-476" aria-hidden="true" tabindex="-1"></a><span class="in">lines(101:110, sim.pred_3[['Prev']], type = "p", col = "red")</span></span>
+<span id="cb15-475"><a href="#cb15-475" aria-hidden="true" tabindex="-1"></a><span class="co"># points prédits</span></span>
+<span id="cb15-476"><a href="#cb15-476" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="dv">101</span><span class="sc">:</span><span class="dv">110</span>, sim.pred_3[[<span class="st">'Prev'</span>]], <span class="at">type =</span> <span class="st">"p"</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
 <span id="cb15-477"><a href="#cb15-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-478"><a href="#cb15-478" aria-hidden="true" tabindex="-1"></a><span class="in">legend("topleft", </span></span>
-<span id="cb15-479"><a href="#cb15-479" aria-hidden="true" tabindex="-1"></a><span class="in">       legend = c("Trajectoire de X(t)", "Trajectoire des prévisions", "prévisions","IC à 80%", "IC à 95%"),</span></span>
-<span id="cb15-480"><a href="#cb15-480" aria-hidden="true" tabindex="-1"></a><span class="in">       col = c("black", "blue", "red", rgb(0, 0, 1,0.3), rgb(0, 0, 1,0.2)),</span></span>
-<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a><span class="in">       lwd = c(1,1,NA,12,12),</span></span>
-<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a><span class="in">       pch = c(NA,NA,1, NA, NA))</span></span>
+<span id="cb15-478"><a href="#cb15-478" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, </span>
+<span id="cb15-479"><a href="#cb15-479" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Trajectoire de X(t)"</span>, <span class="st">"Trajectoire des prévisions"</span>, <span class="st">"prévisions"</span>,<span class="st">"IC à 80%"</span>, <span class="st">"IC à 95%"</span>),</span>
+<span id="cb15-480"><a href="#cb15-480" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"black"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.3</span>), <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>,<span class="fl">0.2</span>)),</span>
+<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="cn">NA</span>,<span class="dv">12</span>,<span class="dv">12</span>),</span>
+<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch =</span> <span class="fu">c</span>(<span class="cn">NA</span>,<span class="cn">NA</span>,<span class="dv">1</span>, <span class="cn">NA</span>, <span class="cn">NA</span>))</span>
 <span id="cb15-483"><a href="#cb15-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">
-<p>Copyright 2025, Clément Poupelin</p>
-</div>   
+    <div class="nav-footer-left">Copyright 2025, Clément Poupelin</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">
-<p>This blog is built with <a href="https://quarto.org/">Quarto</a></p>
-</div>
+    <div class="nav-footer-right">This blog is built with <a href="https://quarto.org/">Quarto</a></div>
   </div>
 </footer>
-
 
 
 

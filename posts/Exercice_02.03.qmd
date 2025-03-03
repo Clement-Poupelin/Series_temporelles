@@ -1,0 +1,243 @@
+---
+title: "Exercice 2.03"
+author: "Clément Poupelin"
+date: "2025-03-xx"
+date-modified: "`r Sys.Date()`"
+format: 
+  html:
+    embed-resources: false
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc-location: right
+    page-layout: article
+    code-overflow: wrap
+toc: true
+number-sections: false
+editor: visual
+categories: ["Fiche 2"]
+image: ""
+description: ""
+---
+
+# Intervenant.e.s
+
+### Rédaction
+
+-   **Clément Poupelin**, [clementjc.poupelin\@gmail.com](mailto:clementjc.poupelin@gmail.com){.email}\
+
+### Relecture
+
+-   
+
+# Setup
+
+:::: panel-tabset
+## Packages
+
+```{r, setup, warning=FALSE, message=FALSE}
+# Données
+library(dplyr)        # manipulation des données
+
+# Esthétique
+library(latex2exp)   ## TeX
+library(ggplot2)     ## ggplot
+```
+
+## Fonctions
+
+::: panel-tabset
+
+### Série temporelle simulée
+
+```{r}
+Sim_serie <- function(m, c) {
+  eps <- rnorm(m + 100)  
+  x <- rep(NA, m + 100) 
+  
+  # On suppose pour notre condition initial
+  x[1] <- eps[1] 
+  for (i in (2:(m + 100))) {
+    x[i] <- eps[i] - c * x[i - 1]
+  }
+  x_final <- x[101:(m + 100)]
+  return(ts(x_final))  
+}
+```
+
+### Plot de séries temporelles
+
+```{r}
+ggTimeSerie <- function(ts, c) {
+  df_series <- data.frame(Time = seq_along(ts), X_t = ts)
+  
+  p <- ggplot(df_series, aes(x = Time, y = X_t)) +
+    geom_line(color = "red") +
+    labs(title = TeX(paste0(
+      "Série $X_m$ pour c = ", c
+    )),
+    x = "Time",
+    y = "Simulated series") +
+    theme_minimal()
+  
+  return(p)
+}
+```
+
+### Plot pour ACF et PACF
+
+```{r}
+ggACF <- function(ts, c) {
+  acf_data <- acf(ts, plot = FALSE)
+  df_acf <- data.frame(Lag = acf_data$lag, ACF = acf_data$acf)
+  
+  pacf_data <- pacf(ts, plot = FALSE)
+  df_pacf <- data.frame(Lag = pacf_data$lag, PACF = pacf_data$acf)
+  
+  # Intervalle de confiance
+  ci <- qnorm((1 + 0.95) / 2) / sqrt(length(ts))
+  
+  # ACF
+  p_acf <- ggplot(df_acf, aes(x = Lag, y = ACF)) +
+    geom_segment(aes(xend = Lag, yend = 0), color = "red") +
+    geom_point(color = "red") +
+    labs(
+      title = paste0("Autocorrelation Function (ACF) \n pour c = ", c),
+      x = "Lag",
+      y = "ACF"
+    ) +
+    geom_hline(
+      yintercept = c(-ci, ci),
+      color = "blue",
+      linetype = "dashed"
+    ) +
+    theme_minimal()
+  
+  # PACF
+  p_pacf <- ggplot(df_pacf, aes(x = Lag, y = PACF)) +
+    geom_segment(aes(xend = Lag, yend = 0), color = "red") +
+    geom_point(color = "red") +
+    labs(
+      title = paste0("Partial Autocorrelation Function (PACF) \n pour c = ", c),
+      x = "Lag",
+      y = "PACF"
+    ) +
+    geom_hline(
+      yintercept = c(-ci, ci),
+      color = "blue",
+      linetype = "dashed"
+    ) +
+    theme_minimal()
+  
+  return(list(ACF = p_acf, PACF = p_pacf))
+}
+```
+
+:::
+
+## Seed
+
+```{r}
+set.seed(140400)
+```
+::::
+
+# Données
+
+Pour cette exercice, nous allons utiliser une fonction pour simuler des trajectoires de processus défini par l’équation de récurrence $X_m + cX_{m−1} = \varepsilon_m$ où $(\varepsilon_m)$ est une suite de variables aléatoires centrées iid (indépendantes et identiquement distribuées).
+
+::: callout-note
+Pour obtenir une série de longueur $m$, simuler $m + 100$ valeurs et supprimer les $100$ premières valeurs pour atténuer l’effet de l’initialisation, nous pouvons utiliser la fonction *`filter`*.
+:::
+
+
+Notre objectif ici va être, pour $|c| = 0, .5, .9$, de tracer une trajectoire simulée afin d'observer l'impact de $c$ dans celle ci.
+```{r}
+m <- 500
+c <- c(-0.9, -0.5, 0, 0.5, 0.9)
+
+Sim_mat <- list()
+for (i in seq_along(c)){ 
+  Sim_mat[[i]] <- Sim_serie(m, c[i])
+}
+```
+
+# ACF
+
+```{r, message=FALSE, fig.height=8, fig.width=20}
+gridExtra::grid.arrange(ggTimeSerie(Sim_mat[[1]], c[1]),
+                        ggTimeSerie(Sim_mat[[2]], c[2]),
+                        ggTimeSerie(Sim_mat[[3]], c[3]), 
+                        ggTimeSerie(Sim_mat[[4]], c[4]),
+                        ggTimeSerie(Sim_mat[[5]], c[5]), 
+                        ncol = 5)
+```
+
+```{r, message=FALSE, fig.height=8, fig.width=20}
+gridExtra::grid.arrange(ggACF(Sim_mat[[1]], c[1])$ACF,
+                        ggACF(Sim_mat[[2]], c[2])$ACF,
+                        ggACF(Sim_mat[[3]], c[3])$ACF, 
+                        ggACF(Sim_mat[[4]], c[4])$ACF,
+                        ggACF(Sim_mat[[5]], c[5])$ACF, 
+                        ncol = 5)
+```
+
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+ On remarque qu'au moment où nos paramètres sont proche de $1$ ou $-1$, nos autocorrélations sont forte et notre série perd en stationnarité. En effet, on remarque que le processus est un AR(1) avec son acf qui décroit exponentiellement et la stationnarité se perd quand $|c| \longrightarrow 1$.
+
+On remarque également que, qand $c=0$, on a un bruit blanc.
+:::
+
+# PACF
+
+```{r, message=FALSE, fig.height=8, fig.width=20}
+gridExtra::grid.arrange(ggTimeSerie(Sim_mat[[1]], c[1]),
+                        ggTimeSerie(Sim_mat[[2]], c[2]),
+                        ggTimeSerie(Sim_mat[[3]], c[3]), 
+                        ggTimeSerie(Sim_mat[[4]], c[4]),
+                        ggTimeSerie(Sim_mat[[5]], c[5]), 
+                        ncol = 5)
+```
+
+```{r, message=FALSE, fig.height=8, fig.width=20}
+gridExtra::grid.arrange(ggACF(Sim_mat[[1]], c[1])$PACF,
+                        ggACF(Sim_mat[[2]], c[2])$PACF,
+                        ggACF(Sim_mat[[3]], c[3])$PACF, 
+                        ggACF(Sim_mat[[4]], c[4])$PACF,
+                        ggACF(Sim_mat[[5]], c[5])$PACF, 
+                        ncol = 5)
+```
+
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+encore une fois, On reconnait alors les caractéristiques d'un AR(1) au vu des ACF et PACF. Et le cas de $c=0$ apparait plus clairement comme celui d'un bruit blanc. <br>
+
+:::
+
+
+# Conclusion
+
+ici on a pu voir l'impact du paramètre c dans les séries de type AR(1) via les ACF et PACF.
+
+# Session info
+
+```{r}
+sessioninfo::session_info(pkgs = "attached")
+```
+

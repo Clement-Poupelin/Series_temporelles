@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Clément Poupelin">
 <meta name="description" content="Description">
 
-<title>Fiche 02 – Séries temporelles</title>
+<title>Séries temporelles - Fiche 02</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -35,7 +35,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -84,13 +84,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -99,42 +93,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="../custom.css">
 </head>
@@ -142,10 +108,10 @@ window.Quarto = {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a href="https://www.univ-nantes.fr/" class="navbar-brand navbar-brand-logo">
     <img src="../img/logo_univ_nantes_complet.png" alt="" class="navbar-logo">
     </a>
@@ -154,48 +120,48 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-feuille-de-tp" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-feuille-de-tp" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-file-earmark-font-fill" role="img">
 </i> 
  <span class="menu-text">Feuille de TP</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-feuille-de-tp">    
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche1-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche1-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 1</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche2-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche2-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 2</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche3-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche3-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 3</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche4-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche4-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 4</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche5-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche5-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 5</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche6-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche6-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 6</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/fiche6_bootstrap.pdf">
+    <a class="dropdown-item" href="../Enonce/fiche6_bootstrap.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 6 Bootstrap</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Enonce/Fiche7-20-21.pdf">
+    <a class="dropdown-item" href="../Enonce/Fiche7-20-21.pdf" rel="" target="">
  <span class="dropdown-text">Fiche 7</span></a>
   </li>  
     </ul>
@@ -203,67 +169,67 @@ window.Quarto = {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="https://clement-poupelin.github.io/Series_temporelles/"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="https://clement-poupelin.github.io/Series_temporelles/" rel="" target="">
+ <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
-<span class="menu-text">About</span></a>
+    <a class="nav-link" href="../about.html" rel="" target="">
+ <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-github" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
         <li>
-    <a class="dropdown-item" href="https://github.com/Clement-Poupelin">
+    <a class="dropdown-item" href="https://github.com/Clement-Poupelin" rel="" target="">
  <span class="dropdown-text">Clément Poupelin</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://github.com/nonomtrt">
+    <a class="dropdown-item" href="https://github.com/nonomtrt" rel="" target="">
  <span class="dropdown-text">Noémie Matrat</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-linkedin" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-linkedin" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
       <i class="bi bi-linkedin" role="img">
 </i> 
  <span class="menu-text"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-linkedin">    
         <li>
-    <a class="dropdown-item" href="http://www.linkedin.com/in/cl%C3%A9ment-poupelin-7675311a7/">
+    <a class="dropdown-item" href="http://www.linkedin.com/in/cl%C3%A9ment-poupelin-7675311a7/" rel="" target="">
  <span class="dropdown-text">Clément Poupelin</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="https://www.linkedin.com/in/no%C3%A9mie-matrat-86a34a200/">
+    <a class="dropdown-item" href="https://www.linkedin.com/in/no%C3%A9mie-matrat-86a34a200/" rel="" target="">
  <span class="dropdown-text">Noémie Matrat</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:clementjc.poupelin@gmail.com"> <i class="bi bi-envelope" role="img">
+    <a class="nav-link" href="mailto:clementjc.poupelin@gmail.com" rel="" target=""><i class="bi bi-envelope" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="http://clement-poupelin.github.io/"> <i class="bi bi-person-circle" role="img">
+    <a class="nav-link" href="http://clement-poupelin.github.io/" rel="" target=""><i class="bi bi-person-circle" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.instagram.com/clement__poupelin"> <i class="bi bi-instagram" role="img">
+    <a class="nav-link" href="https://www.instagram.com/clement__poupelin" rel="" target=""><i class="bi bi-instagram" role="img">
 </i> 
-<span class="menu-text"></span></a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -342,7 +308,6 @@ window.Quarto = {
 
 
 
-
 <section id="intervenant.e.s" class="level1">
 <h1>Intervenant.e.s</h1>
 <section id="rédaction" class="level3">
@@ -366,8 +331,8 @@ window.Quarto = {
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -446,8 +411,8 @@ Warning
 <section id="session-info" class="level1">
 <h1>Session info</h1>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>(<span class="at">pkgs =</span> <span class="st">"attached"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -487,8 +452,8 @@ Warning
 <p><br></p>
 <p>Si on pose que <span class="math inline">\(x_0 = w_0\)</span>, on peut écrire notre marche aléatoire comme <span class="math inline">\(x_t = \delta t + \sum_{i=0}^{t}w_i\)</span></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On pose nos paramètres</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span>         </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">=</span> <span class="fl">0.01</span>    </span>
@@ -512,11 +477,7 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -524,8 +485,8 @@ Warning
 <h4 class="anchored" data-anchor-id="question-2-estimer-le-modèle-de-régression-linéaire-x_t-beta_t-w_t">QUESTION 2 : Estimer le modèle de régression linéaire <span class="math inline">\(x_t = \beta_t + w_t\)</span></h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>list<span class="ot">=</span><span class="dv">1</span><span class="sc">:</span>n</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>l <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -543,11 +504,7 @@ Warning
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -556,8 +513,8 @@ Warning
 <h4 class="anchored" data-anchor-id="question-4-simuler-dix-séries-x_t_t-de-la-forme-x_t-delta_t-w_t-tendancebruit-blanc-de-longueur-n-100-de-paramètre-delta-.01-et-de-variance-sigma2_w-1">QUESTION 4 : Simuler dix séries <span class="math inline">\((x_t)_t\)</span> de la forme <span class="math inline">\(x_t = \delta_t + w_t\)</span> (tendance+bruit blanc) de longueur <span class="math inline">\(n = 100\)</span>, de paramètre <span class="math inline">\(\delta = .01\)</span> et de variance <span class="math inline">\(\sigma^2_W = 1\)</span></h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On définis notre signal linéaire bruité </span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>noisy_serie <span class="ot">=</span> <span class="cf">function</span>(n, delta) {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  w <span class="ot">=</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="dv">1</span>)  </span>
@@ -577,11 +534,7 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -590,8 +543,8 @@ Warning
 <h4 class="anchored" data-anchor-id="question-5-estimer-le-modèle-de-régression-linéaire-x_t-beta_t-w_t">QUESTION 5 : Estimer le modèle de régression linéaire <span class="math inline">\(x_t = \beta_t + w_t\)</span></h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>l2 <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nb){</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  mod2 <span class="ot">=</span> <span class="fu">lm</span>(sim2[i,] <span class="sc">~</span> list <span class="sc">+</span> <span class="dv">0</span>)</span>
@@ -606,11 +559,7 @@ Warning
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -632,8 +581,8 @@ Warning
 <p><br></p>
 <p>Les paramètres d’entrée de la fonction sont <span class="math inline">\(n\)</span>, <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>, <span class="math inline">\(w\)</span> et la sortie est une série temporelle. Pour cela, on utilise la fonction ts() qui transforme nos points générés en une série temporelle.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>X_j <span class="ot">=</span> <span class="cf">function</span>(n, a, b, w) {</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">=</span> <span class="fu">rnorm</span>(n)  </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -644,15 +593,15 @@ Warning
 </div>
 <p>Maintenant, on fixe <span class="math inline">\(n = 100\)</span> puis <span class="math inline">\(n = 500\)</span></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Puis on pose les paramètres qui nous serons utiles par la suite</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="dv">0</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">*</span>pi, pi<span class="sc">/</span><span class="dv">6</span>) </span>
@@ -665,8 +614,8 @@ Warning
 <h4 class="anchored" data-anchor-id="question-2-pour-a-0-et-b-.01-simuler-une-trajectoire-puis-représenter">QUESTION 2 : Pour <span class="math inline">\(a = 0\)</span> et <span class="math inline">\(b = .01\)</span>, simuler une trajectoire, puis représenter</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 100</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sim1_X_j_100 <span class="ot">=</span> <span class="fu">X_j</span>(n[<span class="dv">1</span>], a[<span class="dv">1</span>], b[<span class="dv">1</span>], w[<span class="dv">1</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -681,20 +630,12 @@ Warning
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -703,8 +644,8 @@ Warning
 <h4 class="anchored" data-anchor-id="la-série-x_n-x_n1-et-sa-suite-des-auto-corrélations-empiriques">2-2 : la série <span class="math inline">\(X_n − X_{n−1}\)</span> et sa suite des auto-corrélations empiriques</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sim1_X_j_100_diff <span class="ot">=</span> <span class="fu">diff</span>(sim1_X_j_100, <span class="at">lag =</span> <span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sim1_X_j_500_diff <span class="ot">=</span> <span class="fu">diff</span>(sim1_X_j_500, <span class="at">lag =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -712,20 +653,12 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -734,8 +667,8 @@ Warning
 <h4 class="anchored" data-anchor-id="question-3-pour-b-0-a-2-et-w-fracpi6-simuler-une-trajectoire-puis-représenter">QUESTION 3 : Pour <span class="math inline">\(b = 0\)</span>, <span class="math inline">\(a = 2\)</span> et <span class="math inline">\(w = \frac{\pi}{6}\)</span>, simuler une trajectoire, puis représenter</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 100</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>sim2_X_j_100 <span class="ot">=</span> <span class="fu">X_j</span>(n[<span class="dv">1</span>], a[<span class="dv">2</span>], b[<span class="dv">2</span>], w[<span class="dv">2</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -750,20 +683,12 @@ Warning
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -772,8 +697,8 @@ Warning
 <h4 class="anchored" data-anchor-id="la-série-x_n-x_n12-et-sa-suite-des-auto-corrélations-empiriques">3-2 : la série <span class="math inline">\(X_n − X_{n−12}\)</span> et sa suite des auto-corrélations empiriques</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>sim2_X_j_100_diff <span class="ot">=</span> <span class="fu">diff</span>(sim2_X_j_100, <span class="at">lag =</span> <span class="dv">12</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sim2_X_j_500_diff <span class="ot">=</span> <span class="fu">diff</span>(sim2_X_j_500, <span class="at">lag =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -781,20 +706,12 @@ Warning
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Pour conclure, on peut constater qu’en grandissant l’échantillon, la tendance et la saisonnalité ressortent d’avantage et influencent nos autocorrélation. On ne pourra donc pas considérer les séries comme stationnaires. Mais, l’opération de différenciation peut permettre de résoudre ce problème d’autocorrélation quand celle ci est adaptée à la “perturbation”(tendance ou saison) de notre série.</p>
@@ -824,8 +741,8 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <p><br></p>
 <p><strong>Indication</strong> : Pour obtenir une série de longueur <span class="math inline">\(m\)</span>, simuler <span class="math inline">\(m+ 100\)</span> valeurs et supprimer les 100 premières valeurs pour atténuer l’effet de l’initialisation. Vous pouvez utiliser la fonction filter.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>xt <span class="ot">=</span> <span class="cf">function</span>(m, c) {</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  eps <span class="ot">=</span> <span class="fu">rnorm</span>(m <span class="sc">+</span> <span class="dv">100</span>)  </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">=</span> <span class="fu">rep</span>(<span class="cn">NA</span>, m <span class="sc">+</span> <span class="dv">100</span>) </span>
@@ -847,8 +764,8 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <h4 class="anchored" data-anchor-id="question-2-pour-c-0-.5-.9-tracer-une-trajectoire-simulée-et-sa-suite-des-auto-corrélations-empiriques">QUESTION 2 : Pour <span class="math inline">\(|c| = 0, .5, .9\)</span>, tracer une trajectoire simulée et sa suite des auto-corrélations empiriques</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On pose nos paramètres</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">500</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.9</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -856,18 +773,10 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-27-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -884,18 +793,10 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <p>En Complément de ces informations, on peut aussi s’interesser au PACF</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>On reconnait alors les caractéristiques d’un AR(1) au vu des ACF et PACF. Et le cas de <span class="math inline">\(c=0\)</span> apparait plus clairement comme celui d’un bruit blanc. <br></p>
@@ -907,8 +808,8 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <p>Le fichier champ.asc est disponible sur le web à l’adresse suivante http://www.math.sciences.univ-nantes.fr/~philippe/lecture/champ.asc</p>
 <p>On note <span class="math inline">\((C_t)\)</span> la série.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">"http://www.math.sciences.univ-nantes.fr/~philippe/lecture/champ.asc"</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">read.csv</span>(url)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -921,11 +822,7 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -938,18 +835,14 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <h4 class="anchored" data-anchor-id="question-3-tracer-la-série-logct-et-sa-suite-des-auto-corrélations-empiriques">QUESTION 3 : Tracer la série <span class="math inline">\((log(Ct))\)</span> et sa suite des auto-corrélations empiriques</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>lCt <span class="ot">=</span> <span class="fu">log</span>(Ct)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>On peut observé que le passage au log à permis de contrer la croissance en <span class="math inline">\(t\)</span> de la variance. <br> En effet, si on pose <span class="math inline">\(Y_t = t\varepsilon_t\)</span>, alors <span class="math inline">\(Var(Y_t) = t^2Var(\varepsilon_t)\)</span>. <br> Or, avec le passage au log, on aura que <span class="math inline">\(Var(log(Y_t)) = Var(log(t\varepsilon_t)) = Var(log(t)+log(\varepsilon_t)) = Var(log(\varepsilon_t))\)</span></p>
@@ -961,8 +854,8 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 \alpha t + \beta cos(\frac{2πt}{12}) + \gamma cos(\frac{2πt}{6}) + \beta' cos(\frac{2πt}{12}) + \gamma' cos(\frac{2πt}{6}) + \varepsilon_t
 \end{align}\]</span></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ut <span class="ot">=</span> <span class="cf">function</span>(n, a, b, c, d, e, <span class="at">a0 =</span> <span class="dv">0</span>){</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  t <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span>n</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  eps_t <span class="ot">=</span> <span class="fu">rnorm</span>(n)</span>
@@ -994,20 +887,12 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <p><br></p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><br></p>
@@ -1021,8 +906,8 @@ X_j - X_{j-12} &amp;= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j
 <h4 class="anchored" data-anchor-id="question-7-sur-cette-série-calculer-les-estimateurs-de-alpha-beta-gamma-par-la-méthode-des-moindres-carrés.-que-peut-on-dire-de-la-qualité-du-modèle.-peut-on-modéliser-la-série-des-résidus-par-un-bruit-blanc">QUESTION 7 : Sur cette série, calculer les estimateurs de <span class="math inline">\((\alpha, \beta, \gamma)\)</span> par la méthode des moindres carrés. Que peut-on dire de la qualité du modèle. Peut on modéliser la série des résidus par un bruit blanc?</h4>
 <p><br></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Show the code</summary>
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#construisons un modèle de regression</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">=</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="fu">length</span>(Ct))</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1058,11 +943,7 @@ F-statistic:  51.5 on 5 and 98 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>On constate une forte significativité de tout nos termes.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Fiche_02_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
+<p><img src="Fiche_02_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -1114,33 +995,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       } else {
         el.classList.add('notransition');
       }
-    }
-  }
-  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
-    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
-    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
-    let newTheme = '';
-    if(darkModeDefault) {
-      newTheme = isAlternate ? baseTheme : alternateTheme;
-    } else {
-      newTheme = isAlternate ? alternateTheme : baseTheme;
-    }
-    const changeGiscusTheme = () => {
-      // From: https://github.com/giscus/giscus/issues/336
-      const sendMessage = (message) => {
-        const iframe = document.querySelector('iframe.giscus-frame');
-        if (!iframe) return;
-        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
-      }
-      sendMessage({
-        setConfig: {
-          theme: newTheme
-        }
-      });
-    }
-    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
-    if (isGiscussLoaded) {
-      changeGiscusTheme();
     }
   }
   const toggleColorMode = (alternate) => {
@@ -1209,15 +1063,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  const darkModeDefault = false;
-  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  let localAlternateSentinel = 'default';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
     let toAlternate = !hasAlternateSentinel();
     toggleColorMode(toAlternate);
     setStyleSentinel(toAlternate);
-    toggleGiscusIfUsed(toAlternate, darkModeDefault);
   };
   // Ensure there is a toggle, if there isn't float one in the top right
   if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
@@ -1252,7 +1104,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const onCopySuccess = function(e) {
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1284,29 +1147,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
   });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
   const viewSource = window.document.getElementById('quarto-view-source') ||
                      window.document.getElementById('quarto-code-tools-source');
   if (viewSource) {
@@ -1358,27 +1199,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   if (showAllCode) {
     showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/github\.com\/Clement-Poupelin\/Series_temporelles");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1388,17 +1212,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1410,130 +1225,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
+      return note.innerHTML;
     });
   }
       let selectedAnnoteEl;
@@ -1577,7 +1269,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1603,32 +1294,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1727,15 +1392,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Packages</span></span>
 <span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, setup, warning=FALSE, message=FALSE}</span></span>
-<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="in"># Données</span></span>
-<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="in">library(dplyr)        # manipulation des données</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Données</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)        <span class="co"># manipulation des données</span></span>
 <span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="in">library(latex2exp)</span></span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
 <span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a><span class="in"># Plots</span></span>
-<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="in">## ggplot</span></span>
-<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
-<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="in">library(gridExtra)</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Plots</span></span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a><span class="do">## ggplot</span></span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
 <span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fonctions</span></span>
@@ -1785,15 +1450,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-97"><a href="#cb22-97" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-98"><a href="#cb22-98" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-99"><a href="#cb22-99" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 1 : **</span></span>
-<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-100"><a href="#cb22-100" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-101"><a href="#cb22-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-102"><a href="#cb22-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-103"><a href="#cb22-103" aria-hidden="true" tabindex="-1"></a>Nous étudions la différence entre une marche aléatoire et un signal linéaire bruité.</span>
-<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-104"><a href="#cb22-104" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-105"><a href="#cb22-105" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-106"><a href="#cb22-106" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-107"><a href="#cb22-107" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 1 : Simuler dix marches aléatoires $(x_t)_t = \delta + x_{t-1} + w_t$ avec dérive de longueur $n = 100$, de paramètre $\delta = .01$ et de variance $\sigma^2_W = 1$ pour le bruit.</span></span>
-<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-108"><a href="#cb22-108" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-109"><a href="#cb22-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-110"><a href="#cb22-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-111"><a href="#cb22-111" aria-hidden="true" tabindex="-1"></a>Si on pose que $x_0 = w_0$, on peut écrire notre marche aléatoire comme $x_t = \delta t + \sum_{i=0}^{t}w_i$</span>
@@ -1824,22 +1489,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-138"><a href="#cb22-138" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-139"><a href="#cb22-139" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-140"><a href="#cb22-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a><span class="in">plot(1:n, sim[1, ], type = 'l',</span></span>
-<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Simulation of", nb,"Randoms Walks with drift $delta$ = ", delta)),</span></span>
-<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "Random Walk", </span></span>
-<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time", </span></span>
-<span id="cb22-145"><a href="#cb22-145" aria-hidden="true" tabindex="-1"></a><span class="in">     ylim = c(min(sim), max(sim)), </span></span>
-<span id="cb22-146"><a href="#cb22-146" aria-hidden="true" tabindex="-1"></a><span class="in">     col = 'green')</span></span>
-<span id="cb22-147"><a href="#cb22-147" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 2:nb) {</span></span>
-<span id="cb22-148"><a href="#cb22-148" aria-hidden="true" tabindex="-1"></a><span class="in">  lines(1:n, sim[i, ], col = 'green')</span></span>
-<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb22-141"><a href="#cb22-141" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>n, sim[<span class="dv">1</span>, ], <span class="at">type =</span> <span class="st">'l'</span>,</span>
+<span id="cb22-142"><a href="#cb22-142" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Simulation of"</span>, nb,<span class="st">"Randoms Walks with drift $delta$ = "</span>, delta)),</span>
+<span id="cb22-143"><a href="#cb22-143" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Random Walk"</span>, </span>
+<span id="cb22-144"><a href="#cb22-144" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>, </span>
+<span id="cb22-145"><a href="#cb22-145" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(sim), <span class="fu">max</span>(sim)), </span>
+<span id="cb22-146"><a href="#cb22-146" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">'green'</span>)</span>
+<span id="cb22-147"><a href="#cb22-147" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nb) {</span>
+<span id="cb22-148"><a href="#cb22-148" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span>n, sim[i, ], <span class="at">col =</span> <span class="st">'green'</span>)</span>
+<span id="cb22-149"><a href="#cb22-149" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb22-150"><a href="#cb22-150" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-151"><a href="#cb22-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-152"><a href="#cb22-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-153"><a href="#cb22-153" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-154"><a href="#cb22-154" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-155"><a href="#cb22-155" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : Estimer le modèle de régression linéaire $x_t = \beta_t + w_t$</span></span>
-<span id="cb22-156"><a href="#cb22-156" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-156"><a href="#cb22-156" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-157"><a href="#cb22-157" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-158"><a href="#cb22-158" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-161"><a href="#cb22-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -1856,32 +1521,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-172"><a href="#cb22-172" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-173"><a href="#cb22-173" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-174"><a href="#cb22-174" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-175"><a href="#cb22-175" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-176"><a href="#cb22-176" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-177"><a href="#cb22-177" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Représenter sur un même graphique les dix droites estimées et la tendance moyenne théorique $\delta_t = .01t$</span></span>
 <span id="cb22-178"><a href="#cb22-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-179"><a href="#cb22-179" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-179"><a href="#cb22-179" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-180"><a href="#cb22-180" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-181"><a href="#cb22-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-182"><a href="#cb22-182" aria-hidden="true" tabindex="-1"></a><span class="in">plot( l[1]*list, type = "l", col = 'orange',</span></span>
-<span id="cb22-183"><a href="#cb22-183" aria-hidden="true" tabindex="-1"></a><span class="in">      main = "Graphe of the estimations", </span></span>
-<span id="cb22-184"><a href="#cb22-184" aria-hidden="true" tabindex="-1"></a><span class="in">      ylim = c(-10, 10),</span></span>
-<span id="cb22-185"><a href="#cb22-185" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab = 'Time',</span></span>
-<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab = "Estimated values")</span></span>
-<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 2:nb) {</span></span>
-<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a><span class="in">  lines(list * l[i], col = 'orange')</span></span>
-<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a><span class="in">lines(0.01*list, lty = 2, lwd = 3, col = 'red')</span></span>
-<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a><span class="in">legend("topleft",</span></span>
-<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a><span class="in">  legend = TeX("Theoritical trend $delta_t$ = .01t"),</span></span>
-<span id="cb22-193"><a href="#cb22-193" aria-hidden="true" tabindex="-1"></a><span class="in">  col = 'red',</span></span>
-<span id="cb22-194"><a href="#cb22-194" aria-hidden="true" tabindex="-1"></a><span class="in">  lty = 2)</span></span>
+<span id="cb22-182"><a href="#cb22-182" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( l[<span class="dv">1</span>]<span class="sc">*</span>list, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">'orange'</span>,</span>
+<span id="cb22-183"><a href="#cb22-183" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Graphe of the estimations"</span>, </span>
+<span id="cb22-184"><a href="#cb22-184" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb22-185"><a href="#cb22-185" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">'Time'</span>,</span>
+<span id="cb22-186"><a href="#cb22-186" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Estimated values"</span>)</span>
+<span id="cb22-187"><a href="#cb22-187" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nb) {</span>
+<span id="cb22-188"><a href="#cb22-188" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(list <span class="sc">*</span> l[i], <span class="at">col =</span> <span class="st">'orange'</span>)</span>
+<span id="cb22-189"><a href="#cb22-189" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-190"><a href="#cb22-190" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fl">0.01</span><span class="sc">*</span>list, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">'red'</span>)</span>
+<span id="cb22-191"><a href="#cb22-191" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb22-192"><a href="#cb22-192" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">TeX</span>(<span class="st">"Theoritical trend $delta_t$ = .01t"</span>),</span>
+<span id="cb22-193"><a href="#cb22-193" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">'red'</span>,</span>
+<span id="cb22-194"><a href="#cb22-194" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span>)</span>
 <span id="cb22-195"><a href="#cb22-195" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-196"><a href="#cb22-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-197"><a href="#cb22-197" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-198"><a href="#cb22-198" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-199"><a href="#cb22-199" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 4 : Simuler dix séries $(x_t)_t$ de la forme $x_t = \delta_t + w_t$ (tendance+bruit blanc) de longueur $n = 100$, de paramètre $\delta = .01$ et de variance $\sigma^2_W = 1$</span></span>
-<span id="cb22-200"><a href="#cb22-200" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-200"><a href="#cb22-200" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-201"><a href="#cb22-201" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-204"><a href="#cb22-204" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-205"><a href="#cb22-205" aria-hidden="true" tabindex="-1"></a><span class="co"># On définis notre signal linéaire bruité </span></span>
@@ -1905,22 +1570,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-223"><a href="#cb22-223" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-224"><a href="#cb22-224" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-225"><a href="#cb22-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-226"><a href="#cb22-226" aria-hidden="true" tabindex="-1"></a><span class="in">plot(1:n, sim2[1, ], type = "l",</span></span>
-<span id="cb22-227"><a href="#cb22-227" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-228"><a href="#cb22-228" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = "Noisy serie", </span></span>
-<span id="cb22-229"><a href="#cb22-229" aria-hidden="true" tabindex="-1"></a><span class="in">     main = paste("Simulation of", nb,"linear noisy series"),</span></span>
-<span id="cb22-230"><a href="#cb22-230" aria-hidden="true" tabindex="-1"></a><span class="in">     ylim = c(min(sim2), max(sim2)),</span></span>
-<span id="cb22-231"><a href="#cb22-231" aria-hidden="true" tabindex="-1"></a><span class="in">     col = "blue")</span></span>
-<span id="cb22-232"><a href="#cb22-232" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 2:nb) {</span></span>
-<span id="cb22-233"><a href="#cb22-233" aria-hidden="true" tabindex="-1"></a><span class="in">  lines(1:n, sim2[i, ], col = "blue")</span></span>
-<span id="cb22-234"><a href="#cb22-234" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb22-226"><a href="#cb22-226" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span>n, sim2[<span class="dv">1</span>, ], <span class="at">type =</span> <span class="st">"l"</span>,</span>
+<span id="cb22-227"><a href="#cb22-227" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-228"><a href="#cb22-228" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Noisy serie"</span>, </span>
+<span id="cb22-229"><a href="#cb22-229" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"Simulation of"</span>, nb,<span class="st">"linear noisy series"</span>),</span>
+<span id="cb22-230"><a href="#cb22-230" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fu">min</span>(sim2), <span class="fu">max</span>(sim2)),</span>
+<span id="cb22-231"><a href="#cb22-231" aria-hidden="true" tabindex="-1"></a>     <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb22-232"><a href="#cb22-232" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nb) {</span>
+<span id="cb22-233"><a href="#cb22-233" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(<span class="dv">1</span><span class="sc">:</span>n, sim2[i, ], <span class="at">col =</span> <span class="st">"blue"</span>)</span>
+<span id="cb22-234"><a href="#cb22-234" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb22-235"><a href="#cb22-235" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-236"><a href="#cb22-236" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-237"><a href="#cb22-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-238"><a href="#cb22-238" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-238"><a href="#cb22-238" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-239"><a href="#cb22-239" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-240"><a href="#cb22-240" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 5 : Estimer le modèle de régression linéaire $x_t = \beta_t + w_t$</span></span>
-<span id="cb22-241"><a href="#cb22-241" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-241"><a href="#cb22-241" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-244"><a href="#cb22-244" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-245"><a href="#cb22-245" aria-hidden="true" tabindex="-1"></a>l2 <span class="ot">=</span> <span class="fu">c</span>()</span>
 <span id="cb22-246"><a href="#cb22-246" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nb){</span>
@@ -1929,31 +1594,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-249"><a href="#cb22-249" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb22-250"><a href="#cb22-250" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-251"><a href="#cb22-251" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-252"><a href="#cb22-252" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-253"><a href="#cb22-253" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-254"><a href="#cb22-254" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 6 : Représenter sur un même graphique les dix droites estimées et la tendance théorique $\delta_t = .01t$</span></span>
-<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-255"><a href="#cb22-255" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-256"><a href="#cb22-256" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-257"><a href="#cb22-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-258"><a href="#cb22-258" aria-hidden="true" tabindex="-1"></a><span class="in">plot( l2[1]*list, type = "l", col = 'orange',</span></span>
-<span id="cb22-259"><a href="#cb22-259" aria-hidden="true" tabindex="-1"></a><span class="in">      main = "Graphe of the estimations", </span></span>
-<span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a><span class="in">      ylim = c(-1.2, 1.2),</span></span>
-<span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab = 'Time',</span></span>
-<span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab = "Estimated values")</span></span>
-<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 2:nb) {</span></span>
-<span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a><span class="in">  lines(list * l2[i], col = 'orange')</span></span>
-<span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a><span class="in">lines(0.01*list, lty = 2, lwd = 3, col = 'red')</span></span>
-<span id="cb22-267"><a href="#cb22-267" aria-hidden="true" tabindex="-1"></a><span class="in">legend("topleft",</span></span>
-<span id="cb22-268"><a href="#cb22-268" aria-hidden="true" tabindex="-1"></a><span class="in">  legend = TeX("Theoritical trend $delta_t$ = .01t"),</span></span>
-<span id="cb22-269"><a href="#cb22-269" aria-hidden="true" tabindex="-1"></a><span class="in">  col = 'red',</span></span>
-<span id="cb22-270"><a href="#cb22-270" aria-hidden="true" tabindex="-1"></a><span class="in">  lty = 2)</span></span>
+<span id="cb22-258"><a href="#cb22-258" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>( l2[<span class="dv">1</span>]<span class="sc">*</span>list, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">'orange'</span>,</span>
+<span id="cb22-259"><a href="#cb22-259" aria-hidden="true" tabindex="-1"></a>      <span class="at">main =</span> <span class="st">"Graphe of the estimations"</span>, </span>
+<span id="cb22-260"><a href="#cb22-260" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.2</span>, <span class="fl">1.2</span>),</span>
+<span id="cb22-261"><a href="#cb22-261" aria-hidden="true" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">'Time'</span>,</span>
+<span id="cb22-262"><a href="#cb22-262" aria-hidden="true" tabindex="-1"></a>      <span class="at">ylab =</span> <span class="st">"Estimated values"</span>)</span>
+<span id="cb22-263"><a href="#cb22-263" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>nb) {</span>
+<span id="cb22-264"><a href="#cb22-264" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lines</span>(list <span class="sc">*</span> l2[i], <span class="at">col =</span> <span class="st">'orange'</span>)</span>
+<span id="cb22-265"><a href="#cb22-265" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-266"><a href="#cb22-266" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(<span class="fl">0.01</span><span class="sc">*</span>list, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>, <span class="at">col =</span> <span class="st">'red'</span>)</span>
+<span id="cb22-267"><a href="#cb22-267" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,</span>
+<span id="cb22-268"><a href="#cb22-268" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">TeX</span>(<span class="st">"Theoritical trend $delta_t$ = .01t"</span>),</span>
+<span id="cb22-269"><a href="#cb22-269" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">'red'</span>,</span>
+<span id="cb22-270"><a href="#cb22-270" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="dv">2</span>)</span>
 <span id="cb22-271"><a href="#cb22-271" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-272"><a href="#cb22-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-273"><a href="#cb22-273" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-273"><a href="#cb22-273" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-274"><a href="#cb22-274" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-275"><a href="#cb22-275" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 7 : Commenter les résultats</span></span>
-<span id="cb22-276"><a href="#cb22-276" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-276"><a href="#cb22-276" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-277"><a href="#cb22-277" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-278"><a href="#cb22-278" aria-hidden="true" tabindex="-1"></a>La tendance théorique (le drift) est mieux estimée par régression dans le cas d'un signal bruité que celui de la marche aléatoire. </span>
 <span id="cb22-279"><a href="#cb22-279" aria-hidden="true" tabindex="-1"></a></span>
@@ -1964,13 +1629,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-284"><a href="#cb22-284" aria-hidden="true" tabindex="-1"></a>Cela fait donc défaut à l'hypothèse d'homoscédacité cruciale pour la régression linéaire </span>
 <span id="cb22-285"><a href="#cb22-285" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-286"><a href="#cb22-286" aria-hidden="true" tabindex="-1"></a>Par contre, du côté du signal bruite on conserve l'homoscédacité avec le cas très idéal du bruit iid et gaussien.</span>
-<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-287"><a href="#cb22-287" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-288"><a href="#cb22-288" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-289"><a href="#cb22-289" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 2 : **</span></span>
-<span id="cb22-290"><a href="#cb22-290" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-290"><a href="#cb22-290" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-291"><a href="#cb22-291" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-292"><a href="#cb22-292" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 1 : Écrire une fonction qui retourne une série simulée de la forme $X_j = a cos(ω_j) + bj + \varepsilon_j$ où $(\varepsilon_n)$ un bruit blanc gaussien centré et de variance 1.</span></span>
-<span id="cb22-293"><a href="#cb22-293" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-293"><a href="#cb22-293" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-294"><a href="#cb22-294" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-295"><a href="#cb22-295" aria-hidden="true" tabindex="-1"></a>Les paramètres d’entrée de la fonction sont $n$, $a$, $b$, $w$ et la sortie est une série temporelle. Pour cela, on utilise la fonction ts() qui transforme nos points générés en une série temporelle.</span>
 <span id="cb22-298"><a href="#cb22-298" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
@@ -1999,10 +1664,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-325"><a href="#cb22-325" aria-hidden="true" tabindex="-1"></a><span class="co">#en 2*pi, w n'aura pas d'influence si on voulait enlever la condition a = 0</span></span>
 <span id="cb22-326"><a href="#cb22-326" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-327"><a href="#cb22-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-328"><a href="#cb22-328" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-329"><a href="#cb22-329" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-330"><a href="#cb22-330" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : Pour $a = 0$ et $b = .01$, simuler une trajectoire, puis représenter</span></span>
-<span id="cb22-331"><a href="#cb22-331" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-331"><a href="#cb22-331" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-332"><a href="#cb22-332" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-335"><a href="#cb22-335" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-336"><a href="#cb22-336" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 100</span></span>
@@ -2011,37 +1676,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-339"><a href="#cb22-339" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 500</span></span>
 <span id="cb22-340"><a href="#cb22-340" aria-hidden="true" tabindex="-1"></a>sim1_X_j_500 <span class="ot">=</span> <span class="fu">X_j</span>(n[<span class="dv">2</span>], a[<span class="dv">1</span>], b[<span class="dv">1</span>], w[<span class="dv">1</span>])</span>
 <span id="cb22-341"><a href="#cb22-341" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-342"><a href="#cb22-342" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-342"><a href="#cb22-342" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-343"><a href="#cb22-343" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-344"><a href="#cb22-344" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2-1 : la série et sa suite d’auto-corrélations empiriques</span></span>
-<span id="cb22-345"><a href="#cb22-345" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-345"><a href="#cb22-345" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-346"><a href="#cb22-346" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-347"><a href="#cb22-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-348"><a href="#cb22-348" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-349"><a href="#cb22-349" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim1_X_j_100, col = 2, </span></span>
-<span id="cb22-350"><a href="#cb22-350" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j$ pour n = ", n[1])), </span></span>
-<span id="cb22-351"><a href="#cb22-351" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-352"><a href="#cb22-352" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t$"))</span></span>
-<span id="cb22-353"><a href="#cb22-353" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim1_X_j_100, col = 2)</span></span>
-<span id="cb22-354"><a href="#cb22-354" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-348"><a href="#cb22-348" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-349"><a href="#cb22-349" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim1_X_j_100, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-350"><a href="#cb22-350" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j$ pour n = "</span>, n[<span class="dv">1</span>])), </span>
+<span id="cb22-351"><a href="#cb22-351" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-352"><a href="#cb22-352" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t$"</span>))</span>
+<span id="cb22-353"><a href="#cb22-353" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim1_X_j_100, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-354"><a href="#cb22-354" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-355"><a href="#cb22-355" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-356"><a href="#cb22-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-357"><a href="#cb22-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-358"><a href="#cb22-358" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-359"><a href="#cb22-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-360"><a href="#cb22-360" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-361"><a href="#cb22-361" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim1_X_j_500, col = 2, </span></span>
-<span id="cb22-362"><a href="#cb22-362" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j$ pour n = ", n[2])), </span></span>
-<span id="cb22-363"><a href="#cb22-363" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-364"><a href="#cb22-364" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t$"))</span></span>
-<span id="cb22-365"><a href="#cb22-365" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim1_X_j_500, col = 2)</span></span>
-<span id="cb22-366"><a href="#cb22-366" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-360"><a href="#cb22-360" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-361"><a href="#cb22-361" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim1_X_j_500, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-362"><a href="#cb22-362" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j$ pour n = "</span>, n[<span class="dv">2</span>])), </span>
+<span id="cb22-363"><a href="#cb22-363" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-364"><a href="#cb22-364" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t$"</span>))</span>
+<span id="cb22-365"><a href="#cb22-365" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim1_X_j_500, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-366"><a href="#cb22-366" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-367"><a href="#cb22-367" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-368"><a href="#cb22-368" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-369"><a href="#cb22-369" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-369"><a href="#cb22-369" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-370"><a href="#cb22-370" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-371"><a href="#cb22-371" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2-2 : la série $X_n − X_{n−1}$ et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-372"><a href="#cb22-372" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-372"><a href="#cb22-372" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-375"><a href="#cb22-375" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-376"><a href="#cb22-376" aria-hidden="true" tabindex="-1"></a>sim1_X_j_100_diff <span class="ot">=</span> <span class="fu">diff</span>(sim1_X_j_100, <span class="at">lag =</span> <span class="dv">1</span>)</span>
 <span id="cb22-377"><a href="#cb22-377" aria-hidden="true" tabindex="-1"></a></span>
@@ -2052,31 +1717,31 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-382"><a href="#cb22-382" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-383"><a href="#cb22-383" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE} </span></span>
 <span id="cb22-384"><a href="#cb22-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-385"><a href="#cb22-385" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-386"><a href="#cb22-386" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim1_X_j_100_diff, col = 2, </span></span>
-<span id="cb22-387"><a href="#cb22-387" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j - X_{j-1}$ pour n = ", n[1])), </span></span>
-<span id="cb22-388"><a href="#cb22-388" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-389"><a href="#cb22-389" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t - X_{t-1}$"))</span></span>
-<span id="cb22-390"><a href="#cb22-390" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim1_X_j_100_diff, col = 2)</span></span>
-<span id="cb22-391"><a href="#cb22-391" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-385"><a href="#cb22-385" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-386"><a href="#cb22-386" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim1_X_j_100_diff, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-387"><a href="#cb22-387" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j - X_{j-1}$ pour n = "</span>, n[<span class="dv">1</span>])), </span>
+<span id="cb22-388"><a href="#cb22-388" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-389"><a href="#cb22-389" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t - X_{t-1}$"</span>))</span>
+<span id="cb22-390"><a href="#cb22-390" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim1_X_j_100_diff, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-391"><a href="#cb22-391" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-392"><a href="#cb22-392" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-393"><a href="#cb22-393" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-394"><a href="#cb22-394" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-395"><a href="#cb22-395" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE} </span></span>
 <span id="cb22-396"><a href="#cb22-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-397"><a href="#cb22-397" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-398"><a href="#cb22-398" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim1_X_j_500_diff, col = 2, </span></span>
-<span id="cb22-399"><a href="#cb22-399" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j - X_{j-1}$ pour n = ", n[2])), </span></span>
-<span id="cb22-400"><a href="#cb22-400" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-401"><a href="#cb22-401" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t - X_{t-1}$"))</span></span>
-<span id="cb22-402"><a href="#cb22-402" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim1_X_j_500_diff, col = 2)</span></span>
-<span id="cb22-403"><a href="#cb22-403" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-397"><a href="#cb22-397" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-398"><a href="#cb22-398" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim1_X_j_500_diff, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-399"><a href="#cb22-399" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j - X_{j-1}$ pour n = "</span>, n[<span class="dv">2</span>])), </span>
+<span id="cb22-400"><a href="#cb22-400" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-401"><a href="#cb22-401" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t - X_{t-1}$"</span>))</span>
+<span id="cb22-402"><a href="#cb22-402" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim1_X_j_500_diff, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-403"><a href="#cb22-403" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-404"><a href="#cb22-404" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-405"><a href="#cb22-405" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-406"><a href="#cb22-406" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-406"><a href="#cb22-406" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-407"><a href="#cb22-407" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-408"><a href="#cb22-408" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Pour $b = 0$, $a = 2$ et $w = \frac{\pi}{6}$, simuler une trajectoire, puis représenter</span></span>
-<span id="cb22-409"><a href="#cb22-409" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-409"><a href="#cb22-409" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-412"><a href="#cb22-412" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-413"><a href="#cb22-413" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 100</span></span>
 <span id="cb22-414"><a href="#cb22-414" aria-hidden="true" tabindex="-1"></a>sim2_X_j_100 <span class="ot">=</span> <span class="fu">X_j</span>(n[<span class="dv">1</span>], a[<span class="dv">2</span>], b[<span class="dv">2</span>], w[<span class="dv">2</span>])</span>
@@ -2084,38 +1749,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-416"><a href="#cb22-416" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour n = 500</span></span>
 <span id="cb22-417"><a href="#cb22-417" aria-hidden="true" tabindex="-1"></a>sim2_X_j_500 <span class="ot">=</span> <span class="fu">X_j</span>(n[<span class="dv">2</span>], a[<span class="dv">2</span>], b[<span class="dv">2</span>], w[<span class="dv">2</span>])</span>
 <span id="cb22-418"><a href="#cb22-418" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-419"><a href="#cb22-419" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-419"><a href="#cb22-419" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-420"><a href="#cb22-420" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-421"><a href="#cb22-421" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 3-1 : la série et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-422"><a href="#cb22-422" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-422"><a href="#cb22-422" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-423"><a href="#cb22-423" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-424"><a href="#cb22-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-425"><a href="#cb22-425" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim2_X_j_100, col = 2, </span></span>
-<span id="cb22-427"><a href="#cb22-427" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j$ pour n = ", n[1])), </span></span>
-<span id="cb22-428"><a href="#cb22-428" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-429"><a href="#cb22-429" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t$"))</span></span>
-<span id="cb22-430"><a href="#cb22-430" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim2_X_j_100, col = 2)</span></span>
-<span id="cb22-431"><a href="#cb22-431" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-425"><a href="#cb22-425" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-426"><a href="#cb22-426" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim2_X_j_100, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-427"><a href="#cb22-427" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j$ pour n = "</span>, n[<span class="dv">1</span>])), </span>
+<span id="cb22-428"><a href="#cb22-428" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-429"><a href="#cb22-429" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t$"</span>))</span>
+<span id="cb22-430"><a href="#cb22-430" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim2_X_j_100, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-431"><a href="#cb22-431" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-432"><a href="#cb22-432" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-433"><a href="#cb22-433" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-434"><a href="#cb22-434" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-435"><a href="#cb22-435" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-436"><a href="#cb22-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-437"><a href="#cb22-437" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-438"><a href="#cb22-438" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim2_X_j_500, col = 2, </span></span>
-<span id="cb22-439"><a href="#cb22-439" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j$ pour n = ", n[2])), </span></span>
-<span id="cb22-440"><a href="#cb22-440" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-441"><a href="#cb22-441" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t$"))</span></span>
-<span id="cb22-442"><a href="#cb22-442" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim2_X_j_500, col = 2)</span></span>
-<span id="cb22-443"><a href="#cb22-443" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-437"><a href="#cb22-437" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-438"><a href="#cb22-438" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim2_X_j_500, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-439"><a href="#cb22-439" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j$ pour n = "</span>, n[<span class="dv">2</span>])), </span>
+<span id="cb22-440"><a href="#cb22-440" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-441"><a href="#cb22-441" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t$"</span>))</span>
+<span id="cb22-442"><a href="#cb22-442" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim2_X_j_500, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-443"><a href="#cb22-443" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-444"><a href="#cb22-444" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-445"><a href="#cb22-445" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-446"><a href="#cb22-446" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-447"><a href="#cb22-447" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-447"><a href="#cb22-447" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-448"><a href="#cb22-448" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-449"><a href="#cb22-449" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 3-2 : la série $X_n − X_{n−12}$ et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-450"><a href="#cb22-450" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-450"><a href="#cb22-450" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-451"><a href="#cb22-451" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-454"><a href="#cb22-454" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-455"><a href="#cb22-455" aria-hidden="true" tabindex="-1"></a>sim2_X_j_100_diff <span class="ot">=</span> <span class="fu">diff</span>(sim2_X_j_100, <span class="at">lag =</span> <span class="dv">12</span>)</span>
@@ -2127,25 +1792,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-461"><a href="#cb22-461" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-462"><a href="#cb22-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE} </span></span>
 <span id="cb22-463"><a href="#cb22-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-464"><a href="#cb22-464" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-465"><a href="#cb22-465" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim2_X_j_100_diff, col = 2, </span></span>
-<span id="cb22-466"><a href="#cb22-466" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j - X_{j-12}$ pour n = ", n[1])), </span></span>
-<span id="cb22-467"><a href="#cb22-467" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-468"><a href="#cb22-468" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t - X_{t-12}$"))</span></span>
-<span id="cb22-469"><a href="#cb22-469" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim2_X_j_100_diff, col = 2)</span></span>
-<span id="cb22-470"><a href="#cb22-470" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-464"><a href="#cb22-464" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-465"><a href="#cb22-465" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim2_X_j_100_diff, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-466"><a href="#cb22-466" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j - X_{j-12}$ pour n = "</span>, n[<span class="dv">1</span>])), </span>
+<span id="cb22-467"><a href="#cb22-467" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-468"><a href="#cb22-468" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t - X_{t-12}$"</span>))</span>
+<span id="cb22-469"><a href="#cb22-469" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim2_X_j_100_diff, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-470"><a href="#cb22-470" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-471"><a href="#cb22-471" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-472"><a href="#cb22-472" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-473"><a href="#cb22-473" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-474"><a href="#cb22-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE} </span></span>
 <span id="cb22-475"><a href="#cb22-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-476"><a href="#cb22-476" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-477"><a href="#cb22-477" aria-hidden="true" tabindex="-1"></a><span class="in">plot(sim2_X_j_500_diff, col = 2, </span></span>
-<span id="cb22-478"><a href="#cb22-478" aria-hidden="true" tabindex="-1"></a><span class="in">     main = TeX(paste("Série $X_j - X_{j-12}$ pour n = ", n[2])), </span></span>
-<span id="cb22-479"><a href="#cb22-479" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-480"><a href="#cb22-480" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$X_t - X_{t-12}$"))</span></span>
-<span id="cb22-481"><a href="#cb22-481" aria-hidden="true" tabindex="-1"></a><span class="in">acf(sim2_X_j_500_diff, col = 2)</span></span>
-<span id="cb22-482"><a href="#cb22-482" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-476"><a href="#cb22-476" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-477"><a href="#cb22-477" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sim2_X_j_500_diff, <span class="at">col =</span> <span class="dv">2</span>, </span>
+<span id="cb22-478"><a href="#cb22-478" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"Série $X_j - X_{j-12}$ pour n = "</span>, n[<span class="dv">2</span>])), </span>
+<span id="cb22-479"><a href="#cb22-479" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-480"><a href="#cb22-480" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$X_t - X_{t-12}$"</span>))</span>
+<span id="cb22-481"><a href="#cb22-481" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(sim2_X_j_500_diff, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-482"><a href="#cb22-482" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-483"><a href="#cb22-483" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-484"><a href="#cb22-484" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-485"><a href="#cb22-485" aria-hidden="true" tabindex="-1"></a></span>
@@ -2174,19 +1839,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-508"><a href="#cb22-508" aria-hidden="true" tabindex="-1"></a>\end{align*}</span>
 <span id="cb22-509"><a href="#cb22-509" aria-hidden="true" tabindex="-1"></a>On a bien une disparition de la saison.</span>
 <span id="cb22-510"><a href="#cb22-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-511"><a href="#cb22-511" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-511"><a href="#cb22-511" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-512"><a href="#cb22-512" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-513"><a href="#cb22-513" aria-hidden="true" tabindex="-1"></a>On a donc qu'une différentiation d'ordre 1 permettra d'enlever la tendance et une différentiation d'ordre $s$ permettra d'enlever une saison de période $s$.</span>
 <span id="cb22-514"><a href="#cb22-514" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-515"><a href="#cb22-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-516"><a href="#cb22-516" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-516"><a href="#cb22-516" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-517"><a href="#cb22-517" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-518"><a href="#cb22-518" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-519"><a href="#cb22-519" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 3 : **</span></span>
-<span id="cb22-520"><a href="#cb22-520" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-520"><a href="#cb22-520" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-521"><a href="#cb22-521" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-522"><a href="#cb22-522" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 1 : Ecrire une fonction pour simuler des trajectoires de processus défini par l’équation de récurrence $X_m + cX_{m−1} = \varepsilon_m$ où $(\varepsilon_m)$ est une suite de variables aléatoires centrées iid.</span></span>
-<span id="cb22-523"><a href="#cb22-523" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-523"><a href="#cb22-523" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-524"><a href="#cb22-524" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-525"><a href="#cb22-525" aria-hidden="true" tabindex="-1"></a>**Indication** : Pour obtenir une série de longueur $m$, simuler $m+ 100$ valeurs et supprimer les</span>
 <span id="cb22-526"><a href="#cb22-526" aria-hidden="true" tabindex="-1"></a>100 premières valeurs pour atténuer l’effet de l’initialisation. Vous pouvez utiliser la fonction filter.</span>
@@ -2209,10 +1874,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-545"><a href="#cb22-545" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-546"><a href="#cb22-546" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-547"><a href="#cb22-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-548"><a href="#cb22-548" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-548"><a href="#cb22-548" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-549"><a href="#cb22-549" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-550"><a href="#cb22-550" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : Pour $|c| = 0, .5, .9$, tracer une trajectoire simulée et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-551"><a href="#cb22-551" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-551"><a href="#cb22-551" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-554"><a href="#cb22-554" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-555"><a href="#cb22-555" aria-hidden="true" tabindex="-1"></a><span class="co"># On pose nos paramètres</span></span>
 <span id="cb22-556"><a href="#cb22-556" aria-hidden="true" tabindex="-1"></a>m <span class="ot">=</span> <span class="dv">500</span></span>
@@ -2221,25 +1886,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-559"><a href="#cb22-559" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-560"><a href="#cb22-560" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-561"><a href="#cb22-561" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-562"><a href="#cb22-562" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 5)) </span></span>
-<span id="cb22-563"><a href="#cb22-563" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in c){</span></span>
-<span id="cb22-564"><a href="#cb22-564" aria-hidden="true" tabindex="-1"></a><span class="in">  plot(xt(m, i), col = 2, main = paste("c = ", i, "et m = ", m), ylim = c(-8, 8))</span></span>
-<span id="cb22-565"><a href="#cb22-565" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-566"><a href="#cb22-566" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-562"><a href="#cb22-562" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)) </span>
+<span id="cb22-563"><a href="#cb22-563" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> c){</span>
+<span id="cb22-564"><a href="#cb22-564" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(<span class="fu">xt</span>(m, i), <span class="at">col =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"c = "</span>, i, <span class="st">"et m = "</span>, m), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb22-565"><a href="#cb22-565" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-566"><a href="#cb22-566" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-567"><a href="#cb22-567" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-568"><a href="#cb22-568" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 5)) </span></span>
-<span id="cb22-569"><a href="#cb22-569" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in c){</span></span>
-<span id="cb22-570"><a href="#cb22-570" aria-hidden="true" tabindex="-1"></a><span class="in">  acf(xt(m, i), col = 2, main = paste("c = ", i, "et m = ", m))</span></span>
-<span id="cb22-571"><a href="#cb22-571" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-572"><a href="#cb22-572" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb22-568"><a href="#cb22-568" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)) </span>
+<span id="cb22-569"><a href="#cb22-569" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> c){</span>
+<span id="cb22-570"><a href="#cb22-570" aria-hidden="true" tabindex="-1"></a>  <span class="fu">acf</span>(<span class="fu">xt</span>(m, i), <span class="at">col =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"c = "</span>, i, <span class="st">"et m = "</span>, m))</span>
+<span id="cb22-571"><a href="#cb22-571" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-572"><a href="#cb22-572" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb22-573"><a href="#cb22-573" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-574"><a href="#cb22-574" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-575"><a href="#cb22-575" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-576"><a href="#cb22-576" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-577"><a href="#cb22-577" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-577"><a href="#cb22-577" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-578"><a href="#cb22-578" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-579"><a href="#cb22-579" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Commenter les résultats</span></span>
-<span id="cb22-580"><a href="#cb22-580" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-580"><a href="#cb22-580" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-581"><a href="#cb22-581" aria-hidden="true" tabindex="-1"></a>On remarque qu'au moment où nos paramètres sont proche de $1$ ou $-1$, nos autocorrélations sont forte et notre série perd en stationnarité.</span>
 <span id="cb22-582"><a href="#cb22-582" aria-hidden="true" tabindex="-1"></a>En effet, on remarque que le processus est un AR(1) avec son acf qui décroit exponentiellement et la stationnarité se perd quand $|c| \longrightarrow 1$.</span>
 <span id="cb22-583"><a href="#cb22-583" aria-hidden="true" tabindex="-1"></a></span>
@@ -2248,35 +1913,35 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-586"><a href="#cb22-586" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-587"><a href="#cb22-587" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-588"><a href="#cb22-588" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-589"><a href="#cb22-589" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-589"><a href="#cb22-589" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-590"><a href="#cb22-590" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-591"><a href="#cb22-591" aria-hidden="true" tabindex="-1"></a><span class="fu">#### **BONUS**</span></span>
-<span id="cb22-592"><a href="#cb22-592" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-592"><a href="#cb22-592" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-593"><a href="#cb22-593" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-594"><a href="#cb22-594" aria-hidden="true" tabindex="-1"></a>En Complément de ces informations, on peut aussi s'interesser au PACF </span>
 <span id="cb22-595"><a href="#cb22-595" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-596"><a href="#cb22-596" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-597"><a href="#cb22-597" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 5)) </span></span>
-<span id="cb22-598"><a href="#cb22-598" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in c){</span></span>
-<span id="cb22-599"><a href="#cb22-599" aria-hidden="true" tabindex="-1"></a><span class="in">  acf(xt(m, i), col = 2, main = paste("c = ", i, "et m = ", m))</span></span>
-<span id="cb22-600"><a href="#cb22-600" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-601"><a href="#cb22-601" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-597"><a href="#cb22-597" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)) </span>
+<span id="cb22-598"><a href="#cb22-598" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> c){</span>
+<span id="cb22-599"><a href="#cb22-599" aria-hidden="true" tabindex="-1"></a>  <span class="fu">acf</span>(<span class="fu">xt</span>(m, i), <span class="at">col =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"c = "</span>, i, <span class="st">"et m = "</span>, m))</span>
+<span id="cb22-600"><a href="#cb22-600" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-601"><a href="#cb22-601" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-602"><a href="#cb22-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-603"><a href="#cb22-603" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 5)) </span></span>
-<span id="cb22-604"><a href="#cb22-604" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in c){</span></span>
-<span id="cb22-605"><a href="#cb22-605" aria-hidden="true" tabindex="-1"></a><span class="in">  pacf(xt(m, i), col = 2, main = paste("c = ", i, "et m = ", m))</span></span>
-<span id="cb22-606"><a href="#cb22-606" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-607"><a href="#cb22-607" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1))</span></span>
+<span id="cb22-603"><a href="#cb22-603" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>)) </span>
+<span id="cb22-604"><a href="#cb22-604" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> c){</span>
+<span id="cb22-605"><a href="#cb22-605" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pacf</span>(<span class="fu">xt</span>(m, i), <span class="at">col =</span> <span class="dv">2</span>, <span class="at">main =</span> <span class="fu">paste</span>(<span class="st">"c = "</span>, i, <span class="st">"et m = "</span>, m))</span>
+<span id="cb22-606"><a href="#cb22-606" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-607"><a href="#cb22-607" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb22-608"><a href="#cb22-608" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-609"><a href="#cb22-609" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-610"><a href="#cb22-610" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-611"><a href="#cb22-611" aria-hidden="true" tabindex="-1"></a>On reconnait alors les caractéristiques d'un AR(1) au vu des ACF et PACF. Et le cas de $c=0$ apparait plus clairement comme celui d'un bruit blanc.</span>
-<span id="cb22-612"><a href="#cb22-612" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-612"><a href="#cb22-612" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-613"><a href="#cb22-613" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-614"><a href="#cb22-614" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-615"><a href="#cb22-615" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-616"><a href="#cb22-616" aria-hidden="true" tabindex="-1"></a><span class="fu"># **EXERCICE 4 : **</span></span>
-<span id="cb22-617"><a href="#cb22-617" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-617"><a href="#cb22-617" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-618"><a href="#cb22-618" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-619"><a href="#cb22-619" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-620"><a href="#cb22-620" aria-hidden="true" tabindex="-1"></a>Le fichier champ.asc est disponible sur le web à l’adresse suivante</span>
@@ -2290,51 +1955,51 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-630"><a href="#cb22-630" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-631"><a href="#cb22-631" aria-hidden="true" tabindex="-1"></a>Ct <span class="ot">=</span> <span class="fu">ts</span>(data)</span>
 <span id="cb22-632"><a href="#cb22-632" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-633"><a href="#cb22-633" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-633"><a href="#cb22-633" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-634"><a href="#cb22-634" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-635"><a href="#cb22-635" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-636"><a href="#cb22-636" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 1 : Tracer la série $(C_t)$ et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-637"><a href="#cb22-637" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-637"><a href="#cb22-637" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-638"><a href="#cb22-638" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-639"><a href="#cb22-639" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2))  </span></span>
-<span id="cb22-640"><a href="#cb22-640" aria-hidden="true" tabindex="-1"></a><span class="in">plot(Ct, ylab = TeX("$C_t$"), xlab = "Time", main = "Serie of Champagne sales ", col = "cyan2")</span></span>
-<span id="cb22-641"><a href="#cb22-641" aria-hidden="true" tabindex="-1"></a><span class="in">acf(Ct, main = TeX("ACF for serie $C_t$"), col = "cyan2")</span></span>
-<span id="cb22-642"><a href="#cb22-642" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-639"><a href="#cb22-639" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  </span>
+<span id="cb22-640"><a href="#cb22-640" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Ct, <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$C_t$"</span>), <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">main =</span> <span class="st">"Serie of Champagne sales "</span>, <span class="at">col =</span> <span class="st">"cyan2"</span>)</span>
+<span id="cb22-641"><a href="#cb22-641" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(Ct, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"ACF for serie $C_t$"</span>), <span class="at">col =</span> <span class="st">"cyan2"</span>)</span>
+<span id="cb22-642"><a href="#cb22-642" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-643"><a href="#cb22-643" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-644"><a href="#cb22-644" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-644"><a href="#cb22-644" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-645"><a href="#cb22-645" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-646"><a href="#cb22-646" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 2 : En utilisant les résultats de l’exercice précédent, peut-on détecter la présence d’une fonction périodique ou d’une tendance dans cette série.</span></span>
-<span id="cb22-647"><a href="#cb22-647" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-647"><a href="#cb22-647" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-648"><a href="#cb22-648" aria-hidden="true" tabindex="-1"></a>D'après les graphiques obtenus ainsi que l'analyse faite à l'exercice précédent, on constate clairement une série de type multplicatif (variance qui explose avec le temps) présentant une tendance linéaire et une saisonnalité (de période environ 12 peut-être).</span>
-<span id="cb22-649"><a href="#cb22-649" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-649"><a href="#cb22-649" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-650"><a href="#cb22-650" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-651"><a href="#cb22-651" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 3 : Tracer la série $(log(Ct))$ et sa suite des auto-corrélations empiriques</span></span>
-<span id="cb22-652"><a href="#cb22-652" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-652"><a href="#cb22-652" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-655"><a href="#cb22-655" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-656"><a href="#cb22-656" aria-hidden="true" tabindex="-1"></a>lCt <span class="ot">=</span> <span class="fu">log</span>(Ct)</span>
 <span id="cb22-657"><a href="#cb22-657" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-658"><a href="#cb22-658" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-659"><a href="#cb22-659" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-660"><a href="#cb22-660" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2))  </span></span>
-<span id="cb22-661"><a href="#cb22-661" aria-hidden="true" tabindex="-1"></a><span class="in">plot(lCt, ylab = TeX("$log(C_t)$"), xlab = "Time", main = "Log Serie of Champagne sales ", col = "cyan4")</span></span>
-<span id="cb22-662"><a href="#cb22-662" aria-hidden="true" tabindex="-1"></a><span class="in">acf(lCt, main = TeX("ACF for serie $log(C_t)$"), col = "cyan4")</span></span>
-<span id="cb22-663"><a href="#cb22-663" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-660"><a href="#cb22-660" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  </span>
+<span id="cb22-661"><a href="#cb22-661" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lCt, <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$log(C_t)$"</span>), <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">main =</span> <span class="st">"Log Serie of Champagne sales "</span>, <span class="at">col =</span> <span class="st">"cyan4"</span>)</span>
+<span id="cb22-662"><a href="#cb22-662" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(lCt, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"ACF for serie $log(C_t)$"</span>), <span class="at">col =</span> <span class="st">"cyan4"</span>)</span>
+<span id="cb22-663"><a href="#cb22-663" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-664"><a href="#cb22-664" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-665"><a href="#cb22-665" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-666"><a href="#cb22-666" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-667"><a href="#cb22-667" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-668"><a href="#cb22-668" aria-hidden="true" tabindex="-1"></a>On peut observé que le passage au log à permis de contrer la croissance en $t$ de la variance.</span>
-<span id="cb22-669"><a href="#cb22-669" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-669"><a href="#cb22-669" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-670"><a href="#cb22-670" aria-hidden="true" tabindex="-1"></a>En effet, si on pose $Y_t = t\varepsilon_t$, alors $Var(Y_t) = t^2Var(\varepsilon_t)$.</span>
-<span id="cb22-671"><a href="#cb22-671" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-671"><a href="#cb22-671" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-672"><a href="#cb22-672" aria-hidden="true" tabindex="-1"></a>Or, avec le passage au log, on aura que </span>
 <span id="cb22-673"><a href="#cb22-673" aria-hidden="true" tabindex="-1"></a>$Var(log(Y_t)) = Var(log(t\varepsilon_t)) = Var(log(t)+log(\varepsilon_t)) = Var(log(\varepsilon_t))$</span>
 <span id="cb22-674"><a href="#cb22-674" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-675"><a href="#cb22-675" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-676"><a href="#cb22-676" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-676"><a href="#cb22-676" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-677"><a href="#cb22-677" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-678"><a href="#cb22-678" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 4 : Pour différentes valeurs des paramètres $(\alpha, \beta, \gamma)$, simuler les séries suivantes de longueur 100 où $(\varepsilon_t)$ est une suite de variables aléatoires i.i.d. $\mathcal{N}_{(0, 1)}$</span></span>
-<span id="cb22-679"><a href="#cb22-679" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-679"><a href="#cb22-679" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-680"><a href="#cb22-680" aria-hidden="true" tabindex="-1"></a>On va donc simuler des séries de la forme suivante</span>
 <span id="cb22-681"><a href="#cb22-681" aria-hidden="true" tabindex="-1"></a>\begin{align}</span>
 <span id="cb22-682"><a href="#cb22-682" aria-hidden="true" tabindex="-1"></a>\alpha t + \beta cos(\frac{2πt}{12}) + \gamma cos(\frac{2πt}{6}) + \beta' cos(\frac{2πt}{12}) + \gamma' cos(\frac{2πt}{6}) + \varepsilon_t</span>
@@ -2366,44 +2031,44 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-710"><a href="#cb22-710" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-711"><a href="#cb22-711" aria-hidden="true" tabindex="-1"></a>On peut déjà constater que cette série à été construite dans l'optique de prendre les périodes que l'on peut détecter avec l'ACF autour du Lag 6 et du Lag 12 et qui sont adéquate à l'aspect de "double pics" présent dans notre série. Le terme $\alpha$ est de son côté, présent pour prendre en compte la présence de la tendance linéaire.</span>
 <span id="cb22-712"><a href="#cb22-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-713"><a href="#cb22-713" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-713"><a href="#cb22-713" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-714"><a href="#cb22-714" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-715"><a href="#cb22-715" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 5 : Comparer l’allure des séries simulées avec la série des ventes de champagne et la série $(log(Ct))$.</span></span>
-<span id="cb22-716"><a href="#cb22-716" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-716"><a href="#cb22-716" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-717"><a href="#cb22-717" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-718"><a href="#cb22-718" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-719"><a href="#cb22-719" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-720"><a href="#cb22-720" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(3,3))</span></span>
-<span id="cb22-721"><a href="#cb22-721" aria-hidden="true" tabindex="-1"></a><span class="in">for (i in 1:length(alpha)) {</span></span>
-<span id="cb22-722"><a href="#cb22-722" aria-hidden="true" tabindex="-1"></a><span class="in">  plot(simu.res[,i], type = "l", </span></span>
-<span id="cb22-723"><a href="#cb22-723" aria-hidden="true" tabindex="-1"></a><span class="in">       col = "darkorange", </span></span>
-<span id="cb22-724"><a href="#cb22-724" aria-hidden="true" tabindex="-1"></a><span class="in">       xlab = "Time", </span></span>
-<span id="cb22-725"><a href="#cb22-725" aria-hidden="true" tabindex="-1"></a><span class="in">       ylab = "Serie" ,</span></span>
-<span id="cb22-726"><a href="#cb22-726" aria-hidden="true" tabindex="-1"></a><span class="in">       main = TeX(paste("$alpha$ = ", alpha[i], ", $beta$ = ", beta[i], ", $gamma$ = ", gamma[i], "$beta'$ = ", d[i],", $gamma'$ = ", e[i]))</span></span>
-<span id="cb22-727"><a href="#cb22-727" aria-hidden="true" tabindex="-1"></a><span class="in">       )</span></span>
-<span id="cb22-728"><a href="#cb22-728" aria-hidden="true" tabindex="-1"></a><span class="in"> # title(main=TeX(paste("$alpha$ = ", alpha[i], ", $beta$ = ", beta[i], ", $gamma$ = ", gamma[i],"\n",sep="")), cex.main=1)</span></span>
-<span id="cb22-729"><a href="#cb22-729" aria-hidden="true" tabindex="-1"></a><span class="in">  #title(main=TeX(paste("\n","$beta'$ = ", d[i],", $gamma'$ = ", e[i],sep="")), cex.main=1)</span></span>
-<span id="cb22-730"><a href="#cb22-730" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb22-731"><a href="#cb22-731" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1,1))</span></span>
+<span id="cb22-720"><a href="#cb22-720" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>))</span>
+<span id="cb22-721"><a href="#cb22-721" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(alpha)) {</span>
+<span id="cb22-722"><a href="#cb22-722" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot</span>(simu.res[,i], <span class="at">type =</span> <span class="st">"l"</span>, </span>
+<span id="cb22-723"><a href="#cb22-723" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="st">"darkorange"</span>, </span>
+<span id="cb22-724"><a href="#cb22-724" aria-hidden="true" tabindex="-1"></a>       <span class="at">xlab =</span> <span class="st">"Time"</span>, </span>
+<span id="cb22-725"><a href="#cb22-725" aria-hidden="true" tabindex="-1"></a>       <span class="at">ylab =</span> <span class="st">"Serie"</span> ,</span>
+<span id="cb22-726"><a href="#cb22-726" aria-hidden="true" tabindex="-1"></a>       <span class="at">main =</span> <span class="fu">TeX</span>(<span class="fu">paste</span>(<span class="st">"$alpha$ = "</span>, alpha[i], <span class="st">", $beta$ = "</span>, beta[i], <span class="st">", $gamma$ = "</span>, gamma[i], <span class="st">"$beta'$ = "</span>, d[i],<span class="st">", $gamma'$ = "</span>, e[i]))</span>
+<span id="cb22-727"><a href="#cb22-727" aria-hidden="true" tabindex="-1"></a>       )</span>
+<span id="cb22-728"><a href="#cb22-728" aria-hidden="true" tabindex="-1"></a> <span class="co"># title(main=TeX(paste("$alpha$ = ", alpha[i], ", $beta$ = ", beta[i], ", $gamma$ = ", gamma[i],"\n",sep="")), cex.main=1)</span></span>
+<span id="cb22-729"><a href="#cb22-729" aria-hidden="true" tabindex="-1"></a>  <span class="co">#title(main=TeX(paste("\n","$beta'$ = ", d[i],", $gamma'$ = ", e[i],sep="")), cex.main=1)</span></span>
+<span id="cb22-730"><a href="#cb22-730" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-731"><a href="#cb22-731" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
 <span id="cb22-732"><a href="#cb22-732" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-733"><a href="#cb22-733" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb22-734"><a href="#cb22-734" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-735"><a href="#cb22-735" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
-<span id="cb22-736"><a href="#cb22-736" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2)) </span></span>
-<span id="cb22-737"><a href="#cb22-737" aria-hidden="true" tabindex="-1"></a><span class="in">plot(Ct, ylab = TeX("$C_t$"), xlab = "Time", main = "Serie of Champagne sales ", col = "cyan2")</span></span>
-<span id="cb22-738"><a href="#cb22-738" aria-hidden="true" tabindex="-1"></a><span class="in">plot(lCt, ylab = TeX("$log(C_t)$"), xlab = "Time", main = "Log Serie of Champagne sales ", col = "cyan4")</span></span>
-<span id="cb22-739"><a href="#cb22-739" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-736"><a href="#cb22-736" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) </span>
+<span id="cb22-737"><a href="#cb22-737" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Ct, <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$C_t$"</span>), <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">main =</span> <span class="st">"Serie of Champagne sales "</span>, <span class="at">col =</span> <span class="st">"cyan2"</span>)</span>
+<span id="cb22-738"><a href="#cb22-738" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lCt, <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$log(C_t)$"</span>), <span class="at">xlab =</span> <span class="st">"Time"</span>, <span class="at">main =</span> <span class="st">"Log Serie of Champagne sales "</span>, <span class="at">col =</span> <span class="st">"cyan4"</span>)</span>
+<span id="cb22-739"><a href="#cb22-739" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-740"><a href="#cb22-740" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb22-741"><a href="#cb22-741" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-741"><a href="#cb22-741" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-742"><a href="#cb22-742" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-743"><a href="#cb22-743" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 6 : Pour laquelle des deux séries $((Ct))$ $(log(Ct))$, le modèle défini en question 4 vous semble le plus pertinent.</span></span>
-<span id="cb22-744"><a href="#cb22-744" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-744"><a href="#cb22-744" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-745"><a href="#cb22-745" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-746"><a href="#cb22-746" aria-hidden="true" tabindex="-1"></a>La série $log(C_t)$ est la plus adaptée à l'halure des séries simulées car, pour les series simulées, on a pas la variance qui augmente comme pour$C_t$. </span>
-<span id="cb22-747"><a href="#cb22-747" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-747"><a href="#cb22-747" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-748"><a href="#cb22-748" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-749"><a href="#cb22-749" aria-hidden="true" tabindex="-1"></a><span class="fu">#### QUESTION 7 : Sur cette série, calculer les estimateurs de $(\alpha, \beta, \gamma)$ par la méthode des moindres carrés. Que peut-on dire de la qualité du modèle. Peut on modéliser la série des résidus par un bruit blanc?</span></span>
-<span id="cb22-750"><a href="#cb22-750" aria-hidden="true" tabindex="-1"></a>&lt;br&gt;</span>
+<span id="cb22-750"><a href="#cb22-750" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;br&gt;</span></span>
 <span id="cb22-751"><a href="#cb22-751" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-754"><a href="#cb22-754" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb22-755"><a href="#cb22-755" aria-hidden="true" tabindex="-1"></a><span class="co">#construisons un modèle de regression</span></span>
@@ -2419,19 +2084,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-765"><a href="#cb22-765" aria-hidden="true" tabindex="-1"></a>On constate une forte significativité de tout nos termes.</span>
 <span id="cb22-766"><a href="#cb22-766" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, echo=FALSE}</span></span>
 <span id="cb22-767"><a href="#cb22-767" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-768"><a href="#cb22-768" aria-hidden="true" tabindex="-1"></a><span class="in">plot(log(Ct), type = "l", col = "cyan4",</span></span>
-<span id="cb22-769"><a href="#cb22-769" aria-hidden="true" tabindex="-1"></a><span class="in">     xlab = "Time",</span></span>
-<span id="cb22-770"><a href="#cb22-770" aria-hidden="true" tabindex="-1"></a><span class="in">     ylab = TeX("$C_t$"), </span></span>
-<span id="cb22-771"><a href="#cb22-771" aria-hidden="true" tabindex="-1"></a><span class="in">     ylim=range(log(Ct))+c(0,0.4))</span></span>
-<span id="cb22-772"><a href="#cb22-772" aria-hidden="true" tabindex="-1"></a><span class="in">lines(model$fitted.values, col = "darkorange3")</span></span>
-<span id="cb22-773"><a href="#cb22-773" aria-hidden="true" tabindex="-1"></a><span class="in"># model$fitted.values sont les valeurs estimées de notre série au cours du temps</span></span>
-<span id="cb22-774"><a href="#cb22-774" aria-hidden="true" tabindex="-1"></a><span class="in">title("Données observées vs données ajustées")</span></span>
-<span id="cb22-775"><a href="#cb22-775" aria-hidden="true" tabindex="-1"></a><span class="in">legend(</span></span>
-<span id="cb22-776"><a href="#cb22-776" aria-hidden="true" tabindex="-1"></a><span class="in">  "topleft",</span></span>
-<span id="cb22-777"><a href="#cb22-777" aria-hidden="true" tabindex="-1"></a><span class="in">  legend = c(TeX("$log(C_t)$"), "Estimations du modèle"),</span></span>
-<span id="cb22-778"><a href="#cb22-778" aria-hidden="true" tabindex="-1"></a><span class="in">  col = c("cyan4", "darkorange3"),</span></span>
-<span id="cb22-779"><a href="#cb22-779" aria-hidden="true" tabindex="-1"></a><span class="in">  lty = c("solid", "solid")</span></span>
-<span id="cb22-780"><a href="#cb22-780" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb22-768"><a href="#cb22-768" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(Ct), <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col =</span> <span class="st">"cyan4"</span>,</span>
+<span id="cb22-769"><a href="#cb22-769" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Time"</span>,</span>
+<span id="cb22-770"><a href="#cb22-770" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">TeX</span>(<span class="st">"$C_t$"</span>), </span>
+<span id="cb22-771"><a href="#cb22-771" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">range</span>(<span class="fu">log</span>(Ct))<span class="sc">+</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.4</span>))</span>
+<span id="cb22-772"><a href="#cb22-772" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(model<span class="sc">$</span>fitted.values, <span class="at">col =</span> <span class="st">"darkorange3"</span>)</span>
+<span id="cb22-773"><a href="#cb22-773" aria-hidden="true" tabindex="-1"></a><span class="co"># model$fitted.values sont les valeurs estimées de notre série au cours du temps</span></span>
+<span id="cb22-774"><a href="#cb22-774" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Données observées vs données ajustées"</span>)</span>
+<span id="cb22-775"><a href="#cb22-775" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(</span>
+<span id="cb22-776"><a href="#cb22-776" aria-hidden="true" tabindex="-1"></a>  <span class="st">"topleft"</span>,</span>
+<span id="cb22-777"><a href="#cb22-777" aria-hidden="true" tabindex="-1"></a>  <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">TeX</span>(<span class="st">"$log(C_t)$"</span>), <span class="st">"Estimations du modèle"</span>),</span>
+<span id="cb22-778"><a href="#cb22-778" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"cyan4"</span>, <span class="st">"darkorange3"</span>),</span>
+<span id="cb22-779"><a href="#cb22-779" aria-hidden="true" tabindex="-1"></a>  <span class="at">lty =</span> <span class="fu">c</span>(<span class="st">"solid"</span>, <span class="st">"solid"</span>)</span>
+<span id="cb22-780"><a href="#cb22-780" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb22-781"><a href="#cb22-781" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-782"><a href="#cb22-782" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-783"><a href="#cb22-783" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -2442,29 +2107,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb22-788"><a href="#cb22-788" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-789"><a href="#cb22-789" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, include=FALSE}</span></span>
 <span id="cb22-790"><a href="#cb22-790" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-791"><a href="#cb22-791" aria-hidden="true" tabindex="-1"></a><span class="in"># Pour un complément d'information, on peut également regarder la PACF de nos séries $C_t$ et $log(C_t)$</span></span>
-<span id="cb22-792"><a href="#cb22-792" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 2))  </span></span>
-<span id="cb22-793"><a href="#cb22-793" aria-hidden="true" tabindex="-1"></a><span class="in">pacf(Ct, main = TeX("PACF for serie $(C_t)$"), col = "cyan2")</span></span>
-<span id="cb22-794"><a href="#cb22-794" aria-hidden="true" tabindex="-1"></a><span class="in">pacf(lCt, main = TeX("PACF for serie $log(C_t)$"), col = "cyan4")</span></span>
-<span id="cb22-795"><a href="#cb22-795" aria-hidden="true" tabindex="-1"></a><span class="in">par(mfrow=c(1, 1)) </span></span>
+<span id="cb22-791"><a href="#cb22-791" aria-hidden="true" tabindex="-1"></a><span class="co"># Pour un complément d'information, on peut également regarder la PACF de nos séries $C_t$ et $log(C_t)$</span></span>
+<span id="cb22-792"><a href="#cb22-792" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))  </span>
+<span id="cb22-793"><a href="#cb22-793" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(Ct, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"PACF for serie $(C_t)$"</span>), <span class="at">col =</span> <span class="st">"cyan2"</span>)</span>
+<span id="cb22-794"><a href="#cb22-794" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(lCt, <span class="at">main =</span> <span class="fu">TeX</span>(<span class="st">"PACF for serie $log(C_t)$"</span>), <span class="at">col =</span> <span class="st">"cyan4"</span>)</span>
+<span id="cb22-795"><a href="#cb22-795" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) </span>
 <span id="cb22-796"><a href="#cb22-796" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">
-<p>Copyright 2025, Clément Poupelin</p>
-</div>   
+    <div class="nav-footer-left">Copyright 2025, Clément Poupelin</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">
-<p>This blog is built with <a href="https://quarto.org/">Quarto</a></p>
-</div>
+    <div class="nav-footer-right">This blog is built with <a href="https://quarto.org/">Quarto</a></div>
   </div>
 </footer>
-
 
 
 
