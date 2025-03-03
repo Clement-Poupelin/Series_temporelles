@@ -1,0 +1,346 @@
+---
+title: "Exercice 2.02"
+author: "Clément Poupelin"
+date: "2025-03-03"
+date-modified: "`r Sys.Date()`"
+format: 
+  html:
+    embed-resources: false
+    toc: true
+    code-fold: true
+    code-summary: "Show the code"
+    code-tools: true
+    toc-location: right
+    page-layout: article
+    code-overflow: wrap
+toc: true
+number-sections: false
+editor: visual
+categories: ["Fiche 2", "Différenciation", "Tendance", "Saisonnalité"]
+image: ""
+description: "Nous allons ici voir l'impact de l'opération de **différenciation** pour des données simulées avec **tendance** et **saisonnalité**"
+---
+
+# Intervenant.e.s
+
+### Rédaction
+
+-   **Clément Poupelin**, [clementjc.poupelin\@gmail.com](mailto:clementjc.poupelin@gmail.com){.email}\
+
+### Relecture
+
+-   
+
+# Setup
+
+:::: panel-tabset
+## Packages
+
+```{r, setup, warning=FALSE, message=FALSE}
+# Données
+library(dplyr)        # manipulation des données
+
+# Esthétique
+library(latex2exp)   ## TeX
+library(ggplot2)     ## ggplot
+```
+
+## Fonctions
+
+::: panel-tabset
+
+### Série temporelle simulée
+
+```{r}
+Sim_serie <- function(n, a, b, w) {
+  x <- a * cos(w * seq(1, n)) + b * seq(1, n) + rnorm(n)
+  return(ts(x))
+}
+```
+
+### Plot de séries temporelles
+```{r}
+ggTimeSerie <- function(ts) {
+  df_series <- data.frame(Time = seq_along(ts), X_t = ts)
+  
+  p <- ggplot(df_series, aes(x = Time, y = X_t)) +
+    geom_line(color = "red") +
+    labs(title = TeX(paste0(
+      "Série $X_j$ pour n = ", length(ts)
+    )),
+    x = "Time",
+    y = "Simulated series") +
+    theme_minimal()
+  
+  return(p)
+}
+```
+
+
+### Plot pour ACF et PACF
+
+```{r}
+ggACF <- function(ts) {
+  acf_data <- acf(ts, plot = FALSE)
+  df_acf <- data.frame(Lag = acf_data$lag, ACF = acf_data$acf)
+  
+  pacf_data <- pacf(ts, plot = FALSE)
+  df_pacf <- data.frame(Lag = pacf_data$lag, PACF = pacf_data$acf)  
+  
+  # Intervalle de confiance
+  ci <- qnorm((1 + 0.95) / 2) / sqrt(length(ts))
+  
+  # ACF 
+  p_acf <- ggplot(df_acf, aes(x = Lag, y = ACF)) +
+    geom_segment(aes(xend = Lag, yend = 0), color = "red") +
+    geom_point(color = "red") +
+    labs(title = "Autocorrelation Function (ACF)", x = "Lag", y = "ACF") +
+    geom_hline(yintercept = c(-ci, ci), color = "blue", linetype = "dashed") +
+    theme_minimal()
+  
+  # PACF 
+  p_pacf <- ggplot(df_pacf, aes(x = Lag, y = PACF)) +  
+    geom_segment(aes(xend = Lag, yend = 0), color = "red") +
+    geom_point(color = "red") +
+    labs(title = "Partial Autocorrelation Function (PACF)", x = "Lag", y = "PACF") +
+    geom_hline(yintercept = c(-ci, ci), color = "blue", linetype = "dashed") +
+    theme_minimal()
+  
+  return(list(ACF = p_acf, PACF = p_pacf))
+}
+```
+
+
+:::
+
+## Seed
+
+```{r}
+set.seed(140400)
+```
+::::
+
+# Données
+
+Pour cette exercice, nous allons utilisé une fonction qui retourne une série simulée de la forme $X_j = a \text{cos}(ω_j) + bj + \varepsilon_j$, $j=1, ..., n$, avec $(\varepsilon_j)$ un bruit blanc gaussien centré et de variance 1.
+
+Les paramètres d’entrée de la fonction sont $n$, $a$, $b$, $w$ et la sortie est une série temporelle. 
+
+::: callout-note
+Pour définir une série comme série temporelle, on utilise la fonction *`ts`* qui transforme nos points générés en une série temporelle.
+:::
+
+On pose maintenant différents paramètres que l'on testeras : 
+
+- $n=100$ ou $n=500$
+
+- $a=0$ ou $a=2$
+
+- $b=.01$ ou $b=0$
+
+- $w=\frac{\pi}{6}$
+
+```{r}
+n <- c(100, 500)
+a <- c(0, 2)
+b <- c(0.01, 0)
+w <- pi/6
+```
+
+
+# Situation avec tendance mais sans saisonnalité
+
+Pour cette situation, nous allons utiliser $a=0$ et $b=.01$. Ainsi nous aurons la série simulée $X_j = .01j + \varepsilon_j$.
+
+Commencons par repésenter la série ainsi que sa suite des auto-corrélations empiriques pour $n=100$ et $n=500$.
+
+::: callout-note 
+Pour tracer notre série temporelle et sa suites des auto-corrélations empiriques, on pourrait se contenter d'utiliser les fonctions de bases *`plot`* et *`acf`*.
+:::
+
+::: panel-tabset
+
+## $n=100$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+Sim_serie_drift_100 <- Sim_serie(n[1], a[1], b[1], w)
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_drift_100), ggACF(Sim_serie_drift_100)$ACF, ncol = 2)
+```
+## $n=500$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+Sim_serie_drift_500 <- Sim_serie(n[2], a[1], b[1], w)
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_drift_500), ggACF(Sim_serie_drift_500)$ACF, ncol = 2)
+```
+
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+Nous pouvons constater ici la présence d'une tendance qui se renforce quand $n=500$. Et nous voyons bien l'impact que cela a sur la suite des auto-corrélation avec des auto-corrélation élevés quand $n=500$.\
+
+Mais cela nous fait donc aussi remarquer qu'il faut être prudent avec les tendances qui ne sont pas toujours évidentes à repérer lorsque $n$ est "petit".
+:::
+
+## Différenciation d'ordre 1
+
+Ici, nous allons procéder à une opération d'ordre 1. Cela signifi que pour notre série $X_j$, nous allons effectuer l'opération $X_j − X_{j−1}$.\
+Cette opération peut ce faire facilement avec la fonction *`diff`*.
+```{r}
+Sim_serie_drift_100_diff <- diff(Sim_serie_drift_100, lag = 1)
+Sim_serie_drift_500_diff <- diff(Sim_serie_drift_500, lag = 1)
+```
+
+Maintenant, nous pouvons donc regarder l'effet que cette différenciation d'orde 1 a pu avoir sur notre série et son graphe des auto-corrélations empiriques.
+
+::: panel-tabset
+
+## $n=100$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_drift_100_diff), ggACF(Sim_serie_drift_100_diff)$ACF, ncol = 2)
+```
+## $n=500$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_drift_500_diff), ggACF(Sim_serie_drift_500_diff)$ACF, ncol = 2)
+```
+
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+Nous pouvons maintenant constater une disparition de la tendance qui était pourtant évidente (surtout dans le cas $n=500$) avant la différenciation.
+
+Et au niveau du graphe des ACF, nous voyons que les auto-corrélations sont nettement inférieur à ce que l'on a pu observer précédemment.
+:::
+
+# Situation sans tendance mais avec saisonnalité
+
+
+Pour cette situation, nous allons utiliser $a=2$ et $b=0$. Ainsi nous aurons la série simulée $X_j = 2 \text{cos}(ω_j) + \varepsilon_j$.
+
+Commencons par repésenter la série ainsi que sa suite des auto-corrélations empiriques pour $n=100$ et $n=500$.
+
+::: panel-tabset
+
+## $n=100$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+Sim_serie_season_100 <- Sim_serie(n[1], a[2], b[2], w)
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_season_100), ggACF(Sim_serie_season_100)$ACF, ncol = 2)
+```
+## $n=500$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+Sim_serie_season_500 <- Sim_serie(n[2], a[2], b[2], w)
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_season_500), ggACF(Sim_serie_season_500)$ACF, ncol = 2)
+```
+
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+Nous pouvons constater ici qu'il ne semble pas y avoir de de tendance. Cependant nous sentons bien la présence d'une saisonnalité. Ici nous voyons bien avec le graphe de la suite des auto-corrélations que les auto-corrélation sont élevés et on peut également distinguer à quel temps se trouve la saisonnalié (ici cela semble être à $j=12$).\
+
+:::
+
+## Différenciation d'ordre 12
+
+Ici, nous allons procéder à une opération d'ordre 12. Cela signifi que pour notre série $X_j$, nous allons effectuer l'opération $X_j − X_{j−12}$.\
+Cette opération peut ce faire facilement avec la fonction *`diff`*.
+```{r}
+Sim_serie_season_100_diff <- diff(Sim_serie_season_100, lag = 12)
+Sim_serie_season_500_diff <- diff(Sim_serie_season_500, lag = 12)
+```
+
+Maintenant, nous pouvons donc regarder l'effet que cette différenciation d'orde 12 a pu avoir sur notre série et son graphe des auto-corrélations empiriques.
+
+::: panel-tabset
+
+## $n=100$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_season_100_diff), ggACF(Sim_serie_season_100_diff)$ACF, ncol = 2)
+```
+## $n=500$
+
+```{r, message=FALSE, fig.height=6, fig.width=10}
+gridExtra::grid.arrange(ggTimeSerie(Sim_serie_season_500_diff), ggACF(Sim_serie_season_500_diff)$ACF, ncol = 2)
+```
+
+:::
+
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+Nous pouvons maintenant constater un atténuissement de la saisonnalité qui était pourtant évidente visible (et même tès visible sur le graphe des ACF).
+
+Puis au niveau du graphe des ACF, nous voyons que les auto-corrélations sont nettement inférieur à ce que l'on a pu observer précédemment avec tout de même quelques "pics" toujours présents.
+:::
+
+# Conclusion
+
+Pour conclure, nous avons pu constater qu'en grandissant l'échantillon, la tendance et la saisonnalité ressortent d'avantage et influencent nos auto-corrélations. Nous ne pouvons donc pas considérer les séries comme stationnaires.
+
+::: callout-note
+Une série est dite stationnaire si la structure n'évolue pas avec le temps, i.e soit un processus temporel $(Z_i)_i$, $\forall k$ et pour toute fonction $f$ mesurable $f(Z_1, ..., Z_t)$ et $f(Z_{1+k}, ..., Z_{t+k})$ ont même loi.
+:::
+
+Cependant, l'opération de différenciation peut permettre de résoudre ce problème d'auto-corrélations quand celle ci est adaptée à la "perturbation"(tendance ou saison) de notre série.
+
+Pour visualiser cela, on peut effecuer les calculs. Dans le cas de la série $X_j = 0.01j +\varepsilon_j$ Où il reste l'effet de tendance, 
+\begin{align*}
+X_j - X_{j-1} &= 0.01j +\varepsilon_j - 0.01(j-1) -\varepsilon_{j-1}\\
+ &= 0.01j - 0.01j - 0.01  + \varepsilon_j  - \varepsilon_{j-1}\\
+ &= -0.01  +\varepsilon_j  - \varepsilon_{j-1}\\
+\end{align*} 
+Ainsi, nous avons bien une disparition de la tendance.
+
+Et dans le cas de la série $X_j = 2cos(\frac{\pi}{6}j) + \varepsilon_j$ où il reste l'effet de saison,
+\begin{align*}
+X_j - X_{j-12} &= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}(j-12)) -\varepsilon_{j-12}\\
+ &= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}j-\frac{\pi}{6}12) -\varepsilon_{j-12}\\
+ &= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2cos(\frac{\pi}{6}j-2\pi) -\varepsilon_{j-12}\\
+ &= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2(cos(\frac{\pi}{6}j)cos(2\pi) - sin(\frac{\pi}{6}j)sin(2\pi)) -\varepsilon_{j-12}\\
+ &= 2cos(\frac{\pi}{6}j) +\varepsilon_j - 2(cos(\frac{\pi}{6}j) - 0) -\varepsilon_{j-12}\\
+ &= \varepsilon_j -\varepsilon_{j-12}\\
+\end{align*} 
+Nous avons maintenant une disparition de la saison.
+
+Autrement dit, une différenciation d'ordre 1 permettra d'enlever la tendance et une différenciation d'ordre $s$ permettra d'enlever une saison de période $s$.
+
+# Session info
+
+```{r}
+sessioninfo::session_info(pkgs = "attached")
+```
