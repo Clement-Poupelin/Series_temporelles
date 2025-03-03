@@ -1,7 +1,7 @@
 ---
 title: "Exercice 2.01"
 author: "Clément Poupelin"
-date: "2025-02-xx"
+date: "2025-03-03"
 date-modified: "`r Sys.Date()`"
 format: 
   html:
@@ -18,7 +18,7 @@ number-sections: false
 editor: visual
 categories: ["Fiche 2", "Marche aléatoire", "Signal linéraire bruité"]
 image: ""
-description: "L'objectif de ce document est détudier la différence entre une **marche aléatoire** et un **signal linéraire bruité**"
+description: "L'objectif de ce document est détudier la différence dans l'estimation de la tendance par régression linéaire entre une **marche aléatoire** et un **signal linéraire bruité**"
 ---
 
 # Intervenant.e.s
@@ -40,12 +40,9 @@ description: "L'objectif de ce document est détudier la différence entre une *
 # Données
 library(dplyr)        # manipulation des données
 
-library(latex2exp)
-
-# Plots
-## ggplot
-library(ggplot2)
-library(gridExtra)
+# Esthétique
+library(latex2exp)   ## TeX
+library(ggplot2)     ## ggplot
 ```
 
 ## Fonctions
@@ -105,6 +102,59 @@ plot_simulation_time_series <- function(data, main_title, y_lab) {
   
 }
 ```
+
+### Plot des estimations 
+```{r}
+plot_estimations <- function(coeff, theo_trend_x.pos, theo_trend_y.pos) {
+  time <- seq(1, n)
+  
+  sim_data <- data.frame(
+    time = rep(time, I),
+    value = unlist(lapply(1:I, function(i)
+      coeff[i] * time)),
+    group = rep(1:I, each = n)
+  )
+  
+  theoretical_trend <- data.frame(time = time,
+                                  value = 0.01 * time,
+                                  group = "Theoretical Trend")
+  
+  p <- ggplot(sim_data, aes(
+    x = time,
+    y = value,
+    group = group,
+    color = factor(group)
+  )) +
+    geom_line(size = .5, color = "orange") +
+    geom_line(
+      data = theoretical_trend,
+      aes(x = time, y = value),
+      color = "red",
+      linetype = "dashed",
+      size = 1.
+    ) +
+    labs(
+      title = "Graphe of the estimations",
+      x = "Time",
+      y = "Estimated values",
+      color = "Simulated Curves"
+    ) +
+    scale_color_manual(values = rep("orange", I)) +
+    theme_minimal() +
+    theme(legend.position = "topleft") +
+    annotate(
+      "text",
+      x = theo_trend_x.pos,
+      y = theo_trend_y.pos,
+      label = TeX("Theoretical trend$\\delta t = 0.01t$"),
+      color = "red",
+      hjust = 0
+    )
+  return(p)
+}
+```
+
+
 :::
 
 ## Seed
@@ -159,13 +209,12 @@ plot_simulation_time_series(sim2, main_title = paste("Simulation of", I, "linear
 
 # Estimation du modèle de régression linéaire
 
-Pour les deux types de séries, nous allons estimer le modèle de régression linéaire 
-$$x^\xi_t = \beta t + w_t \quad \text{pour} \quad \xi=1,2$$
+Pour les deux types de séries, nous allons estimer le modèle de régression linéaire $$x^\xi_t = \beta t + w_t \quad \text{pour} \quad \xi=1,2$$
 
 ::: panel-tabset
 ## Marche aléatoire
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 sim_coeff <- apply(sim, 1, function(x) {
   mod <- lm(x ~ 0 + seq(1, n)) 
   return(mod$coefficients)  
@@ -174,11 +223,23 @@ sim_coeff <- apply(sim, 1, function(x) {
 df_sim_coeff <- data.frame(coeff = paste("beta_", seq(1,10)), estimation = round(sim_coeff, 3))
 
 t(df_sim_coeff) %>% DT::datatable()
+sim_coeff %>% summary()
 ```
+:::: success-header
+::: success-icon
+:::
+
+Résultats
+::::
+
+::: success
+Nous pouvons constater ici que les dix estimations varient entre $-0.21$ et $0.18$ avec une moyenne à $0.002$ alors que notre tendance théorique est à $.01$.
+:::
+
 
 ## Signal linéaire bruité
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 sim2_coeff <- apply(sim2, 1, function(x) {
   mod <- lm(x ~ 0 + seq(1, n))  
   return(mod$coefficients)  
@@ -186,47 +247,28 @@ sim2_coeff <- apply(sim2, 1, function(x) {
 df_sim2_coeff <- data.frame(coeff = paste("beta_", seq(1,10)), estimation = round(sim2_coeff, 3))
 
 t(df_sim2_coeff) %>% DT::datatable()
+sim2_coeff %>% summary()
 ```
+:::: success-header
+::: success-icon
 :::
 
-Avec ces résulats, nous pouvons par la suite représenter sur un même graphique les dix droites estimées et la tendance moyenne théorique $\delta t=.01t$.
+Résultats
+::::
+
+::: success
+Nous pouvons constater ici que les dix estimations son proche de $.01$ qui est notre tendance théorique.
+:::
+
+:::
+
+Avec ces résulats, nous pouvons par la suite représenter sur un même graphique dix droites représentant l'évolution de nos séries à partir de nos dix estimations et une droite avec l'évolution de la série avec la tendance théorique $\delta t=.01t$.
 
 ::::::::: panel-tabset
 ## Marche aléatoire
 
 ```{r, warning=FALSE, message=FALSE}
-time <- seq(1, n)
-
-# Créer un data.frame pour les courbes simulées
-sim_data <- data.frame(
-  time = rep(time, I),
-  value = unlist(lapply(1:I, function(i) sim_coeff[i] * time)),
-  group = rep(1:I, each = n)
-)
-
-# Créer la ligne théorique
-theoretical_trend <- data.frame(
-  time = time,
-  value = 0.01 * time,
-  group = "Theoretical Trend"
-)
-
-# Plot avec ggplot
-library(ggplot2)
-
-ggplot(sim_data, aes(x = time, y = value, group = group, color = factor(group))) +
-  geom_line(size = .5, color = "orange") +  # Courbes simulées
-  geom_line(data = theoretical_trend, aes(x = time, y = value), color = "red", linetype = "dashed", size = 1.) +  # Ligne théorique
-  labs(
-    title = "Graphe of the estimations",
-    x = "Time",
-    y = "Estimated values",
-    color = "Simulated Curves"
-  ) +
-  scale_color_manual(values = rep("orange", I)) +  # Couleur orange pour toutes les courbes simulées
-  theme_minimal() +
-  theme(legend.position = "topleft") +
-  annotate("text", x = 10, y = 9, label = TeX("Theoretical trend $\\delta_t = 0.01t$"), color = "red", hjust = 0)
+plot_estimations(sim_coeff, 5, 9)
 ```
 
 :::: success-header
@@ -244,36 +286,7 @@ La variance des estimations semble même croitre au cours du temps.
 ## Signal linéaire bruité
 
 ```{r, warning=FALSE, message=FALSE}
-time <- seq(1, n)
-
-# Créer un data.frame pour les courbes simulées
-sim_data <- data.frame(
-  time = rep(time, I),
-  value = unlist(lapply(1:I, function(i) sim2_coeff[i] * time)),
-  group = rep(1:I, each = n)
-)
-
-# Créer la ligne théorique
-theoretical_trend <- data.frame(
-  time = time,
-  value = 0.01 * time,
-  group = "Theoretical Trend"
-)
-
-
-ggplot(sim_data, aes(x = time, y = value, group = group, color = factor(group))) +
-  geom_line(size = .5, color = "orange") +  # Courbes simulées
-  geom_line(data = theoretical_trend, aes(x = time, y = value), color = "red", linetype = "dashed", size = 1.) +  # Ligne théorique
-  labs(
-    title = "Graphe of the estimations",
-    x = "Time",
-    y = "Estimated values",
-    color = "Simulated Curves"
-  ) +
-  scale_color_manual(values = rep("orange", I)) +  # Couleur orange pour toutes les courbes simulées
-  theme_minimal() +
-  theme(legend.position = "topleft") +
-  annotate("text", x = 10, y = 9, label = TeX("Theoretical trend $\\delta_t = 0.01t$"), color = "red", hjust = 0)
+plot_estimations(sim2_coeff, 0.2, 0.5)
 ```
 
 :::: success-header
@@ -290,10 +303,9 @@ Nous constatons ici que l'estimation semble très bien fonctionner avec des lign
 
 # Conclusion
 
-Nous avons pu voir avec cette exercice que la tendance théorique (le drift) est mieux estimée par régression dans le cas d'un signal bruité que celui de la marche aléatoire.
+Nous avons pu voir avec cette exercice que la tendance théorique (le drift) est mieux estimée par régression linéaire dans le cas d'un signal bruité que celui de la marche aléatoire.
 
-Cela s'explique par le fait que, dans le cas de la marche aléatoire, la variance de $x_t$ croît linéairement avec le temps. En effet, 
-\begin{align*} 
+Cela s'explique par le fait que, dans le cas de la marche aléatoire, la variance de $x_t$ croît linéairement avec le temps. En effet, \begin{align*} 
 Var(x_t) &= Var(\delta t + \sum_{i=0}^{t}w_i)\\
 &= Var(\sum_{i=0}^{t}w_i)\\ 
 &= \sum_{i=0}^{t}Var(w_i)\\ 
@@ -301,9 +313,9 @@ Var(x_t) &= Var(\delta t + \sum_{i=0}^{t}w_i)\\
 &= t\sigma^2_w 
 \end{align*}
 
-Cela fait donc défaut à l'hypothèse d'homoscédacité cruciale pour la régression linéaire.
+Cela fait donc défaut à l'hypothèse d'homoscédacité (la variance des erreurs est la même pour chaque observation) cruciale pour la régression linéaire.
 
-Par contre, du côté du signal bruite on conserve l'homoscédacité avec le cas très idéal du bruit iid (indépendant et identiquement distribué) et gaussien. 
+Par contre, du côté du signal bruité on conserve l'homoscédacité avec le cas très idéal du bruit iid (indépendant et identiquement distribué) et gaussien.
 
 # Session info
 
