@@ -17,7 +17,7 @@ toc: true
 number-sections: false
 editor: visual
 categories: ["Fiche 2", "Différenciation", "Tendance", "Saisonnalité"]
-image: ""
+image: "/img/graphique_frequence.png"
 description: "Nous allons ici voir l'impact de l'opération de **différenciation** pour des données simulées avec **tendance** et **saisonnalité**"
 ---
 

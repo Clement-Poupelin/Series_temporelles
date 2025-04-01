@@ -17,7 +17,7 @@ toc: true
 number-sections: false
 editor: visual
 categories: ["Fiche 2", "Marche aléatoire", "Signal linéraire bruité"]
-image: ""
+image: "/img/graphique_frequence.png"
 description: "L'objectif de ce document est détudier la différence dans l'estimation de la tendance par régression linéaire entre une **marche aléatoire** et un **signal linéraire bruité**"
 ---
 
